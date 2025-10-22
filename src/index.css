@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: Arial, 'Franklin Gothic Book', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  /* Override PrimeReact primary color with UPC brand */
+  .p-button:not(.p-button-outlined):not(.p-button-text) {
+    background-color: #007A3D;
+    border-color: #007A3D;
+  }
+
+  .p-button:not(.p-button-outlined):not(.p-button-text):hover {
+    background-color: #00843D;
+    border-color: #00843D;
+  }
+
+  .p-button:focus {
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #007A3D, 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  /* Ensure focus states are visible for accessibility */
+  input:focus,
+  button:focus,
+  a:focus {
+    outline: 2px solid #007A3D;
+    outline-offset: 2px;
+  }
+}

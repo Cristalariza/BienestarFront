@@ -1,0 +1,36 @@
+/**
+ * Estilos para el componente Header
+ * Usando CSS Modules para scope local
+ */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  height: 60px;
+  width: auto;
+}
+
+.portalesButton {
+  background-color: #007A3D;
+  border-color: #007A3D;
+}
+
+.portalesButton:hover {
+  background-color: #00843D;
+  border-color: #00843D;
+}

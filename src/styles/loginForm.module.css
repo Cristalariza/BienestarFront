@@ -1,0 +1,69 @@
+/**
+ * Estilos para el componente LoginForm
+ * Usando CSS Modules para scope local
+ */
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1.5rem;
+  min-height: calc(100vh - 200px);
+}
+
+.card {
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  background: linear-gradient(135deg, #007A3D 0%, #00843D 100%);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0 0 0.5rem 0;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.content {
+  padding: 2rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-weight: 600;
+  color: #333333;
+}
+
+.submitButton {
+  margin-top: 1rem;
+  background-color: #007A3D;
+  border-color: #007A3D;
+}
+
+.submitButton:hover {
+  background-color: #00843D;
+  border-color: #00843D;
+}
