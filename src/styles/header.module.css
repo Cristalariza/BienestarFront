@@ -23,6 +23,12 @@
   display: flex;
   align-items: center;
   gap: 20px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.leftSection:hover {
+  opacity: 0.8;
 }
 
 .logo {

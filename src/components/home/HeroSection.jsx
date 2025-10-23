@@ -1,8 +1,15 @@
+import { useNavigate } from 'react-router-dom';
 import { Button } from 'primereact/button';
 import bannerImage from '../../assets/UniversidadPrincipal.jpeg';
 import styles from '../../styles/home.module.css';
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
+  const handleLoginRedirect = () => {
+    navigate('/login');
+  };
+
   return (
     <section className={styles.hero}>
       <div className={styles.heroBackground}>
@@ -18,7 +25,7 @@ const HeroSection = () => {
         <Button
           label="Bienestar Virtual"
           className={styles.heroButton}
-          onClick={() => window.open('#', '_blank')}
+          onClick={handleLoginRedirect}
         />
       </div>
     </section>

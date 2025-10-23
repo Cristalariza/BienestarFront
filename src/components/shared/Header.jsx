@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from 'primereact/button';
 import styles from '../../styles/header.module.css';
 
 const Header = () => {
   const [showPortals, setShowPortals] = useState(true);
+  const navigate = useNavigate();
 
   const portalLinks = [
     { label: 'Egresados', url: '#' },
@@ -16,10 +18,14 @@ const Header = () => {
     setShowPortals(!showPortals);
   };
 
+  const handleHomeRedirect = () => {
+    navigate('/');
+  };
+
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <div className={styles.leftSection}>
+        <div className={styles.leftSection} onClick={handleHomeRedirect}>
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Logo_upc_nuevo.png"
             alt="Universidad Popular del Cesar"
