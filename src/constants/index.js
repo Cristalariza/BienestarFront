@@ -6,3 +6,4 @@
 export * from './navigation';
 export * from './contact';
 export * from './messages';
+export * from './categories';

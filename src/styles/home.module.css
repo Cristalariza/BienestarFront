@@ -1,0 +1,769 @@
+/**
+ * Estilos para HomePage
+ * Usando CSS Modules para scope local
+ */
+
+/* Hero Section - Parte 1 */
+.hero {
+  position: relative;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.heroBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+}
+
+.heroBackground img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.heroContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 60px 80px;
+  gap: 24px;
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+}
+
+.heroTitle {
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: white;
+  margin: 0;
+  letter-spacing: -0.5px;
+  text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.heroHighlight {
+  color: #FFF500;
+  font-weight: 800;
+  text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.heroDescription {
+  font-size: 18px;
+  line-height: 1.6;
+  color: white;
+  margin: 0;
+  text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+.heroButton {
+  background-color: white !important;
+  color: #2d8659 !important;
+  border: none !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  padding: 14px 36px !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.heroButton:hover {
+  background-color: #f5f5f5 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+.heroImage {
+  display: none;
+}
+
+/* Categories Section - Parte 2 */
+.categories {
+  padding: 80px 60px;
+  background-color: #ffffff;
+}
+
+.categoriesHeader {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.categoriesTitle {
+  font-size: 36px;
+  font-weight: 700;
+  color: #2d8659;
+  margin: 0 0 16px 0;
+}
+
+.categoriesSubtitle {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.categoriesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.categoryCard {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.categoryCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: #8BC34A;
+}
+
+.categoryBadge {
+  background-color: #2d8659;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 20px;
+  align-self: flex-start;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.categoryTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2d8659;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.categoryDescription {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #666;
+  margin: 0;
+  flex-grow: 1;
+  text-align: justify;
+}
+
+.categoryButton {
+  background-color: #8BC34A !important;
+  border: none !important;
+  color: white !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  padding: 12px 24px !important;
+  border-radius: 8px !important;
+  align-self: flex-start;
+  transition: all 0.3s ease !important;
+}
+
+.categoryButton:hover {
+  background-color: #7CB342 !important;
+  transform: translateX(4px);
+}
+
+.categoryButton .pi {
+  font-size: 14px;
+  margin-left: 8px;
+}
+
+/* Shared Section Styles */
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 60px;
+  position: relative;
+}
+
+.sectionHeader::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 1000px;
+  height: 4px;
+  background-color: #8BC34A;
+}
+
+.sectionTitle {
+  font-size: 36px;
+  font-weight: 700;
+  color: #2d8659;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.sectionSubtitle {
+  font-size: 16px;
+  color: #666;
+  margin: 12px 0 0 0;
+}
+
+/* About Section - Parte 3 */
+.about {
+  padding: 80px 60px;
+  background-color: #fafafa;
+}
+
+.aboutContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.aboutImage {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.aboutImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.aboutText {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.aboutText p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #444;
+  margin: 0;
+  text-align: justify;
+}
+
+.aboutBadge {
+  background-color: #2d8659;
+  color: white;
+  padding: 20px 32px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.aboutBadgeText {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.aboutBadgeSubtext {
+  font-size: 14px;
+  font-weight: 400;
+  opacity: 0.95;
+}
+
+/* Mission Vision Section - Parte 4 */
+.missionVision {
+  padding: 80px 60px;
+  background: linear-gradient(135deg, #f8fdf9 0%, #ffffff 50%, #f0f9f3 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.missionVision::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(139, 195, 74, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.missionVision::after {
+  content: '';
+  position: absolute;
+  bottom: -50%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(45, 134, 89, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.missionVisionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.missionVisionCard {
+  background: white;
+  border: none;
+  border-radius: 16px;
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 24px;
+  box-shadow: 0 10px 40px rgba(45, 134, 89, 0.12);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.missionVisionCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #2d8659 0%, #8BC34A 100%);
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+}
+
+.missionVisionCard:hover::before {
+  transform: scaleX(1);
+}
+
+.missionVisionCard:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 20px 60px rgba(45, 134, 89, 0.2);
+}
+
+.missionVisionIcon {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #8BC34A 0%, #7CB342 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(139, 195, 74, 0.3);
+  transition: all 0.4s ease;
+}
+
+.missionVisionCard:hover .missionVisionIcon {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 12px 32px rgba(139, 195, 74, 0.4);
+}
+
+.missionVisionIcon::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid #8BC34A;
+  opacity: 0.3;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.1;
+  }
+}
+
+.missionVisionTitle {
+  font-size: 26px;
+  font-weight: 700;
+  color: #2d8659;
+  margin: 0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.missionVisionTitle::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #8BC34A 0%, #2d8659 100%);
+  border-radius: 2px;
+}
+
+.missionVisionText {
+  font-size: 15px;
+  line-height: 1.8;
+  color: #555;
+  margin: 0;
+  text-align: justify;
+  font-weight: 400;
+}
+
+/* Structure Section - Parte 5 */
+.structure {
+  padding: 80px 60px;
+  background-color: #fafafa;
+}
+
+.structureContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.structureLeft,
+.structureRight {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.structureSubtitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.structureDescription {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #666;
+  margin: 0;
+}
+
+.structureImageContainer {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.structureImageContainer img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.structureImageOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(45, 134, 89, 0.9);
+  color: white;
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.structureAreas {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.areasTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2d8659;
+  margin: 0 0 16px 0;
+}
+
+.areasList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.areasList li {
+  font-size: 14px;
+  color: #555;
+  padding-left: 28px;
+  position: relative;
+}
+
+.areasList li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: #8BC34A;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.policiesList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.policyItem {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.policyIcon {
+  width: 48px;
+  height: 48px;
+  background-color: #8BC34A;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.policyContent {
+  flex: 1;
+}
+
+.policyTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.policyDescription {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #666;
+  margin: 0;
+}
+
+.regulationBox {
+  background: linear-gradient(135deg, #2d8659 0%, #8BC34A 100%);
+  border-radius: 12px;
+  padding: 32px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  margin-top: 16px;
+}
+
+.regulationIcon {
+  width: 64px;
+  height: 64px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.regulationContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.regulationTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.regulationDescription {
+  font-size: 14px;
+  line-height: 1.6;
+  color: white;
+  margin: 0;
+  opacity: 0.95;
+}
+
+.regulationButton {
+  background-color: white !important;
+  color: #2d8659 !important;
+  border: none !important;
+  font-weight: 600 !important;
+  padding: 10px 24px !important;
+  border-radius: 6px !important;
+  align-self: flex-start;
+}
+
+.regulationButton:hover {
+  background-color: #f5f5f5 !important;
+}
+
+/* Contact Section - Parte 6 */
+.contact {
+  padding: 60px;
+  background: linear-gradient(135deg, #8BC34A 0%, #7CB342 100%);
+}
+
+.contactTitle {
+  font-size: 36px;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  margin: 0 0 48px 0;
+  text-transform: uppercase;
+}
+
+.contactGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.contactCard {
+  background: white;
+  border-radius: 12px;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.contactIcon {
+  width: 80px;
+  height: 80px;
+  background-color: #8BC34A;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 36px;
+}
+
+.contactContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.contactCardTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.contactText {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #666;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .categoriesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contactGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .structureContent {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .heroImage {
+    min-height: 300px;
+  }
+
+  .heroContent {
+    padding: 40px 32px;
+  }
+
+  .heroTitle {
+    font-size: 36px;
+  }
+
+  .categoriesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .categories {
+    padding: 40px 24px;
+  }
+
+  .aboutContent {
+    grid-template-columns: 1fr;
+  }
+
+  .missionVisionGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .contactGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .about,
+  .missionVision,
+  .structure,
+  .contact {
+    padding: 40px 24px;
+  }
+}
