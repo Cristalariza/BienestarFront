@@ -1,20 +1,12 @@
-/**
- * Componente: MainLayout
- * Layout principal de la aplicación con Header, contenido y Footer
- *
- * Arquitectura:
- * - Recibe children para renderizar contenido dinámico
- * - Estructura flex para footer sticky
- * - Componentes modulares (Header, Footer)
- */
-
 import Header from '../shared/Header';
+import SubMenu from '../shared/SubMenu';
 import Footer from '../shared/Footer';
 
-const MainLayout = ({ children }) => {
+const MainLayout = ({ children, showSubMenu = true }) => {
   return (
     <div className="min-h-screen flex flex-col bg-white font-sans">
       <Header />
+      <SubMenu show={showSubMenu} />
 
       <main className="flex-1">
         {children}
