@@ -55,7 +55,8 @@ El deploy se ejecutará automáticamente cuando:
 2. ✅ Instala Node.js 20
 3. ✅ Instala las dependencias (`npm ci`)
 4. ✅ Genera el build para Hostinger (`npm run build:hostinger`)
-5. ✅ Sube los archivos del `dist/` a tu servidor vía FTP en `public_html/`
+5. ✅ **Limpia la carpeta `public_html/` en el servidor** (elimina todo el contenido anterior)
+6. ✅ Sube los archivos del `dist/` a tu servidor vía FTP en `public_html/`
 
 ## 🔍 Verificar el Deploy
 
@@ -70,6 +71,7 @@ Después de que el workflow termine:
 - **NO** compartas el archivo `DEPLOYMENT_SETUP.md` públicamente, contiene credenciales sensibles
 - Considera agregarlo a `.gitignore` si no quieres subirlo al repositorio
 - Los secretos en GitHub están seguros y encriptados
+- ⚠️ **ADVERTENCIA**: El workflow **ELIMINA TODO** el contenido de `public_html/` antes de cada deploy. Si tienes archivos importantes en esa carpeta que no sean de este proyecto, muévelos a otra ubicación.
 
 ## 🛠️ Troubleshooting
 
@@ -82,8 +84,12 @@ Después de que el workflow termine:
 - Verifica la IP del servidor: `109.106.251.10`
 
 ### Los archivos no se actualizan
-- Verifica que `server-dir` sea `./public_html/` en el workflow
+- Verifica que `server-dir` sea `/public_html/` en el workflow
 - Asegúrate de que tengas permisos de escritura en esa carpeta
+
+### Se creó una carpeta `public_html/public_html/`
+- Esto ya no debería ocurrir, el workflow limpia automáticamente `public_html/` antes de cada deploy
+- Si ya existe una carpeta anidada, el próximo deploy la eliminará automáticamente
 
 ## 📝 Archivos Relevantes
 

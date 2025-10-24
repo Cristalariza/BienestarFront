@@ -27,6 +27,18 @@ jobs:
       - name: Build for Hostinger
         run: npm run build:hostinger
 
+      - name: Clean public_html folder on server
+        run: |
+          sudo apt-get update && sudo apt-get install -y lftp
+          lftp -c "
+          set ftp:ssl-allow no;
+          open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} 109.106.251.10;
+          cd /public_html;
+          rm -rf *;
+          rm -rf .*;
+          bye;
+          "
+
       - name: Deploy to Hostinger via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -35,7 +47,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21
           local-dir: ./dist/
-          server-dir: ./public_html/
+          server-dir: /public_html/
           dangerous-clean-slate: false
           exclude: |
             **/.git*
