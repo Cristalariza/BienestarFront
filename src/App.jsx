@@ -5,6 +5,7 @@ import LoginView from "./views/LoginView";
 import NotFoundView from "./views/NotFoundView";
 import SportsView from "./views/SportsView";
 import IncluseView from "./views/InclusiveView";
+import PQRSView from "./views/PQRSView";
 
 function App() {
   return (
@@ -39,6 +40,14 @@ function App() {
           element={
             <MainLayout showSubMenu={true}>
               <IncluseView />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/pqrs"
+          element={
+            <MainLayout showSubMenu={true}>
+              <PQRSView />
             </MainLayout>
           }
         />

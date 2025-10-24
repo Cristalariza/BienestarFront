@@ -1,0 +1,811 @@
+/**
+ * Estilos para el módulo PQRS
+ * Siguiendo el patrón de diseño del proyecto
+ */
+
+/* Clases compartidas */
+.container {
+    max-width: 80rem;
+    margin: 3rem auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.containerPadded {
+    composes: container;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+/* Section Divider Bar */
+.sectionDivider {
+    background: linear-gradient(to right, #16a34a, #15803d);
+    height: 4px;
+    width: 100%;
+    margin: 0;
+    border: none;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, #f8fdf9 0%, #ffffff 50%, #f0f9f3 100%);
+    padding: 80px 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(139, 195, 74, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    bottom: -50%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(45, 134, 89, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.heroContent {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.heroTitle {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: #2d8659;
+    margin: 0 0 24px 0;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.heroTitle::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, #2d8659 0%, #8BC34A 100%);
+    border-radius: 2px;
+}
+
+.heroDescription {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: #666;
+    margin: 0;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Main Content */
+.mainContent {
+    padding: 60px 0;
+    background-color: #ffffff;
+}
+
+.contentGrid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 48px;
+    align-items: start;
+}
+
+/* Form Section */
+.formSection {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.formCard {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.formCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #2d8659 0%, #8BC34A 100%);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.formCard:hover::before {
+    transform: scaleX(1);
+}
+
+.formCard:hover {
+    box-shadow: 0 10px 40px rgba(45, 134, 89, 0.12);
+    transform: translateY(-4px);
+    border-color: #8BC34A;
+}
+
+.formSectionTitle {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2d8659;
+    margin: 0 0 24px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f0f9f3;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+}
+
+.formSectionTitle::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, #8BC34A 0%, #2d8659 100%);
+    border-radius: 1px;
+}
+
+.formGroup {
+    margin-bottom: 24px;
+}
+
+.formLabel {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2d8659;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.formInput,
+.formSelect,
+.formTextarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+    color: #333;
+}
+
+.formInput:focus,
+.formSelect:focus,
+.formTextarea:focus {
+    outline: none;
+    border-color: #8BC34A;
+    box-shadow: 0 0 0 3px rgba(139, 195, 74, 0.1);
+}
+
+.formInput::placeholder,
+.formTextarea::placeholder {
+    color: #999;
+}
+
+.formTextarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.formHelpText {
+    font-size: 12px;
+    color: #666;
+    margin-top: 6px;
+    line-height: 1.4;
+}
+
+.checkboxGroup {
+    margin-top: 20px;
+}
+
+.checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+.checkboxInput {
+    width: 18px;
+    height: 18px;
+    accent-color: #8BC34A;
+    cursor: pointer;
+}
+
+.fileInputContainer {
+    position: relative;
+}
+
+.fileInput {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.fileInputLabel {
+    display: block;
+    padding: 16px 20px;
+    border: 2px dashed #e0e0e0;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.fileInputLabel:hover {
+    border-color: #8BC34A;
+    background-color: #f0f9f4;
+}
+
+.fileInputText {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #8BC34A;
+    margin-bottom: 4px;
+}
+
+.fileInputStatus {
+    display: block;
+    font-size: 12px;
+    color: #666;
+}
+
+.submitButton {
+    width: 100%;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #8BC34A 0%, #7CB342 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(139, 195, 74, 0.3);
+}
+
+.submitButton:hover {
+    background: linear-gradient(135deg, #7CB342 0%, #6BA33A 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 195, 74, 0.4);
+}
+
+/* Tracking Section */
+.trackingSection {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.trackingImage {
+    width: 100%;
+    height: 200px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.trackingImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.trackingCard {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.trackingCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #2d8659 0%, #8BC34A 100%);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.trackingCard:hover::before {
+    transform: scaleX(1);
+}
+
+.trackingCard:hover {
+    box-shadow: 0 8px 24px rgba(45, 134, 89, 0.12);
+    transform: translateY(-2px);
+    border-color: #8BC34A;
+}
+
+.trackingHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.trackingTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2d8659;
+    margin: 0;
+}
+
+.trackingDescription {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.trackingForm {
+    margin-bottom: 24px;
+}
+
+.trackingInputGroup {
+    display: flex;
+    gap: 12px;
+}
+
+.trackingInput {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.trackingInput:focus {
+    outline: none;
+    border-color: #8BC34A;
+    box-shadow: 0 0 0 3px rgba(139, 195, 74, 0.1);
+}
+
+.trackingInput::placeholder {
+    color: #999;
+}
+
+.trackingButton {
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #8BC34A 0%, #7CB342 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(139, 195, 74, 0.3);
+}
+
+.trackingButton:hover {
+    background: linear-gradient(135deg, #7CB342 0%, #6BA33A 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(139, 195, 74, 0.4);
+}
+
+.statusIndicators {
+    border-top: 1px solid #f0f9f3;
+    padding-top: 20px;
+}
+
+.statusTitle {
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.statusList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.statusItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color: #333;
+    font-weight: 500;
+}
+
+.statusDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.statusDot.yellow {
+    background-color: #ffc107;
+}
+
+.statusDot.blue {
+    background-color: #007bff;
+}
+
+.statusDot.green {
+    background-color: #28a745;
+}
+
+/* Definitions Section */
+.definitions {
+    padding: 80px 60px;
+    background: linear-gradient(135deg, #f8fdf9 0%, #ffffff 50%, #f0f9f3 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.definitions::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 1000px;
+    height: 4px;
+    background: linear-gradient(90deg, #8BC34A 0%, #2d8659 100%);
+    border-radius: 2px;
+}
+
+.definitionsHeader {
+    text-align: center;
+    margin-bottom: 60px;
+    position: relative;
+    z-index: 1;
+}
+
+.definitionsTitle {
+    font-size: 36px;
+    font-weight: 700;
+    color: #2d8659;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.definitionsTitle::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, #2d8659 0%, #8BC34A 100%);
+    border-radius: 2px;
+}
+
+.definitionsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.definitionCard {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.definitionCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #2d8659 0%, #8BC34A 100%);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.definitionCard:hover::before {
+    transform: scaleX(1);
+}
+
+.definitionCard:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 32px rgba(45, 134, 89, 0.15);
+    border-color: #8BC34A;
+}
+
+.definitionQuestion {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2d8659;
+    margin: 0;
+    padding: 24px 24px 0 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.definitionAnswer {
+    padding: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.definitionIcon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #8BC34A 0%, #7CB342 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(139, 195, 74, 0.3);
+}
+
+.definitionText {
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Contact Info Section */
+.contactInfo {
+    padding: 80px 60px;
+    background: linear-gradient(135deg, #8BC34A 0%, #7CB342 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.contactInfo::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.contactInfo::after {
+    content: '';
+    position: absolute;
+    bottom: -50%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.contactHeader {
+    text-align: center;
+    margin-bottom: 60px;
+    position: relative;
+    z-index: 1;
+}
+
+.contactTitle {
+    font-size: 36px;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    padding-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.contactTitle::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 100%);
+    border-radius: 2px;
+}
+
+.contactGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.contactCard {
+    background: white;
+    border-radius: 12px;
+    padding: 32px 24px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.contactCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #2d8659 0%, #8BC34A 100%);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.contactCard:hover::before {
+    transform: scaleX(1);
+}
+
+.contactCard:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.contactIcon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #8BC34A 0%, #7CB342 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin: 0 auto 20px auto;
+    box-shadow: 0 4px 12px rgba(139, 195, 74, 0.3);
+}
+
+.contactCardTitle {
+    font-size: 16px;
+    font-weight: 700;
+    color: #2d8659;
+    margin: 0 0 16px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.contactDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.contactDetail {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .contentGrid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+    
+    .definitionsGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    .contactGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 40px 24px;
+    }
+    
+    .mainContent {
+        padding: 40px 0;
+    }
+    
+    .formCard {
+        padding: 24px;
+    }
+    
+    .trackingInputGroup {
+        flex-direction: column;
+    }
+    
+    .trackingButton {
+        justify-content: center;
+    }
+    
+    .definitions,
+    .contactInfo {
+        padding: 40px 24px;
+    }
+    
+    .contactGrid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,9 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styles from "../../styles/submenu.module.css";
 
 const SubMenu = ({ show = true }) => {
+  const location = useLocation();
+  
   const menuItems = [
-    { label: "Inicio", url: "/", active: true },
+    { label: "Inicio", url: "/" },
     { label: "Deportes", url: "/deportes" },
     { label: "Cultura", url: "/cultura" },
     { label: "Ayuda Social", url: "/ayuda-social" },
@@ -21,7 +23,7 @@ const SubMenu = ({ show = true }) => {
           <Link
             key={index}
             to={item.url}
-            className={`${styles.menuItem} ${item.active ? styles.active : ""}`}
+            className={`${styles.menuItem} ${location.pathname === item.url ? styles.active : ""}`}
           >
             {item.label}
           </Link>
