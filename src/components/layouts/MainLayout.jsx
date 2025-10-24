@@ -1,6 +1,6 @@
-import Header from '../shared/Header';
-import SubMenu from '../shared/SubMenu';
-import Footer from '../shared/Footer';
+import Header from "../shared/Header";
+import SubMenu from "../shared/SubMenu";
+import Footer from "../shared/Footer";
 
 const MainLayout = ({ children, showSubMenu = true }) => {
   return (
@@ -8,9 +8,7 @@ const MainLayout = ({ children, showSubMenu = true }) => {
       <Header />
       <SubMenu show={showSubMenu} />
 
-      <main className="flex-1">
-        {children}
-      </main>
+      <main className="flex-1">{children}</main>
 
       <Footer />
     </div>
