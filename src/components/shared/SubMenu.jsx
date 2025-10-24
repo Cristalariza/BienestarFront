@@ -1,14 +1,15 @@
-import styles from '../../styles/submenu.module.css';
+import { Link } from "react-router-dom";
+import styles from "../../styles/submenu.module.css";
 
 const SubMenu = ({ show = true }) => {
   const menuItems = [
-    { label: 'Inicio', url: '/', active: true },
-    { label: 'Deportes', url: '/deportes' },
-    { label: 'Cultura', url: '/cultura' },
-    { label: 'Ayuda Social', url: '/ayuda-social' },
-    { label: 'Informativo', url: '/informativo' },
-    { label: 'PQRs', url: '/pqrs' },
-    { label: 'Educación Inclusiva', url: '/educacion-inclusiva' }
+    { label: "Inicio", url: "/", active: true },
+    { label: "Deportes", url: "/deportes" },
+    { label: "Cultura", url: "/cultura" },
+    { label: "Ayuda Social", url: "/ayuda-social" },
+    { label: "Informativo", url: "/informativo" },
+    { label: "PQRs", url: "/pqrs" },
+    { label: "Educación Inclusiva", url: "/educacion-inclusiva" },
   ];
 
   if (!show) return null;
@@ -17,13 +18,13 @@ const SubMenu = ({ show = true }) => {
     <nav className={styles.subMenu}>
       <div className={styles.container}>
         {menuItems.map((item, index) => (
-          <a
+          <Link
             key={index}
-            href={item.url}
-            className={`${styles.menuItem} ${item.active ? styles.active : ''}`}
+            to={item.url}
+            className={`${styles.menuItem} ${item.active ? styles.active : ""}`}
           >
             {item.label}
-          </a>
+          </Link>
         ))}
       </div>
     </nav>
