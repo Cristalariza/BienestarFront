@@ -59,20 +59,22 @@ Este comando hace build y publica en: `https://cristalariza.github.io/BienestarF
 El deploy a Hostinger es **completamente automático** mediante GitHub Actions:
 
 1. **Configuración única** (solo la primera vez):
-   - Ve a **Settings** → **Secrets and variables** → **Actions** en tu repositorio de GitHub
-   - Agrega los secretos:
+   - Configura los permisos de GitHub Actions (Settings → Actions → General)
+   - Agrega los secretos FTP (Settings → Secrets and variables → Actions):
      - `FTP_USERNAME`: Usuario FTP de Hostinger
      - `FTP_PASSWORD`: Contraseña FTP de Hostinger
-   - Ver instrucciones detalladas en: [DEPLOYMENT_SETUP.md](../DEPLOYMENT_SETUP.md)
+   - **Ver guía completa**: [GITHUB_ACTIONS_SETUP.md](./GITHUB_ACTIONS_SETUP.md)
 
 2. **Deploy automático**:
-   - Cada vez que hagas `git push` a la rama `main`, se desplegará automáticamente
-   - O ejecuta manualmente desde **Actions** → **Deploy to Hostinger via FTP** → **Run workflow**
+   - Cada vez que hagas `git push` a la rama `main`, se desplegará automáticamente a **ambos sitios**
+   - O ejecuta manualmente desde **Actions** → Selecciona el workflow → **Run workflow**
 
 3. **¿Qué hace el workflow?**
    - ✅ Genera el build optimizado para Hostinger (`npm run build:hostinger`)
    - ✅ Sube automáticamente los archivos vía FTP a `public_html/`
    - ✅ Tu sitio queda actualizado en minutos
+
+> **⚠️ IMPORTANTE**: Antes del primer deploy, debes configurar GitHub Actions siguiendo la guía: [GITHUB_ACTIONS_SETUP.md](./GITHUB_ACTIONS_SETUP.md)
 
 #### 📦 Hostinger (Manual)
 Si prefieres subir manualmente:
