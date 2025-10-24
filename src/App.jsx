@@ -6,6 +6,7 @@ import NotFoundView from "./views/NotFoundView";
 import SportsView from "./views/SportsView";
 import IncluseView from "./views/InclusiveView";
 import PQRSView from "./views/PQRSView";
+import CultureView from "./views/CultureView";
 
 function App() {
   return (
@@ -40,6 +41,14 @@ function App() {
           element={
             <MainLayout showSubMenu={true}>
               <IncluseView />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/cultura"
+          element={
+            <MainLayout showSubMenu={true}>
+              <CultureView />
             </MainLayout>
           }
         />

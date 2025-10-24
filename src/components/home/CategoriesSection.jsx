@@ -1,6 +1,6 @@
-import { Button } from 'primereact/button';
-import { BIENESTAR_CATEGORIES } from '../../constants';
-import styles from '../../styles/home.module.css';
+import { Button } from "primereact/button";
+import { BIENESTAR_CATEGORIES } from "../../constants";
+import styles from "../../styles/home.module.css";
 
 const CategoriesSection = () => {
   return (
@@ -23,7 +23,7 @@ const CategoriesSection = () => {
               icon="pi pi-arrow-right"
               iconPos="right"
               className={styles.categoryButton}
-              onClick={() => window.location.href = category.link}
+              onClick={() => (window.location.href = category.link)}
             />
           </div>
         ))}
