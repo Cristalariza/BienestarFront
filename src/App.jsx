@@ -7,6 +7,7 @@ import SportsView from "./views/SportsView";
 import IncluseView from "./views/InclusiveView";
 import PQRSView from "./views/PQRSView";
 import CultureView from "./views/CultureView";
+import InfoView from "./views/InfoView";
 
 function App() {
   return (
@@ -49,6 +50,14 @@ function App() {
           element={
             <MainLayout showSubMenu={true}>
               <CultureView />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/informativo"
+          element={
+            <MainLayout showSubMenu={true}>
+              <InfoView />
             </MainLayout>
           }
         />
