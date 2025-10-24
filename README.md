@@ -40,9 +40,46 @@ npm --version
 | Comando | Descripción |
 |---------|-------------|
 | `npm run dev` | Inicia el servidor de desarrollo con hot-reload |
-| `npm run build` | Genera el build de producción en `/dist` |
+| `npm run build` | Genera el build para **GitHub Pages** con base `/BienestarFront/` |
+| `npm run build:hostinger` | Genera el build para **Hostinger** con base `/` (raíz) |
 | `npm run preview` | Previsualiza el build de producción localmente |
 | `npm run lint` | Ejecuta ESLint para revisar el código |
+| `npm run deploy` | Despliega automáticamente a GitHub Pages |
+
+### 🌐 Deployment
+
+#### 📘 GitHub Pages (Automático)
+```bash
+npm run deploy
+```
+Este comando hace build y publica en: `https://cristalariza.github.io/BienestarFront/`
+
+#### 🌐 Hostinger (Automático con GitHub Actions)
+
+El deploy a Hostinger es **completamente automático** mediante GitHub Actions:
+
+1. **Configuración única** (solo la primera vez):
+   - Ve a **Settings** → **Secrets and variables** → **Actions** en tu repositorio de GitHub
+   - Agrega los secretos:
+     - `FTP_USERNAME`: Usuario FTP de Hostinger
+     - `FTP_PASSWORD`: Contraseña FTP de Hostinger
+   - Ver instrucciones detalladas en: [DEPLOYMENT_SETUP.md](../DEPLOYMENT_SETUP.md)
+
+2. **Deploy automático**:
+   - Cada vez que hagas `git push` a la rama `main`, se desplegará automáticamente
+   - O ejecuta manualmente desde **Actions** → **Deploy to Hostinger via FTP** → **Run workflow**
+
+3. **¿Qué hace el workflow?**
+   - ✅ Genera el build optimizado para Hostinger (`npm run build:hostinger`)
+   - ✅ Sube automáticamente los archivos vía FTP a `public_html/`
+   - ✅ Tu sitio queda actualizado en minutos
+
+#### 📦 Hostinger (Manual)
+Si prefieres subir manualmente:
+```bash
+npm run build:hostinger
+```
+Luego sube el contenido de la carpeta `dist/` a `public_html/` en tu servidor.
 
 ## 🛠️ Stack Tecnológico
 

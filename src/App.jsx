@@ -2,6 +2,7 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 import MainLayout from './components/layouts/MainLayout'
 import HomeView from './views/HomeView'
 import LoginView from './views/LoginView'
+import NotFoundView from './views/NotFoundView'
 
 function App() {
   return (
@@ -15,6 +16,11 @@ function App() {
         <Route path="/login" element={
           <MainLayout showSubMenu={false}>
             <LoginView />
+          </MainLayout>
+        } />
+        <Route path="*" element={
+          <MainLayout showSubMenu={false}>
+            <NotFoundView />
           </MainLayout>
         } />
       </Routes>
