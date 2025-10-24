@@ -1,48 +1,56 @@
-/* Hero */
-
+/* Clases compartidas */
 .container {
     max-width: 80rem;
     margin-left: auto;
     margin-right: auto;
     padding-left: 1rem;
     padding-right: 1rem;
-    text-align: center;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    margin: 3rem auto;
 }
 
-.infoTitle {
-    font-size: 36px;
-    font-weight: 700;
-    color: #2d8659;
-    margin: 0 0 16px 0;
-}
-
-.infoSubtitle {
-    font-size: 16px;
-    color: #666;
-    margin: 0;
-}
-
-/* Gallery */
-
-.container {
-    max-width: 80rem;
-    margin-left: auto;
-    margin-right: auto;
+.containerCenter {
+    composes: container;
     display: flex;
     align-items: center;
     gap: 1rem;
     justify-content: center;
     text-align: center;
+    flex-wrap: wrap;
 }
 
+.containerText {
+    composes: container;
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Hero */
+.infoTitle {
+    font-size: clamp(1.5rem, 5vw, 2.25rem);
+    font-weight: 700;
+    color: #2d8659;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.infoSubtitle {
+    font-size: clamp(0.875rem, 2vw, 1rem);
+    color: #666;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+/* Gallery */
 .item {
     max-width: 200px;
+    flex: 1 1 150px;
 }
 
 .image {
-    width: 200px;
+    width: 100%;
+    max-width: 200px;
+    height: auto;
     background-repeat: no-repeat;
     background-position: center;
     margin-bottom: 0.25rem;
@@ -51,7 +59,7 @@
 .label {
     color: #f9fafb;
     background-color: #14532d;
-    font-size: 1.25rem;
+    font-size: clamp(1rem, 2vw, 1.25rem);
     line-height: 1.75rem;
 }
 
@@ -64,9 +72,8 @@
 }
 
 /* Info */
-
 .title {
-    font-size: 1.875rem;
+    font-size: clamp(1.25rem, 4vw, 1.875rem);
     font-weight: 700;
     margin-top: 2.5rem;
     margin-bottom: 2.5rem;
@@ -75,47 +82,32 @@
     line-height: 2.25rem;
 }
 
-.container {
-    max-width: 80rem;
-    margin-left: auto;
-    margin-right: auto;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    justify-content: center;
-    text-align: center;
-}
-
 .card {
     max-width: 200px;
+    flex: 1 1 150px;
     background-color: #16a34a;
     color: #111827;
-    font-size: 1.25rem;
+    font-size: clamp(1rem, 2vw, 1.25rem);
     line-height: 1.75rem;
     padding: 1.5rem;
     border-radius: 0.75rem;
 }
 
 /* More Info */
-
 .header {
     background: linear-gradient(to right, #15803d, #15803d);
     color: white;
 }
 
 .headerContainer {
-    max-width: 80rem;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    composes: container;
     text-align: center;
-    margin-top: 5rem;
-    margin-bottom: 5rem;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
 }
 
 .headerTitle {
-    font-size: 1.5rem;
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
     font-weight: 700;
     line-height: 2rem;
 }
@@ -124,21 +116,44 @@
     max-width: 64rem;
     margin-left: auto;
     margin-right: auto;
+    padding: 0 1rem;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    /*gap: 1rem;*/
+    grid-template-columns: 1fr;
+    gap: 2rem;
     margin-bottom: 5rem;
+}
+
+@media (min-width: 768px) {
+    .content {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.5rem;
+    }
+
+    .imageGrid {
+        grid-column: span 2;
+    }
+
+    .headerContainer {
+        margin-top: 5rem;
+        margin-bottom: 5rem;
+    }
 }
 
 .imageGrid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    /*gap: 1rem;*/
-    grid-column: span 2;
+    gap: 0.5rem;
+}
+
+.imageGrid img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
 }
 
 .textContent p {
     line-height: 1.625;
+    font-size: clamp(0.875rem, 2vw, 1rem);
 }
 
 .button {
@@ -150,10 +165,32 @@
     border-radius: 1rem;
     border: none;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: clamp(0.875rem, 2vw, 1rem);
     transition: background-color 0.3s ease;
 }
 
 .button:hover {
     background-color: #15803d;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .containerCenter {
+        gap: 0.75rem;
+    }
+
+    .item,
+    .card {
+        max-width: 100%;
+        min-width: 140px;
+    }
+
+    .label {
+        font-size: 0.875rem;
+        padding: 0.5rem;
+    }
+
+    .labelDefault {
+        padding: 0.5rem;
+    }
 }

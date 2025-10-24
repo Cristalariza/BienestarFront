@@ -4,7 +4,7 @@ function InfoInclusive() {
   return (
     <>
       <h2 className={styles.title}>Grupos Insitucionales</h2>
-      <div className={styles.container}>
+      <div className={styles.containerCenter}>
         <div className={styles.card}>
           <p>Acciones de Inclusión Educativa</p>
         </div>

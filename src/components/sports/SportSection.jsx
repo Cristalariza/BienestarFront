@@ -15,7 +15,7 @@ function SportSection() {
               />
               <span className={styles.badge}>Bienestar</span>
             </div>
-            <div className="p-2">
+            <div className={styles.cardContent}>
               <h3 className={styles.title}>{program.title}</h3>
               <div className={styles.info}>
                 <div className={styles.infoItem}>
