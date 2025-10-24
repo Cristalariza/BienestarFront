@@ -3,7 +3,7 @@ import styles from "../../styles/inclusive.module.css";
 function GalleryInclusive() {
   return (
     <div>
-      <div className={styles.container}>
+      <div className={styles.containerCenter}>
         <div className={styles.item}>
           <img src="inclusivo/ed_1.png" width={200} className={styles.image} />
           <p className={`${styles.label} ${styles.labelDefault}`}>Inicio</p>
