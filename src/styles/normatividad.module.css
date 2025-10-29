@@ -1,0 +1,23 @@
+.container {
+  padding: 2rem;
+}
+
+.docs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.docLink {
+  background-color: #007a3d;
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.docLink:hover {
+  background-color: #005f2e;
+}

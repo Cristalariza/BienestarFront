@@ -1,0 +1,12 @@
+.container {
+  padding: 2rem;
+}
+
+ul {
+  margin-top: 1rem;
+  list-style: square;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}

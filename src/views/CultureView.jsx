@@ -1,15 +1,6 @@
 import React, { Fragment, useState } from "react";
-// import Header from "../shared/Header";
-// import SubMenu from "../shared/SubMenu";
-// import Footer from "../shared/Footer";
 import ContactSection from "../components/home/ContactSection";
 import styles from "../../src/styles/culture.module.css";
-// import image1 from "../../assets/image1.png";
-// import image2 from "../../assets/image2.png";
-// import image3 from "../../assets/image3.png";
-// import image4 from "../../assets/image4.png";
-// import image5 from "../../assets/image5.png";
-
 import danza from "../assets/danza.png";
 import teatro from "../assets/teatro.png";
 import zancos from "../assets/zancos.png";
@@ -22,46 +13,29 @@ import raulgomez from "../assets/raul-gomez.png";
 import cine from "../assets/cine.png";
 import vallenato from "../assets/vallenato.png";
 import coral from "../assets/coral.png";
-
-import {
-  GiBallerinaShoes,
-  GiDramaMasks,
-  GiGuitarHead,
-  GiMicrophone,
-} from "react-icons/gi";
+import {GiBallerinaShoes,GiDramaMasks,GiGuitarHead,GiMicrophone,} from "react-icons/gi";
 import { FaMusic, FaRegCalendarAlt } from "react-icons/fa";
 import { MdAccessibility, MdMusicNote, MdMovie } from "react-icons/md";
 import { IoIosPeople } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
+import GruposCulturaView from "./GruposCulturaView";
+
 
 // ======================= COMPONENTES SECUNDARIOS =======================
 
-const ActividadesCulturalesInicio = () => {
+export const ActividadesCulturalesInicio = () => {
+  const navigate = useNavigate();
+
   const actividades = [
-    {
-      titulo: "INICIO",
-      // imagen: image1
-    },
-    {
-      titulo: "Grupos Artísticos Institucionales",
-      // imagen: image2
-    },
-    {
-      titulo: "Cultura y academia",
-      // imagen: image3
-    },
-    {
-      titulo: "Logros Obtenidos",
-      // imagen: image4
-    },
-    {
-      titulo: "Normatividad",
-      // imagen: image5
-    },
+    { titulo: "Inicio", ruta: "/CultureView" },
+    { titulo: "Grupos Artísticos Institucionales", ruta: "/GruposCulturaView" },
+    { titulo: "Cultura y academia", ruta: "/academia" },
+    { titulo: "Logros Obtenidos", ruta: "/logros" },
+    { titulo: "Normatividad", ruta: "/normatividad" },
   ];
 
   return (
     <section className={styles.actividadesInicioSection2}>
-      <p className={styles.actividadesDescription2}></p>
       <div className={styles.actividadesGrid2}>
         {actividades.map((act, i) => (
           <div key={i} className={styles.actividadCard2}>
@@ -70,7 +44,12 @@ const ActividadesCulturalesInicio = () => {
               alt={act.titulo}
               className={styles.actividadImg2}
             />
-            <button className={styles.actividadButton2}>{act.titulo}</button>
+            <button
+              className={styles.actividadButton2}
+              onClick={() => navigate(act.ruta)} // 👈 Aquí ocurre la navegación
+            >
+              {act.titulo}
+            </button>
           </div>
         ))}
       </div>
@@ -102,7 +81,7 @@ const TableSection = ({ onOpen }) => (
   </section>
 );
 
-const activities = [
+ const activities = [
   {
     key: "danza",
     title: "DANZA",
@@ -177,7 +156,7 @@ const activities = [
   },
 ];
 
-const ActivitiesGrid = () => (
+export const ActivitiesGrid = () => (
   <section
     className={styles.activitiesSection}
     aria-labelledby="actividades-title"
