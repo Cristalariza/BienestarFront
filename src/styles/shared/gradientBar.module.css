@@ -1,0 +1,13 @@
+.gradientBar {
+  background: linear-gradient(to right, #16a34a, #15803d);
+  color: white;
+  text-align: center;
+}
+
+.headerTitle {
+  font-size: clamp(1.25rem, 3vw, 1.5rem);
+  font-weight: 700;
+  line-height: 2rem;
+  margin: 0;
+  padding: 0;
+}

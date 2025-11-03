@@ -13,13 +13,17 @@ import raulgomez from "../assets/raul-gomez.png";
 import cine from "../assets/cine.png";
 import vallenato from "../assets/vallenato.png";
 import coral from "../assets/coral.png";
-import {GiBallerinaShoes,GiDramaMasks,GiGuitarHead,GiMicrophone,} from "react-icons/gi";
+import {
+  GiBallerinaShoes,
+  GiDramaMasks,
+  GiGuitarHead,
+  GiMicrophone,
+} from "react-icons/gi";
 import { FaMusic, FaRegCalendarAlt } from "react-icons/fa";
 import { MdAccessibility, MdMusicNote, MdMovie } from "react-icons/md";
 import { IoIosPeople } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import GruposCulturaView from "./GruposCulturaView";
-
 
 // ======================= COMPONENTES SECUNDARIOS =======================
 
@@ -81,7 +85,7 @@ const TableSection = ({ onOpen }) => (
   </section>
 );
 
- const activities = [
+const activities = [
   {
     key: "danza",
     title: "DANZA",

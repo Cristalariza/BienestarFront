@@ -3,16 +3,15 @@ import MainLayout from "../components/layouts/MainLayout";
 import ContactSection from "../components/home/ContactSection";
 import styles from "../styles/gruposCultura.module.css";
 import { ActividadesCulturalesInicio } from "./CultureView";
-import { ActivitiesGrid  } from "./CultureView";
+import { ActivitiesGrid } from "./CultureView";
 
 const GruposCulturaView = () => {
   return (
     <MainLayout>
-            <ActividadesCulturalesInicio /> 
+      <ActividadesCulturalesInicio />
 
-
-       <ActivitiesGrid />
-       <ContactSection />
+      <ActivitiesGrid />
+      <ContactSection />
     </MainLayout>
   );
 };
