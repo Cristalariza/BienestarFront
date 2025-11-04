@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import ContactSection from "../components/home/ContactSection";
-import styles from "../../src/styles/culture.module.css";
+import styles from "../styles/culture.module.css";
 import danza from "../assets/danza.png";
 import teatro from "../assets/teatro.png";
 import zancos from "../assets/zancos.png";

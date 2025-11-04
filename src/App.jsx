@@ -4,7 +4,7 @@ import HomeView from "./views/HomeView";
 import LoginView from "./views/LoginView";
 import NotFoundView from "./views/NotFoundView";
 import SportsView from "./views/SportsView";
-import IncluseView from "./views/InclusiveView";
+import InclusiveView from "./views/InclusiveView";
 import PQRSView from "./views/PQRSView";
 import CultureView from "./views/CultureView";
 import AyudaSocialView from "./views/AyudaSocialView";
@@ -55,7 +55,7 @@ function App() {
           path="/educacion-inclusiva"
           element={
             <MainLayout showSubMenu={true}>
-              <IncluseView />
+              <InclusiveView />
             </MainLayout>
           }
         />
