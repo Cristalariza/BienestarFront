@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
 import ContactSection from "../components/home/ContactSection";
-import styles from "../styles/culture.module.css";
+import PreinscripcionCulturalForm from "../components/forms/PreinscripcionCulturalForm";
+import styles from "../../src/styles/culture.module.css";
 import danza from "../assets/danza.png";
 import teatro from "../assets/teatro.png";
 import zancos from "../assets/zancos.png";
@@ -13,87 +14,17 @@ import raulgomez from "../assets/raul-gomez.png";
 import cine from "../assets/cine.png";
 import vallenato from "../assets/vallenato.png";
 import coral from "../assets/coral.png";
-import {GiBallerinaShoes,GiDramaMasks,GiGuitarHead,GiMicrophone,} from "react-icons/gi";
+import {
+  GiBallerinaShoes,
+  GiDramaMasks,
+  GiGuitarHead,
+  GiMicrophone,
+} from "react-icons/gi";
 import { FaMusic, FaRegCalendarAlt } from "react-icons/fa";
 import { MdAccessibility, MdMusicNote, MdMovie } from "react-icons/md";
 import { IoIosPeople } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
-import GruposCulturaView from "./GruposCulturaView";
 
-
-
-
-export const ActividadesCulturalesInicio = () => {
-  const navigate = useNavigate();
-
-  const actividades = [
-    { titulo: "Inicio", ruta: "/Culture" },
-    { titulo: "Grupos Artísticos Institucionales", ruta: "/GruposCultura" },
-    { titulo: "Cultura y academia", ruta: "/academia" },
-    { titulo: "Logros Obtenidos", ruta: "/logros" },
-    { titulo: "Normatividad", ruta: "/normatividad" },
-  ];
-
-  return (
-    <section className={styles.actividadesInicioSection2}>
-      <div className={styles.actividadesGrid2}>
-        {actividades.map((act, i) => (
-          <div key={i} className={styles.actividadCard2}>
-            <img
-              src={`image${i + 1}.jpeg`}
-              alt={act.titulo}
-              className={styles.actividadImg2}
-            />
-            <button
-              className={styles.actividadButton2}
-              onClick={() => navigate(act.ruta)} 
-            >
-              {act.titulo}
-            </button>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-};
-
-
-
-export const TableSection = () => {
-  const navigate = useNavigate();
-
-  const Table = [
-    { titulo: "INSCRIBIRSE EN UN GRUPO ARTISTICO", ruta: "/inscribirse-grupo" },
-    { titulo: "PRE-INSCRIBIRSE EN UN GRUPO ARTISTICO", ruta: "/PreInscribirse-grupo" },
-    { titulo: "REQUISITOS Y SELECCIÓN", ruta: "/requisitos-seleccion" },
-    { titulo: "CONSULTAR HORARIOS DE ENSAYO", ruta: "/horarios-ensayo" },
-  ];
-
-  return (
-    <section className={styles.tableSection} aria-labelledby="grupos-title">
-      <h2 id="grupos-title" className={styles.sectionTitle}>
-        Grupos Institucionales
-      </h2>
-
-      <div className={styles.tableGrid}>
-        {Table.map((Table, i) => (
-          <div key={i} className={styles.tableCard}>
-            <div className={styles.tableHeader}></div>
-            <button
-              className={styles.tableButton}
-              onClick={() => navigate(Table.ruta)}
-            >
-              {Table.titulo}
-            </button>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-};
-
-
- const activities = [
+const activities = [
   {
     key: "danza",
     title2: "GRUPO DE DANZAS UPARI",
@@ -103,13 +34,13 @@ export const TableSection = () => {
   {
     key: "teatro",
     title2: "GRUPO DE TEATRO",
-        icon: <GiDramaMasks />,
+    icon: <GiDramaMasks />,
     image: teatro,
   },
   {
     key: "zancos",
     title2: "ZANCOS",
-    title:" ",
+    title: " ",
     icon: <MdAccessibility />,
     image: zancos,
   },
@@ -134,7 +65,7 @@ export const TableSection = () => {
   {
     key: "banda",
     title2: "BANDA PAPAYERA",
-        icon: <FaMusic />,
+    icon: <FaMusic />,
     image: banda,
   },
   {
@@ -169,6 +100,61 @@ export const TableSection = () => {
   },
 ];
 
+export const ActividadesCulturalesInicio = () => {
+  const actividades = [
+    { titulo: "Inicio" },
+    { titulo: "Grupos Artísticos Institucionales" },
+    { titulo: "Cultura y academia" },
+    { titulo: "Logros Obtenidos" },
+    { titulo: "Normatividad" },
+  ];
+
+  return (
+    <section className={styles.actividadesInicioSection2}>
+      <div className={styles.actividadesGrid2}>
+        {actividades.map((act, i) => (
+          <div key={i} className={styles.actividadCard2}>
+            <img
+              src={`image${i + 1}.jpeg`}
+              alt={act.titulo}
+              className={styles.actividadImg2}
+            />
+            <button className={styles.actividadButton2}>{act.titulo}</button>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+const TableSection = ({ onOpen }) => {
+  return (
+    <section className={styles.tableSection} aria-labelledby="grupos-title">
+      <h2 id="grupos-title" className={styles.sectionTitle}>
+        Grupos Institucionales
+      </h2>
+
+      <div className={styles.tableGrid}>
+        {[
+          "INSCRIBIRSE EN UN GRUPO ARTISTICO",
+          "REQUISITOS Y SELECCIÓN",
+          "CONVOCATORIA NUEVOS INTEGRANTES",
+          "CONSULTAR HORARIOS DE ENSAYO",
+        ].map((title, i) => (
+          <div key={i} className={styles.tableCard}>
+            <button
+              className={styles.tableButton}
+              onClick={() => onOpen(title)}
+            >
+              <span>{title}</span>
+            </button>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
 export const ActivitiesGrid = () => (
   <section
     className={styles.activitiesSection}
@@ -194,39 +180,83 @@ export const ActivitiesGrid = () => (
   </section>
 );
 
-
-
 const CultureView = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
+  const [programaSeleccionado, setProgramaSeleccionado] = useState(null);
 
-  const openModal = (title) => {
+  const openModal = (title, programa = null) => {
     setModalTitle(title);
+    setProgramaSeleccionado(programa);
     setModalOpen(true);
   };
 
   const closeModal = () => {
     setModalOpen(false);
     setModalTitle("");
+    setProgramaSeleccionado(null);
+  };
+
+  const handlePreinscripcionSubmit = async (inscripcionData) => {
+    try {
+      // TODO: Conectar con backend API
+      console.log("Datos de preinscripción:", inscripcionData);
+
+      // Aquí iría la llamada al backend:
+      // const response = await fetch('/api/inscripciones-culturales', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(inscripcionData)
+      // });
+
+      alert("¡Preinscripción enviada exitosamente!");
+      closeModal();
+    } catch (error) {
+      console.error("Error al enviar preinscripción:", error);
+      alert("Hubo un error al enviar la preinscripción. Intente nuevamente.");
+    }
   };
 
   return (
     <Fragment>
       <main>
-        <section className={styles.hero}>
-          <h1>Actividades Culturales</h1>
-          <p >
+        <div className={styles.container}>
+          <h1 className={styles.cultureTitle}>Actividades Culturales</h1>
+          <p className={styles.cultureSubtitle}>
             La sección de cultura ofrece la posibilidad de vincularse a los
             grupos culturales, como también, desarrollar aptitudes personales en
             las diferentes manifestaciones del arte y la cultura.
           </p>
-        </section>
+          <button
+            className={styles.heroButton}
+            onClick={() => openModal("INSCRIPCIÓN A CULTURA")}
+          >
+            Inscribirme
+          </button>
+        </div>
+        <div className={styles.gradientBar}></div>
 
         <ActividadesCulturalesInicio />
-        <TableSection />
+        <TableSection onOpen={openModal} />
         <ActivitiesGrid />
         <ContactSection />
       </main>
+
+      {/* Modal de Preinscripción */}
+      {modalOpen && (
+        <div className={styles.modalOverlay} onClick={closeModal}>
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <PreinscripcionCulturalForm
+              onSubmit={handlePreinscripcionSubmit}
+              onCancel={closeModal}
+              programaSeleccionado={programaSeleccionado}
+            />
+          </div>
+        </div>
+      )}
     </Fragment>
   );
 };

@@ -9,7 +9,6 @@ const Slider = ({
   pauseOnHover = true,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(autoPlayInterval > 0);
   const [isPaused, setIsPaused] = useState(false);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
@@ -32,7 +31,7 @@ const Slider = ({
   }, []);
 
   useEffect(() => {
-    if (!isPlaying || isPaused || slides.length <= 1) {
+    if (isPaused || slides.length <= 1 || autoPlayInterval <= 0) {
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
@@ -48,7 +47,7 @@ const Slider = ({
         clearInterval(timerRef.current);
       }
     };
-  }, [isPlaying, isPaused, goToNext, autoPlayInterval, slides.length]);
+  }, [isPaused, goToNext, autoPlayInterval, slides.length]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {

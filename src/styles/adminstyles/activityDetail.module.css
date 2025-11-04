@@ -1,0 +1,131 @@
+/**
+ * Estilos para las vistas de detalle de actividades
+ * Usando CSS Modules para scope local
+ */
+
+.container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.filterButtons {
+  display: flex;
+  gap: 12px;
+}
+
+.carreraBadge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #ffffff;
+  background-color: #2d8659;
+}
+
+.tableSection {
+  width: 100%;
+  overflow: visible;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .filterButtons {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0;
+    max-width: 100%;
+  }
+
+  .tableSection {
+    padding: 0;
+  }
+
+  .header {
+    margin-bottom: 16px;
+    padding: 0 8px;
+  }
+
+  .title {
+    font-size: 18px;
+    word-break: break-word;
+  }
+
+  .controls {
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 0 8px;
+  }
+
+  .actions {
+    gap: 12px;
+  }
+
+  .filterButtons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .filterButtons button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0;
+  }
+
+  .header {
+    padding: 0 4px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .controls {
+    gap: 10px;
+    padding: 0 4px;
+  }
+}

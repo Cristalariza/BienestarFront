@@ -1,0 +1,422 @@
+/* Contenedor principal */
+.formContainer {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 32px;
+}
+
+/* Header del formulario */
+.formHeader {
+  text-align: center;
+  margin-bottom: 32px;
+  border-bottom: 2px solid #2d8659;
+  padding-bottom: 16px;
+}
+
+.formHeader h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+}
+
+.stepInfo {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+/* Indicador de pasos */
+.stepIndicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  padding: 20px 0;
+}
+
+.stepDot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.stepDot::after {
+  content: "";
+  position: absolute;
+  right: -12px;
+  width: 12px;
+  height: 2px;
+  background-color: #e0e0e0;
+}
+
+.stepDot:last-child::after {
+  display: none;
+}
+
+.stepDot.active {
+  background-color: #2d8659;
+  color: white;
+  transform: scale(1.1);
+}
+
+.stepDot.completed {
+  background-color: #4caf50;
+  color: white;
+}
+
+.stepDot.completed::after {
+  background-color: #4caf50;
+}
+
+/* Contenido del paso */
+.stepContent {
+  margin-bottom: 32px;
+}
+
+.stepContent h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #2d8659;
+  margin: 0 0 24px 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 24px 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Grid de formulario */
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* Grid para direcciones */
+.addressGrid {
+  display: grid;
+  grid-template-columns: 150px 1fr auto 1fr auto 1fr;
+  gap: 8px;
+  align-items: center;
+}
+
+.addressSeparator {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2d8659;
+  text-align: center;
+}
+
+/* Grupos de formulario */
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroupFull {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup label,
+.formGroupFull label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.required {
+  color: #dc3545;
+  margin-left: 4px;
+}
+
+/* Inputs */
+.formGroup input[type="text"],
+.formGroup input[type="email"],
+.formGroup input[type="tel"],
+.formGroup input[type="number"],
+.formGroup input[type="date"],
+.formGroup select,
+.formGroup textarea,
+.formGroupFull input[type="text"],
+.formGroupFull input[type="email"],
+.formGroupFull input[type="tel"],
+.formGroupFull input[type="number"],
+.formGroupFull input[type="date"],
+.formGroupFull select,
+.formGroupFull textarea {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background-color: white;
+}
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus,
+.formGroupFull input:focus,
+.formGroupFull select:focus,
+.formGroupFull textarea:focus {
+  outline: none;
+  border-color: #2d8659;
+  box-shadow: 0 0 0 3px rgba(45, 134, 89, 0.1);
+}
+
+.formGroup input:disabled,
+.formGroup select:disabled,
+.formGroupFull input:disabled,
+.formGroupFull select:disabled {
+  background-color: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* Textarea */
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Checkbox */
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+}
+
+.checkboxLabel input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #2d8659;
+}
+
+/* Errores */
+.error {
+  border-color: #dc3545 !important;
+}
+
+.errorMsg {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Texto de ayuda */
+.helperText {
+  color: #666;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+  line-height: 1.4;
+}
+
+/* Boxes informativos */
+.infoBox {
+  background-color: #e7f5ed;
+  border-left: 4px solid #2d8659;
+  padding: 16px;
+  border-radius: 6px;
+  margin: 16px 0;
+}
+
+.infoBox p {
+  margin: 0;
+  font-size: 14px;
+  color: #1a5d3a;
+  line-height: 1.6;
+}
+
+.summaryBox {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+.summaryBox h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2d8659;
+  margin: 0 0 16px 0;
+}
+
+.summaryBox p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Acciones del formulario */
+.formActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 2px solid #e0e0e0;
+}
+
+/* Botones */
+.btnPrimary,
+.btnSecondary,
+.btnSuccess,
+.btnCancel {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.btnPrimary {
+  background-color: #2d8659;
+  color: white;
+}
+
+.btnPrimary:hover {
+  background-color: #246d48;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(45, 134, 89, 0.3);
+}
+
+.btnSecondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btnSecondary:hover {
+  background-color: #5a6268;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+}
+
+.btnSuccess {
+  background-color: #28a745;
+  color: white;
+}
+
+.btnSuccess:hover {
+  background-color: #218838;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.btnCancel {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btnCancel:hover {
+  background-color: #c82333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .formContainer {
+    padding: 20px;
+  }
+
+  .formHeader h1 {
+    font-size: 22px;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .formGroupFull {
+    grid-column: span 1;
+  }
+
+  .addressGrid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .addressSeparator {
+    display: none;
+  }
+
+  .stepIndicator {
+    gap: 8px;
+  }
+
+  .stepDot {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .stepDot::after {
+    right: -8px;
+    width: 8px;
+  }
+
+  .formActions {
+    flex-direction: column;
+  }
+
+  .btnPrimary,
+  .btnSecondary,
+  .btnSuccess,
+  .btnCancel {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .formContainer {
+    padding: 16px;
+  }
+
+  .formHeader h1 {
+    font-size: 20px;
+  }
+
+  .stepContent h2 {
+    font-size: 20px;
+  }
+
+  .stepDot {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+}

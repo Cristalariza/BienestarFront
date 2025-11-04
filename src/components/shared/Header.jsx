@@ -1,17 +1,17 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from 'primereact/button';
-import styles from '../../styles/header.module.css';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "primereact/button";
+import styles from "../../styles/header.module.css";
 
 const Header = () => {
   const [showPortals, setShowPortals] = useState(true);
   const navigate = useNavigate();
 
   const portalLinks = [
-    { label: 'Egresados', url: '#' },
-    { label: 'Docentes', url: '#' },
-    { label: 'Administrativos', url: '#' },
-    { label: 'Estudiantes', url: '#' }
+    { label: "Egresados", url: "#" },
+    { label: "Docentes", url: "#" },
+    { label: "Administrativos", url: "#" },
+    { label: "Estudiantes", url: "#" },
   ];
 
   const togglePortals = () => {
@@ -19,7 +19,7 @@ const Header = () => {
   };
 
   const handleHomeRedirect = () => {
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -27,7 +27,7 @@ const Header = () => {
       <div className={styles.container}>
         <div className={styles.leftSection} onClick={handleHomeRedirect}>
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Logo_upc_nuevo.png"
+            src="/Logo_upc_nuevo.png"
             alt="Universidad Popular del Cesar"
             className={styles.logo}
             onError={(e) => {
@@ -40,15 +40,12 @@ const Header = () => {
         </div>
 
         <nav className={styles.navigation}>
-          {showPortals && portalLinks.map((link, index) => (
-            <a
-              key={index}
-              href={link.url}
-              className={styles.navLink}
-            >
-              {link.label}
-            </a>
-          ))}
+          {showPortals &&
+            portalLinks.map((link, index) => (
+              <a key={index} href={link.url} className={styles.navLink}>
+                {link.label}
+              </a>
+            ))}
           <Button
             label="Portales"
             icon={showPortals ? "pi pi-angle-up" : "pi pi-angle-down"}

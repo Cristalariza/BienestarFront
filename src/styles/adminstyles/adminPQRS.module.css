@@ -1,0 +1,532 @@
+/**
+ * Estilos para la vista de administración de PQRS
+ * Usando CSS Modules para scope local
+ */
+
+.container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.filterButtons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tableSection {
+  width: 100%;
+  overflow: visible;
+}
+
+.stats {
+  margin-top: 16px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+  color: #4a4a4a;
+}
+
+.stats strong {
+  color: #2d8659;
+  font-weight: 600;
+}
+
+/* Estilos personalizados para las celdas */
+.tipoBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.tipoBadge.petición {
+  background-color: #3b82f6; /* Azul */
+}
+
+.tipoBadge.queja {
+  background-color: #ef4444; /* Rojo */
+}
+
+.tipoBadge.reclamo {
+  background-color: #f59e0b; /* Naranja */
+}
+
+.tipoBadge.sugerencia {
+  background-color: #10b981; /* Verde */
+}
+
+/* Badges de estado */
+.estadoBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.estadoBadge.en-revisión {
+  background-color: #f59e0b; /* Naranja/Amarillo */
+}
+
+.estadoBadge.en-trámite {
+  background-color: #3b82f6; /* Azul */
+}
+
+.estadoBadge.consulta-respuesta {
+  background-color: #10b981; /* Verde */
+}
+
+.estadoBadge.cerrada {
+  background-color: #6b7280; /* Gris */
+}
+
+.descripcionCell {
+  display: block;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.verButton {
+  background-color: #2d8659;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s ease;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.verButton:hover {
+  background-color: #1e5d3d;
+}
+
+.verButton i {
+  font-size: 14px;
+}
+
+/* Modal de detalles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modalContent {
+  background-color: white;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modalTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: #6b7280;
+  transition: color 0.2s ease;
+  font-size: 20px;
+}
+
+.closeButton:hover {
+  color: #1a1a1a;
+}
+
+.modalBody {
+  padding: 24px;
+}
+
+.detailSection {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.detailSection:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 16px 0;
+}
+
+.detailRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.detailColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.detailLabel {
+  font-weight: 600;
+  color: #4a4a4a;
+  min-width: 140px;
+}
+
+.detailValue {
+  color: #1a1a1a;
+}
+
+.descripcionFull {
+  color: #1a1a1a;
+  line-height: 1.6;
+  margin: 0;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+}
+
+.downloadButton {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.downloadButton:hover {
+  background-color: #2563eb;
+}
+
+.downloadButton i {
+  font-size: 16px;
+}
+
+/* Área de respuesta */
+.responseTextarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  line-height: 1.5;
+  resize: vertical;
+  margin-bottom: 12px;
+  transition: border-color 0.2s ease;
+}
+
+.responseTextarea:focus {
+  outline: none;
+  border-color: #2d8659;
+}
+
+.responseTextarea::placeholder {
+  color: #9ca3af;
+}
+
+/* Botones de cambio de estado */
+.statusButtons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.statusButton {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  flex: 1;
+  min-width: 140px;
+}
+
+.statusButton:hover {
+  background-color: #e5e7eb;
+  border-color: #d1d5db;
+}
+
+.statusButton.statusActive {
+  background-color: #2d8659;
+  color: white;
+  border-color: #2d8659;
+}
+
+.statusButton.statusActive:hover {
+  background-color: #1e5d3d;
+  border-color: #1e5d3d;
+}
+
+.modalFooter {
+  padding: 16px 24px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .filterButtons {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0;
+    max-width: 100%;
+  }
+
+  .tableSection {
+    padding: 0;
+  }
+
+  .header {
+    margin-bottom: 16px;
+    padding: 0 8px;
+  }
+
+  .title {
+    font-size: 18px;
+    word-break: break-word;
+  }
+
+  .controls {
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 0 8px;
+  }
+
+  .actions {
+    gap: 12px;
+  }
+
+  .filterButtons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .filterButtons button {
+    width: 100%;
+  }
+
+  .descripcionCell {
+    max-width: 150px;
+  }
+
+  .stats {
+    margin: 16px 8px 0;
+    padding: 12px;
+    font-size: 13px;
+  }
+
+  .modalContent {
+    max-width: 100%;
+    margin: 0 10px;
+  }
+
+  .modalHeader {
+    padding: 16px;
+  }
+
+  .modalTitle {
+    font-size: 18px;
+  }
+
+  .modalBody {
+    padding: 16px;
+  }
+
+  .detailLabel {
+    min-width: 100px;
+    font-size: 13px;
+  }
+
+  .detailValue {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0;
+  }
+
+  .header {
+    padding: 0 4px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .controls {
+    gap: 10px;
+    padding: 0 4px;
+  }
+
+  .descripcionCell {
+    max-width: 100px;
+  }
+
+  .tipoBadge {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+
+  .estadoBadge {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+
+  .stats {
+    margin: 12px 4px 0;
+    font-size: 12px;
+  }
+
+  .verButton {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .verButton span {
+    display: none;
+  }
+
+  .modalHeader {
+    padding: 12px;
+  }
+
+  .modalTitle {
+    font-size: 16px;
+  }
+
+  .modalBody {
+    padding: 12px;
+  }
+
+  .detailSection {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+  }
+
+  .detailLabel {
+    min-width: 80px;
+    font-size: 12px;
+  }
+
+  .detailValue {
+    font-size: 12px;
+  }
+
+  .sectionTitle {
+    font-size: 14px;
+  }
+
+  .statusButtons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .statusButton {
+    min-width: 100%;
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+}

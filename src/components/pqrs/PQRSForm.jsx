@@ -1,99 +1,276 @@
-import styles from '../../styles/pqrs.module.css';
-import muchachaImage from '../../assets/MuCHACHA.jpg';
+import { usePQRSForm } from "../../hooks/usePQRSForm";
+import styles from "../../styles/pqrs.module.css";
+import muchachaImage from "../../assets/MuCHACHA.jpg";
 
 const PQRSForm = () => {
-  const handleRedirectToOfficialSystem = () => {
-    window.open('https://orfeo2022.unicesar.edu.co/pqrs/frontend/web/index.php?r=site%2Findex', '_blank');
-  };
+  const {
+    formData,
+    trackingCode,
+    handleInputChange,
+    handleSubmit,
+    handleTrackingSearch,
+    setTrackingCode,
+  } = usePQRSForm();
 
   return (
-    <div className={styles.modernContentWrapper}>
-      {/* Main Card with Image and Content */}
-      <div className={styles.modernCard}>
-        {/* Image Section */}
-        <div className={styles.modernImageSection}>
-          <div className={styles.imageWrapper}>
-            <img 
-              src={muchachaImage} 
-              alt="Sistema de PQRS" 
-              className={styles.modernImage}
-            />
-            <div className={styles.imageOverlay}></div>
+    <div className={styles.contentGrid}>
+      {/* Form Section */}
+      <div className={styles.formSection}>
+        <form onSubmit={handleSubmit}>
+          {/* Personal Information Card */}
+          <div className={styles.formCard}>
+            <h3 className={styles.formSectionTitle}>Información Personal</h3>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="nombreCompleto" className={styles.formLabel}>
+                Nombre completo *
+              </label>
+              <input
+                type="text"
+                id="nombreCompleto"
+                name="nombreCompleto"
+                value={formData.nombreCompleto}
+                onChange={handleInputChange}
+                className={styles.formInput}
+                placeholder="Ej: Juan Pérez"
+                disabled={formData.enviarAnonimo}
+                required
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="correoInstitucional" className={styles.formLabel}>
+                Correo institucional *
+              </label>
+              <input
+                type="email"
+                id="correoInstitucional"
+                name="correoInstitucional"
+                value={formData.correoInstitucional}
+                onChange={handleInputChange}
+                className={styles.formInput}
+                placeholder="Ej: juan.perez@unicesar.edu.co"
+                disabled={formData.enviarAnonimo}
+                required
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="documentoIdentidad" className={styles.formLabel}>
+                Documento de identidad
+              </label>
+              <input
+                type="text"
+                id="documentoIdentidad"
+                name="documentoIdentidad"
+                value={formData.documentoIdentidad}
+                onChange={handleInputChange}
+                className={styles.formInput}
+                placeholder="Ej: 12345678"
+                disabled={formData.enviarAnonimo}
+              />
+            </div>
+
+            <div className={styles.checkboxGroup}>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  id="enviarAnonimo"
+                  name="enviarAnonimo"
+                  checked={formData.enviarAnonimo}
+                  onChange={handleInputChange}
+                  className={styles.checkboxInput}
+                />
+                Deseo enviar esta PQRS de forma anónima
+              </label>
+            </div>
           </div>
+
+          {/* Request Details Card */}
+          <div className={styles.formCard}>
+            <h3 className={styles.formSectionTitle}>
+              Detalles de la Solicitud
+            </h3>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="tipoSolicitud" className={styles.formLabel}>
+                Tipo de solicitud *
+              </label>
+              <select
+                id="tipoSolicitud"
+                name="tipoSolicitud"
+                value={formData.tipoSolicitud}
+                onChange={handleInputChange}
+                className={styles.formSelect}
+                required
+              >
+                <option value="">Seleccione una opción</option>
+                <option value="peticion">Petición</option>
+                <option value="queja">Queja</option>
+                <option value="reclamo">Reclamo</option>
+                <option value="sugerencia">Sugerencia</option>
+              </select>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label
+                htmlFor="dependenciaRelacionada"
+                className={styles.formLabel}
+              >
+                Dependencia relacionada *
+              </label>
+              <select
+                id="dependenciaRelacionada"
+                name="dependenciaRelacionada"
+                value={formData.dependenciaRelacionada}
+                onChange={handleInputChange}
+                className={styles.formSelect}
+                required
+              >
+                <option value="">Seleccione una dependencia</option>
+                <option value="bienestar">Bienestar Universitario</option>
+                <option value="academica">Dirección Académica</option>
+                <option value="administrativa">Dirección Administrativa</option>
+                <option value="financiera">Dirección Financiera</option>
+                <option value="recursos-humanos">Recursos Humanos</option>
+              </select>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="asunto" className={styles.formLabel}>
+                Asunto *
+              </label>
+              <input
+                type="text"
+                id="asunto"
+                name="asunto"
+                value={formData.asunto}
+                onChange={handleInputChange}
+                className={styles.formInput}
+                placeholder="Ej: Inconveniente con horario de atención"
+                required
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label
+                htmlFor="descripcionDetallada"
+                className={styles.formLabel}
+              >
+                Descripción detallada *
+              </label>
+              <textarea
+                id="descripcionDetallada"
+                name="descripcionDetallada"
+                value={formData.descripcionDetallada}
+                onChange={handleInputChange}
+                rows="4"
+                className={styles.formTextarea}
+                placeholder="Describe brevemente tu solicitud o sugerencia..."
+                required
+              />
+              <p className={styles.formHelpText}>
+                Por favor, proporciona todos los detalles relevantes para que
+                podamos atender tu solicitud de manera efectiva.
+              </p>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="archivoAdjunto" className={styles.formLabel}>
+                Adjuntar archivo (opcional)
+              </label>
+              <div className={styles.fileInputContainer}>
+                <input
+                  type="file"
+                  id="archivoAdjunto"
+                  name="archivoAdjunto"
+                  onChange={handleInputChange}
+                  className={styles.fileInput}
+                  accept=".pdf,.doc,.docx,.jpg,.png,.jpeg"
+                />
+                <label
+                  htmlFor="archivoAdjunto"
+                  className={styles.fileInputLabel}
+                >
+                  <span className={styles.fileInputText}>
+                    Seleccionar archivo
+                  </span>
+                  <span className={styles.fileInputStatus}>
+                    Sin archivos seleccionados
+                  </span>
+                </label>
+              </div>
+              <p className={styles.formHelpText}>
+                Formatos permitidos: PDF, DOC, DOCX, JPG, PNG (máx. 5MB)
+              </p>
+            </div>
+
+            <button type="submit" className={styles.submitButton}>
+              Enviar PQRS
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* Tracking Section */}
+      <div className={styles.trackingSection}>
+        {/* Tracking Image */}
+        <div className={styles.trackingImage}>
+          <img
+            src={muchachaImage}
+            alt="Imagen ilustrativa del módulo PQRS"
+            className="w-full h-full object-cover"
+          />
         </div>
 
-        {/* Content Section */}
-        <div className={styles.modernContentSection}>
-          <div className={styles.iconBadge}>
-            <svg className={styles.badgeIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        {/* Tracking Card */}
+        <div className={styles.trackingCard}>
+          <div className={styles.trackingHeader}>
+            <svg
+              className="w-5 h-5 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
             </svg>
           </div>
 
-          <h3 className={styles.modernTitle}>
-            Sistema Oficial de PQRS
-          </h3>
-          
-          <div className={styles.modernInfoContent}>
-            <p className={styles.modernInfoText}>
-              Para realizar una <strong>Petición, Queja, Reclamo o Sugerencia (PQRS)</strong>, 
-              utiliza el sistema oficial de la Universidad Popular del Cesar - UPC.
-            </p>
-            
-            <div className={styles.featuresSection}>
-              <p className={styles.featuresTitle}>El sistema oficial te permitirá:</p>
-              
-              <div className={styles.featuresGrid}>
-                <div className={styles.featureItem}>
-                  <div className={styles.featureIcon}>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                  </div>
-                  <span>Registrar tu PQRS de forma segura</span>
-                </div>
+          <p className={styles.trackingDescription}>
+            Ingresa tu código de radicado para consultar su estado:
+          </p>
 
-                <div className={styles.featureItem}>
-                  <div className={styles.featureIcon}>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
-                    </svg>
-                  </div>
-                  <span>Obtener código de radicado</span>
-                </div>
-
-                <div className={styles.featureItem}>
-                  <div className={styles.featureIcon}>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                  </div>
-                  <span>Consultar estado en tiempo real</span>
-                </div>
-
-                <div className={styles.featureItem}>
-                  <div className={styles.featureIcon}>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <span>Recibir respuestas oficiales</span>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.modernButtonContainer}>
-              <button
-                onClick={handleRedirectToOfficialSystem}
-                className={styles.modernOfficialButton}
-              >
-                <span className={styles.buttonText}>Acceder al Sistema Oficial</span>
-                <svg className={styles.buttonIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          <form onSubmit={handleTrackingSearch} className={styles.trackingForm}>
+            <div className={styles.trackingInputGroup}>
+              <input
+                type="text"
+                value={trackingCode}
+                onChange={(e) => setTrackingCode(e.target.value)}
+                className={styles.trackingInput}
+                placeholder="Ej: PQRS-2025-001234"
+              />
+              <button type="submit" className={styles.trackingButton}>
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
                 </svg>
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>

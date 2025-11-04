@@ -1,0 +1,90 @@
+/**
+ * Estilos para el componente SearchBar
+ * Usando CSS Modules para scope local
+ */
+
+.searchContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 10px 16px;
+  gap: 12px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.searchContainer i.pi-search {
+  color: #6b7280;
+  font-size: 16px;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #1a1a1a;
+  background-color: transparent;
+}
+
+.searchInput::placeholder {
+  color: #9ca3af;
+}
+
+.clearButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  transition: color 0.2s ease;
+}
+
+.clearButton:hover {
+  color: #1a1a1a;
+}
+
+.clearButton i {
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .searchContainer {
+    max-width: 100%;
+    padding: 8px 12px;
+  }
+
+  .searchInput {
+    font-size: 13px;
+  }
+
+  .searchInput::placeholder {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .searchContainer {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .searchContainer i.pi-search {
+    font-size: 14px;
+  }
+
+  .searchInput {
+    font-size: 12px;
+  }
+
+  .searchInput::placeholder {
+    font-size: 12px;
+  }
+}
