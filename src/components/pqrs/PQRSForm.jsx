@@ -270,7 +270,7 @@ const PQRSForm = () => {
                 </svg>
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
