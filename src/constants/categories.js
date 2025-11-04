@@ -1,3 +1,5 @@
+
+
 export const BIENESTAR_CATEGORIES = [
   {
     id: 1,

@@ -1,12 +1,11 @@
 import React from "react";
-import MainLayout from "../components/layouts/MainLayout";
 import ContactSection from "../components/home/ContactSection";
 import styles from "../styles/normatividad.module.css";
 import { ActividadesCulturalesInicio } from "./CultureView";
 
 const NormatividadView = () => {
   return (
-    <MainLayout>
+    <>
            <ActividadesCulturalesInicio /> 
       <h1>Normatividad Cultural</h1>
       <p>
@@ -21,7 +20,7 @@ const NormatividadView = () => {
         <p></p>
       </section>
          <ContactSection />
-    </MainLayout>
+    </>
   );
 };
 

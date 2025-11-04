@@ -15,6 +15,14 @@ import AcademiaView from "./views/AcademiaView";
 import LogrosView from "./views/LogrosView";
 import NormatividadView from "./views/NormatividadView";
 
+import InscribirseGrupoView from "./views/InscribirseGrupoView";
+import RequisitosSeleccionView from "./views/RequisitosSeleccionView";
+import PreInscribirseGrupoView from "./views/PreInscribirseGrupoView";
+//import ConvocatoriaNuevosView from "./views/ConvocatoriaNuevosView";
+//import HorariosEnsayoView from "./views/HorariosEnsayoView";
+
+
+
 function App() {
   return (
     <Router>
@@ -91,14 +99,23 @@ function App() {
             </MainLayout>
           }
         />
-        <Route path="/" element={<HomeView />} />
-        <Route path="/CultureView" element={<CultureView />} />
-        <Route path="/GruposCulturaView" element={<GruposCulturaView />} />
-        <Route path="/academia" element={<AcademiaView />} />
-        <Route path="/logros" element={<LogrosView />} />
-        <Route path="/normatividad" element={<NormatividadView />} />
-        <Route path="*" element={<NotFoundView />} />
+           <Route path="/" element={<HomeView />} />
+           <Route path="/Culture" element={ <MainLayout showSubMenu={true}><CultureView /></MainLayout>}/>
+           <Route path="/GruposCultura" element={<MainLayout showSubMenu={true}><GruposCulturaView /></MainLayout>} />
+           <Route path="/academia" element={<MainLayout showSubMenu={true}><AcademiaView /></MainLayout>} />
+           <Route path="/logros" element={<MainLayout showSubMenu={true}><LogrosView /></MainLayout>} />
+           <Route path="/normatividad" element={<MainLayout showSubMenu={true}><NormatividadView /></MainLayout>} />
+           <Route path="*" element={<NotFoundView />} />
+
+           <Route path="/inscribirse-grupo" element={<MainLayout showSubMenu={true}><InscribirseGrupoView /></MainLayout>} />
+           <Route path="/requisitos-seleccion" element={<MainLayout showSubMenu={true}><RequisitosSeleccionView /></MainLayout>} />
+           <Route path="/PreInscribirse-grupo" element={<MainLayout showSubMenu={true}><PreInscribirseGrupoView /></MainLayout>} />
+             {/*<Route path="/convocatoria-nuevos" element={<MainLayout showSubMenu={true}><ConvocatoriaNuevosView /></MainLayout>} />*/}
+          {/* <Route path="/horarios-ensayo" element={<MainLayout showSubMenu={true}><HorariosEnsayoView /></MainLayout>} />*/}
+
+
       </Routes>
+      
     </Router>
   );
 }

@@ -1,0 +1,190 @@
+/* === Contenedor general del formulario === */
+.container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  font-family: "Inter", sans-serif;
+}
+
+/* === Barra de progreso === */
+.progressBar {
+  width: 100%;
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+}
+
+.progress {
+  height: 10px;
+  background: #007a3d;
+  border-radius: 10px;
+  transition: width 0.3s ease-in-out;
+}
+
+/* === Títulos === */
+h2 {
+  font-size: 1.6rem;
+  color: #007a3d;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 1.2rem;
+  color: #007a3d;
+  margin-bottom: 1rem;
+}
+
+/* === Grid de columnas === */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem 1.5rem;
+}
+
+/* === Inputs y select === */
+label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+input, select {
+  padding: 0.7rem;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  margin-top: 0.3rem;
+}
+
+input:focus, select:focus {
+  border-color: #007a3d;
+  box-shadow: 0 0 0 3px rgba(0, 122, 61, 0.2);
+  outline: none;
+}
+
+/* === Botones === */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.buttons button {
+  background: #007a3d;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.buttons button:hover {
+  background: #005f2d;
+}
+
+/* === Previsualización de foto === */
+.previewPhoto {
+  display: block;
+  margin-top: 0.8rem;
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid #007a3d;
+}
+
+/* === Requisitos === */
+.requisitos {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-radius: 15px;
+}
+
+.requisitos ol {
+  margin-top: 0.5rem;
+  padding-left: 1.2rem;
+}
+
+.requisitos li {
+  margin-bottom: 0.6rem;
+}
+
+/* === CONTROL DE VALORACIONES === */
+.valoracionesContainer {
+  margin-top: 3rem;
+  background: #f9fafb;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.valoracion {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 1.5rem;
+}
+
+.valoracion:last-child {
+  border-bottom: none;
+}
+
+.valoracion h3 {
+  color: #007a3d;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.valoracion .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem 1.5rem;
+}
+
+.valoracion label {
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.valoracion input,
+.valoracion select {
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 0.7rem;
+  font-size: 0.9rem;
+  transition: 0.2s ease;
+}
+
+.valoracion input:focus,
+.valoracion select:focus {
+  border-color: #007a3d;
+  box-shadow: 0 0 0 3px rgba(0, 122, 61, 0.2);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem;
+  }
+
+  .buttons {
+    flex-direction: column;
+  }
+
+  .buttons button {
+    width: 100%;
+  }
+}
