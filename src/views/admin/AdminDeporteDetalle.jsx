@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import SearchBar from "../../components/admin/buscar/SearchBar";
 import Button from "../../components/admin/buttom/Button";
 import Table from "../../components/admin/tables/Table";
@@ -7,7 +7,6 @@ import styles from "../../styles/adminstyles/activityDetail.module.css";
 
 const AdminDeporteDetalle = () => {
   const { actividad } = useParams();
-  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [activeFilter, setActiveFilter] = useState("todos");

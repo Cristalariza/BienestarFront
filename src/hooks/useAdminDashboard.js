@@ -96,19 +96,9 @@ export const useAdminDashboard = () => {
               Doctorado: 1,
               Especialización: 0,
               Maestría: 2,
-              Pregrado: 0,
-            },
-            total: 3,
-          },
-          {
-            facultad: "Ciencias Básicas",
-            niveles: {
-              Doctorado: 0,
-              Especialización: 0,
-              Maestría: 0,
               Pregrado: 5,
             },
-            total: 5,
+            total: 8,
           },
         ],
 
@@ -132,8 +122,7 @@ export const useAdminDashboard = () => {
             anualidad: "semestres",
             facultades: {
               "Bellas Artes": 7.48,
-              "Ciencias Básicas": 5.44,
-              "Ciencias Básicas": 3.4,
+              "Ciencias Básicas": 8.84,
               "Ciencias De La Salud": 15.31,
               "Derecho, Ciencias Políticas Y Sociales": 13.61,
               Educación: 17.69,

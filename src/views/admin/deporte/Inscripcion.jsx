@@ -150,7 +150,7 @@ const Inscripcion = () => {
         inscripcion.email.toLowerCase().includes(term) ||
         inscripcion.programaDeportivo.toLowerCase().includes(term)
     );
-  }, [searchTerm]);
+  }, [searchTerm, inscripcionesData]);
 
   const columns = [
     {

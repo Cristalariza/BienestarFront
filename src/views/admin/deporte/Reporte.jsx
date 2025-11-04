@@ -6,7 +6,7 @@ const Reporte = () => {
       <h1 className={styles.title}>Reporte</h1>
       <div className={styles.content}>
         <p>
-          debido a la falta de datos, no se puede generar un reporte en este
+          Debido a la falta de datos, no se puede generar un reporte en este
           momento.
         </p>
       </div>

@@ -3,75 +3,75 @@ import Table from "../../../components/admin/tables/Table";
 import SearchBar from "../../../components/admin/buscar/SearchBar";
 import styles from "../../../styles/adminstyles/adminCultura.module.css";
 
+// Datos de ejemplo - Reemplazar con datos reales de la API
+const preinscripcionesData = [
+  {
+    id: 1,
+    nombreCompleto: "Carlos Andrés Rodríguez",
+    tipoIdentificacion: "CC",
+    numeroIdentificacion: "1234567890",
+    programaCultural: "Danza Folclórica",
+    telefono: "3001234567",
+    modalidad: "Presencial",
+    email: "carlos.rodriguez@example.com",
+    estado: "PENDIENTE",
+    fechaPreinscripcion: "2025-11-03",
+  },
+  {
+    id: 2,
+    nombreCompleto: "María Fernanda Gómez",
+    tipoIdentificacion: "CC",
+    numeroIdentificacion: "9876543210",
+    programaCultural: "Teatro",
+    telefono: "3109876543",
+    modalidad: "Virtual",
+    email: "maria.gomez@example.com",
+    estado: "PENDIENTE",
+    fechaPreinscripcion: "2025-11-02",
+  },
+  {
+    id: 3,
+    nombreCompleto: "Jorge Luis Martínez",
+    tipoIdentificacion: "CE",
+    numeroIdentificacion: "5555666777",
+    programaCultural: "Música - Guitarra",
+    telefono: "3201122334",
+    modalidad: "Presencial",
+    email: "jorge.martinez@example.com",
+    estado: "ACEPTADA",
+    fechaPreinscripcion: "2025-11-01",
+  },
+  {
+    id: 4,
+    nombreCompleto: "Sofía Valentina Castro",
+    tipoIdentificacion: "TI",
+    numeroIdentificacion: "1122334455",
+    programaCultural: "Pintura",
+    telefono: "3154445566",
+    modalidad: "Mixta",
+    email: "sofia.castro@example.com",
+    estado: "RECHAZADA",
+    fechaPreinscripcion: "2025-10-30",
+  },
+  {
+    id: 5,
+    nombreCompleto: "Diego Alejandro Vargas",
+    tipoIdentificacion: "CC",
+    numeroIdentificacion: "7788990011",
+    programaCultural: "Coro",
+    telefono: "3187778899",
+    modalidad: "Presencial",
+    email: "diego.vargas@example.com",
+    estado: "PENDIENTE",
+    fechaPreinscripcion: "2025-11-04",
+  },
+];
+
 const Preinscripciones = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedPreinscripcion, setSelectedPreinscripcion] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-
-  // Datos de ejemplo - Reemplazar con datos reales de la API
-  const preinscripcionesData = [
-    {
-      id: 1,
-      nombreCompleto: "Carlos Andrés Rodríguez",
-      tipoIdentificacion: "CC",
-      numeroIdentificacion: "1234567890",
-      programaCultural: "Danza Folclórica",
-      telefono: "3001234567",
-      modalidad: "Presencial",
-      email: "carlos.rodriguez@example.com",
-      estado: "PENDIENTE",
-      fechaPreinscripcion: "2025-11-03",
-    },
-    {
-      id: 2,
-      nombreCompleto: "María Fernanda Gómez",
-      tipoIdentificacion: "CC",
-      numeroIdentificacion: "9876543210",
-      programaCultural: "Teatro",
-      telefono: "3109876543",
-      modalidad: "Virtual",
-      email: "maria.gomez@example.com",
-      estado: "PENDIENTE",
-      fechaPreinscripcion: "2025-11-02",
-    },
-    {
-      id: 3,
-      nombreCompleto: "Jorge Luis Martínez",
-      tipoIdentificacion: "CE",
-      numeroIdentificacion: "5555666777",
-      programaCultural: "Música - Guitarra",
-      telefono: "3201122334",
-      modalidad: "Presencial",
-      email: "jorge.martinez@example.com",
-      estado: "ACEPTADA",
-      fechaPreinscripcion: "2025-11-01",
-    },
-    {
-      id: 4,
-      nombreCompleto: "Sofía Valentina Castro",
-      tipoIdentificacion: "TI",
-      numeroIdentificacion: "1122334455",
-      programaCultural: "Pintura",
-      telefono: "3154445566",
-      modalidad: "Mixta",
-      email: "sofia.castro@example.com",
-      estado: "RECHAZADA",
-      fechaPreinscripcion: "2025-10-30",
-    },
-    {
-      id: 5,
-      nombreCompleto: "Diego Alejandro Vargas",
-      tipoIdentificacion: "CC",
-      numeroIdentificacion: "7788990011",
-      programaCultural: "Coro",
-      telefono: "3187778899",
-      modalidad: "Presencial",
-      email: "diego.vargas@example.com",
-      estado: "PENDIENTE",
-      fechaPreinscripcion: "2025-11-04",
-    },
-  ];
 
   const filteredPreinscripciones = useMemo(() => {
     if (!searchTerm) return preinscripcionesData;
@@ -84,7 +84,7 @@ const Preinscripciones = () => {
         item.email.toLowerCase().includes(searchLower) ||
         item.programaCultural.toLowerCase().includes(searchLower)
     );
-  }, [searchTerm, preinscripcionesData]);
+  }, [searchTerm]);
 
   const handleEstadoChange = (id, nuevoEstado) => {
     console.log(`Cambiando estado de preinscripción ${id} a ${nuevoEstado}`);

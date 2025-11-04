@@ -57,9 +57,17 @@ export const usePQRSForm = () => {
       return;
     }
 
-    if (!formData.enviarAnonimo && !formData.correoInstitucional.trim()) {
-      alert("Por favor ingresa tu correo institucional");
-      return;
+    // Validar correo: primero que no esté vacío, luego que tenga formato válido
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.enviarAnonimo) {
+      if (!formData.correoInstitucional.trim()) {
+        alert("Por favor ingresa tu correo institucional");
+        return;
+      }
+      if (!emailRegex.test(formData.correoInstitucional)) {
+        alert("Por favor ingresa un correo electrónico válido");
+        return;
+      }
     }
 
     if (!formData.tipoSolicitud) {
@@ -79,16 +87,6 @@ export const usePQRSForm = () => {
 
     if (!formData.descripcionDetallada.trim()) {
       alert("Por favor ingresa la descripción detallada");
-      return;
-    }
-
-    // Validar formato de email (saltar si es anónimo)
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (
-      !formData.enviarAnonimo &&
-      !emailRegex.test(formData.correoInstitucional)
-    ) {
-      alert("Por favor ingresa un correo electrónico válido");
       return;
     }
 
