@@ -5,10 +5,10 @@ import induccion from "../assets/Ayuda_Social/Induccion/INDUCCION-03.png";
 import buentrato from "../assets/Ayuda_Social/Buentrato/AYUDAS-04.png";
 // componentes
 import trabajoSocial from "../assets/Ayuda_Social/Trabajo_Social/TRAB-02.png";
-import BuenTrato from "../components/ayudaSocial/BuenTrato";
-import InduccionEstudiantes from "../components/ayudaSocial/InduccionEstudiante";
+import BuenTrato from "../components/ayudasocial/BuenTrato";
+import InduccionEstudiantes from "../components/ayudasocial/InduccionEstudiante";
 import ServicioTrabajoSocial from "../components/ayudasocial/ServicioTrabajoSocial";
-import ConsejeriaPsicologica from "../components/ayudaSocial/ConsejeriaPsicologia";
+import ConsejeriaPsicologica from "../components/ayudasocial/ConsejeriaPsicologia";
 //compartidos
 import Slider from "../components/shared/slider/slider";
 import Hero from "../components/shared/hero/Hero";
