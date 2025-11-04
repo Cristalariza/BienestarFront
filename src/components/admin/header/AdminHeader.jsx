@@ -1,19 +1,65 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Menu } from "primereact/menu";
+import { authService } from "../../../services";
 import styles from "../../../styles/adminstyles/adminHeader.module.css";
 
 const AdminHeader = () => {
-  const [userName] = useState("John Titor");
+  const [userName, setUserName] = useState("Usuario");
+  const [userEmail, setUserEmail] = useState("");
   const navigate = useNavigate();
   const menuRef = useRef(null);
+
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      try {
+        // Intentar obtener el perfil completo desde el backend
+        const profile = await authService.getProfile();
+        console.log('Perfil completo del usuario:', profile);
+
+        if (profile) {
+          // Usar nombre y apellido del perfil completo
+          if (profile.nombre && profile.apellido) {
+            setUserName(`${profile.nombre} ${profile.apellido}`);
+          } else if (profile.correo_elec) {
+            const emailName = profile.correo_elec.split('@')[0];
+            setUserName(emailName);
+          }
+
+          if (profile.correo_elec) {
+            setUserEmail(profile.correo_elec);
+          }
+        }
+      } catch (error) {
+        console.error('Error al cargar perfil, usando datos de localStorage:', error);
+
+        // Fallback a localStorage si falla la petición al backend
+        const user = authService.getCurrentUser();
+        if (user) {
+          if (user.nombre && user.apellido) {
+            setUserName(`${user.nombre} ${user.apellido}`);
+          } else if (user.correo_elec) {
+            const emailName = user.correo_elec.split('@')[0];
+            setUserName(emailName);
+          }
+
+          if (user.correo_elec) {
+            setUserEmail(user.correo_elec);
+          }
+        }
+      }
+    };
+
+    loadUserProfile();
+  }, []);
 
   const userMenuItems = [
     {
       label: "Cerrar sesión",
       icon: "pi pi-sign-out",
       command: () => {
-        // TODO: Implementar lógica de cierre de sesión
+        // Limpiar sesión y redirigir al login
+        authService.logout();
         navigate("/login");
       },
     },

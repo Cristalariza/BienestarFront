@@ -5,10 +5,13 @@
  */
 
 import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { authService, estamentosService } from '../services';
 import { validateRequiredFields, validateInstitutionalEmail } from '../utils/validators';
 import { VALIDATION_MESSAGES } from '../constants';
 
 export const useLoginForm = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -65,18 +68,78 @@ export const useLoginForm = () => {
     setLoading(true);
 
     try {
-      // Aquí iría la lógica de autenticación
-      // Por ahora solo simulamos un delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Llamar al servicio de autenticación
+      const credentials = {
+        correo_elec: email,
+        contrasenia: password
+      };
 
-      showToast('success', 'Éxito', VALIDATION_MESSAGES.LOGIN_SUCCESS);
+      console.log('Intentando login con:', credentials);
 
-      // TODO: Redirigir al dashboard o home
-      console.log('Login exitoso:', { email });
+      const response = await authService.login(credentials);
+
+      console.log('Login exitoso:', response);
+
+      // Verificar que realmente obtuvimos un token
+      if (!response || !response.token) {
+        console.error('Login sin token:', response);
+        showToast('error', 'Error', 'Error en la autenticación. Intenta nuevamente.');
+        setLoading(false);
+        return;
+      }
+
+      showToast('success', 'Éxito', 'Inicio de sesión exitoso. Bienvenido!');
+
+      // Determinar la ruta de redirección según el estamento
+      let redirectPath = '/';
+
+      if (response.estamento_id) {
+        try {
+          // Obtener información del estamento
+          const estamento = await estamentosService.obtenerPorId(response.estamento_id);
+          console.log('Estamento del usuario:', estamento);
+
+          // Si es administrativo, redirigir a /admin
+          if (estamento && estamento.nombre && estamento.nombre.toLowerCase().includes('administrativo')) {
+            redirectPath = '/admin';
+          }
+        } catch (estamentoError) {
+          console.error('Error al obtener estamento:', estamentoError);
+          // Si falla, usar el email como fallback
+          if (email.toLowerCase().includes('admin')) {
+            redirectPath = '/admin';
+          }
+        }
+      }
+
+      // Redirigir después de 1 segundo
+      setTimeout(() => {
+        navigate(redirectPath);
+      }, 1000);
 
     } catch (error) {
-      showToast('error', 'Error', VALIDATION_MESSAGES.LOGIN_ERROR);
-      console.error('Error en login:', error);
+      console.error('Error completo en login:', error);
+      console.error('Error status:', error?.status);
+      console.error('Error message:', error?.message);
+
+      // Determinar el tipo de error y mostrar mensaje apropiado
+      const errorStatus = error?.status || error?.response?.status;
+      const errorMessage = error?.message || error?.response?.data?.detail || 'Error desconocido';
+
+      console.log('Status detectado:', errorStatus);
+      console.log('Mensaje de error:', errorMessage);
+
+      if (errorStatus === 503 || !errorStatus) {
+        showToast('error', 'Error de Conexión', 'No se pudo conectar con el servidor. Verifica que el backend esté corriendo.');
+      } else if (errorStatus === 401) {
+        showToast('error', 'Credenciales Incorrectas', 'El correo o la contraseña son incorrectos. Por favor verifica tus datos.');
+      } else if (errorStatus === 400) {
+        showToast('error', 'Datos Inválidos', 'Por favor verifica que los datos ingresados sean correctos.');
+      } else if (errorStatus === 422) {
+        showToast('error', 'Error de Validación', 'Los datos ingresados no son válidos.');
+      } else {
+        showToast('error', 'Error', errorMessage || 'Error al iniciar sesión. Por favor intenta nuevamente.');
+      }
     } finally {
       setLoading(false);
     }

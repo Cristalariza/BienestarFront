@@ -3,6 +3,7 @@ import MainLayout from "./components/layouts/MainLayout";
 import AdministracionLayout from "./components/layouts/AdministracionLayout";
 import HomeView from "./views/HomeView";
 import LoginView from "./views/LoginView";
+import RegisterView from "./views/RegisterView";
 import NotFoundView from "./views/NotFoundView";
 import SportsView from "./views/SportsView";
 import InclusiveView from "./views/InclusiveView";
@@ -15,6 +16,7 @@ import GruposCulturaView from "./views/GruposCulturaView";
 import AcademiaView from "./views/AcademiaView";
 import LogrosView from "./views/LogrosView";
 import NormatividadView from "./views/NormatividadView";
+import NoticiaDetalleView from "./views/NoticiaDetalleView";
 
 // Vistas Admin
 import AdminDashboard from "./views/admin/AdminDashboard";
@@ -58,6 +60,14 @@ function App() {
           element={
             <MainLayout showSubMenu={false}>
               <LoginView />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/registro"
+          element={
+            <MainLayout showSubMenu={false}>
+              <RegisterView />
             </MainLayout>
           }
         />
@@ -106,6 +116,14 @@ function App() {
           element={
             <MainLayout showSubMenu={true}>
               <PQRSView />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/noticia/:id"
+          element={
+            <MainLayout showSubMenu={true}>
+              <NoticiaDetalleView />
             </MainLayout>
           }
         />

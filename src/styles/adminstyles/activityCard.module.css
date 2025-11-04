@@ -101,6 +101,94 @@
   background-color: #164a2f;
 }
 
+/* Estado inactivo */
+.card.inactive {
+  opacity: 0.6;
+  border-color: #cccccc;
+}
+
+/* Badge de estado */
+.estadoBadge {
+  margin-top: 4px;
+}
+
+.estadoBadge span {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.activo {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.inactivo {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Acciones administrativas */
+.actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.actionBtn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.actionBtn i {
+  font-size: 14px;
+}
+
+.editBtn {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.editBtn:hover {
+  background-color: #2563eb;
+}
+
+.toggleOffBtn {
+  background-color: #f59e0b;
+  color: white;
+}
+
+.toggleOffBtn:hover {
+  background-color: #d97706;
+}
+
+.toggleOnBtn {
+  background-color: #10b981;
+  color: white;
+}
+
+.toggleOnBtn:hover {
+  background-color: #059669;
+}
+
+.deleteBtn {
+  background-color: #ef4444;
+  color: white;
+}
+
+.deleteBtn:hover {
+  background-color: #dc2626;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .card {
@@ -122,5 +210,18 @@
   .button {
     font-size: 14px;
     padding: 10px 20px;
+  }
+
+  .actions {
+    gap: 6px;
+  }
+
+  .actionBtn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .actionBtn i {
+    font-size: 12px;
   }
 }

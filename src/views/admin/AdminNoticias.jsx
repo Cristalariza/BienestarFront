@@ -2,15 +2,20 @@ import { useAdminNoticias } from "../../hooks/useAdminNoticias";
 import Table from "../../components/admin/tables/Table";
 import Button from "../../components/admin/buttom/Button";
 import SearchBar from "../../components/admin/buscar/SearchBar";
+import { Toast } from "primereact/toast";
 import styles from "../../styles/adminstyles/adminNoticias.module.css";
 
 export const AdminNoticias = () => {
+  console.log('Renderizando AdminNoticias...');
+
   const {
     searchTerm,
     currentPage,
     showModal,
     editingNoticia,
     formData,
+    loading,
+    toast,
     getFilteredData,
     getPaginatedData,
     handleSearch,
@@ -20,14 +25,51 @@ export const AdminNoticias = () => {
     handleOpenEditModal,
     handleCloseModal,
     handleInputChange,
-    handleFileChange,
     handleSubmit,
     handleDelete,
     handleToggleEstado,
   } = useAdminNoticias();
 
-  const filteredData = getFilteredData();
-  const { paginatedData, totalPages } = getPaginatedData(filteredData);
+  console.log('Hook useAdminNoticias cargado, loading:', loading);
+
+  let filteredData = [];
+  let paginatedData = [];
+  let totalPages = 0;
+
+  try {
+    filteredData = getFilteredData();
+    console.log('Datos filtrados:', filteredData);
+
+    const paginationResult = getPaginatedData(filteredData);
+    paginatedData = paginationResult.paginatedData;
+    totalPages = paginationResult.totalPages;
+    console.log('Datos paginados:', paginatedData, 'Total páginas:', totalPages);
+  } catch (error) {
+    console.error('Error al procesar datos:', error);
+  }
+
+  if (loading && paginatedData.length === 0) {
+    console.log('Mostrando loading...');
+    return (
+      <div className={styles.container}>
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem' }}></i>
+          <p>Cargando noticias...</p>
+        </div>
+      </div>
+    );
+  }
+
+  console.log('Renderizando contenido principal...');
+
+  // Función para formatear fecha sin problemas de zona horaria
+  const formatearFecha = (fecha) => {
+    if (!fecha) return '';
+    const dateStr = fecha.split('T')[0]; // Obtener YYYY-MM-DD
+    const [year, month, day] = dateStr.split('-').map(num => parseInt(num));
+    const date = new Date(year, month - 1, day);
+    return date.toLocaleDateString("es-CO");
+  };
 
   const columns = [
     {
@@ -45,7 +87,7 @@ export const AdminNoticias = () => {
       key: "fecha",
       label: "Fecha",
       sortable: true,
-      render: (value) => new Date(value).toLocaleDateString("es-CO"),
+      render: (value) => formatearFecha(value),
     },
     {
       key: "imagen",
@@ -117,6 +159,7 @@ export const AdminNoticias = () => {
 
   return (
     <div className={styles.container}>
+      <Toast ref={toast} />
       <div className={styles.header}>
         <h1 className={styles.title}>Administración de Noticias</h1>
         <Button
@@ -190,31 +233,38 @@ export const AdminNoticias = () => {
               </div>
 
               <div className={styles.formGroup}>
-                <label htmlFor="fecha" className={styles.label}>
-                  Fecha <span className={styles.required}>*</span>
+                <label htmlFor="categoria" className={styles.label}>
+                  Categoría <span className={styles.required}>*</span>
                 </label>
-                <input
-                  type="date"
-                  id="fecha"
+                <select
+                  id="categoria"
                   className={styles.input}
-                  value={formData.fecha}
-                  onChange={(e) => handleInputChange("fecha", e.target.value)}
-                />
+                  value={formData.categoria}
+                  onChange={(e) => handleInputChange("categoria", e.target.value)}
+                >
+                  <option value="">Seleccione una categoría</option>
+                  <option value="Académico">Académico</option>
+                  <option value="Deportivo">Deportivo</option>
+                  <option value="Cultural">Cultural</option>
+                  <option value="Bienestar">Bienestar</option>
+                  <option value="General">General</option>
+                </select>
               </div>
 
               <div className={styles.formGroup}>
                 <label htmlFor="imagen" className={styles.label}>
-                  Imagen (Opcional)
+                  URL de Imagen (Opcional)
                 </label>
                 <input
-                  type="file"
+                  type="text"
                   id="imagen"
-                  className={styles.fileInput}
-                  accept="image/jpeg,image/jpg,image/png,image/webp"
-                  onChange={(e) => handleFileChange(e.target.files[0])}
+                  className={styles.input}
+                  value={formData.imagen}
+                  onChange={(e) => handleInputChange("imagen", e.target.value)}
+                  placeholder="https://ejemplo.com/imagen.jpg"
                 />
                 <small className={styles.hint}>
-                  Tamaño máximo: 5MB. Formatos: JPG, PNG, WEBP
+                  Ingrese la URL completa de la imagen
                 </small>
               </div>
 

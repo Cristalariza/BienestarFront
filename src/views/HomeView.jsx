@@ -1,5 +1,6 @@
 import HeroSection from '../components/home/HeroSection';
 import CategoriesSection from '../components/home/CategoriesSection';
+import LatestNewsSection from '../components/home/LatestNewsSection';
 import AboutSection from '../components/home/AboutSection';
 import MissionVisionSection from '../components/home/MissionVisionSection';
 import StructureSection from '../components/home/StructureSection';
@@ -11,6 +12,7 @@ const HomeView = () => {
     <div>
       <HeroSection />
       <CategoriesSection />
+      <LatestNewsSection />
       <AboutSection />
       <MissionVisionSection />
       <StructureSection />

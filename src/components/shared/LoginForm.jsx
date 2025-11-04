@@ -14,6 +14,7 @@ import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
+import { Link } from 'react-router-dom';
 import { useLoginForm } from '../../hooks/useLoginForm';
 import { UI_TEXTS } from '../../constants';
 
@@ -115,6 +116,19 @@ const LoginForm = () => {
               <div className="text-center -mt-2">
                 <p className="text-xs text-gray-500">
                   Use su correo institucional @unicesar.edu.co
+                </p>
+              </div>
+
+              {/* Enlace al registro */}
+              <div className="text-center mt-2 pt-4 border-t border-gray-200">
+                <p className="text-sm text-gray-600">
+                  ¿No tienes una cuenta?{' '}
+                  <Link
+                    to="/registro"
+                    className="text-brand-356 hover:text-green-700 font-semibold underline"
+                  >
+                    Regístrate aquí
+                  </Link>
                 </p>
               </div>
             </form>

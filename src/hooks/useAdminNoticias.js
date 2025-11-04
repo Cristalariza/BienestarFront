@@ -1,39 +1,85 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { noticiasService } from "../services";
 
 export const useAdminNoticias = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [editingNoticia, setEditingNoticia] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [noticias, setNoticias] = useState([]);
+  const toast = useRef(null);
+
   const [formData, setFormData] = useState({
     nombre: "",
     descripcion: "",
-    fecha: "",
-    imagen: null,
+    categoria: "Académico",
+    imagen: "",
     estado: true,
   });
 
-  // Datos de ejemplo - Conectar con API
-  const noticiasData = [
-    {
-      noticia_id: "1",
-      nombre: "Nuevo programa de becas 2025",
-      descripcion: "Se abre convocatoria para becas de excelencia académica",
-      fecha: "2025-11-01",
-      imagen: "becas.jpg",
-      estado: true,
-      created_at: "2025-10-25",
-    },
-    {
-      noticia_id: "2",
-      nombre: "Jornada deportiva universitaria",
-      descripcion: "Participa en los juegos intercursos este fin de semana",
-      fecha: "2025-11-05",
-      imagen: null,
-      estado: true,
-      created_at: "2025-10-28",
-    },
-  ];
+  // Cargar noticias desde el backend
+  useEffect(() => {
+    cargarNoticias();
+  }, []);
+
+  const cargarNoticias = async () => {
+    try {
+      setLoading(true);
+      console.log('Iniciando carga de noticias...');
+
+      const data = await noticiasService.obtenerTodas({ skip: 0, limit: 1000, only_active: false });
+      console.log('Noticias cargadas del backend:', data);
+      console.log('Tipo de datos recibidos:', typeof data, Array.isArray(data));
+
+      // Si data no es un array, intentar obtener el array correcto
+      let noticiasArray = Array.isArray(data) ? data : [];
+
+      if (!Array.isArray(data)) {
+        console.warn('Los datos recibidos no son un array, usando array vacío');
+      }
+
+      // Mapear datos del backend al formato del frontend
+      const noticiasFormateadas = noticiasArray.map((noticia, index) => {
+        console.log(`Mapeando noticia ${index}:`, noticia);
+        return {
+          noticia_id: noticia.noticia_id || `temp-${index}`,
+          nombre: noticia.nombre || 'Sin título',
+          descripcion: noticia.descripcion || 'Sin descripción',
+          fecha: noticia.fecha ? new Date(noticia.fecha).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+          imagen: noticia.imagen || "",
+          categoria: 'General', // El backend no devuelve categoría
+          estado: noticia.estado !== undefined ? noticia.estado : true,
+          created_at: noticia.created_at || new Date().toISOString(),
+        };
+      });
+
+      console.log('Noticias formateadas:', noticiasFormateadas);
+      setNoticias(noticiasFormateadas);
+      console.log('Noticias establecidas correctamente');
+    } catch (error) {
+      console.error('Error completo al cargar noticias:', error);
+      console.error('Detalles del error:', {
+        message: error.message,
+        status: error.status,
+        data: error.data
+      });
+
+      // No mostrar toast si el backend no está corriendo
+      if (error.status !== 503) {
+        toast.current?.show({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al cargar las noticias. Verifica la consola para más detalles.',
+          life: 3000
+        });
+      }
+      setNoticias([]);
+    } finally {
+      console.log('Finalizando carga de noticias');
+      setLoading(false);
+    }
+  };
 
   // Validaciones
   const validateForm = () => {
@@ -55,75 +101,8 @@ export const useAdminNoticias = () => {
         message: "La descripción debe tener al menos 10 caracteres",
       };
     }
-    if (!formData.fecha) {
-      return { isValid: false, message: "La fecha es obligatoria" };
-    }
-
-    // Validar que la fecha sea mayor a hoy (no puede ser hoy mismo)
-    const fechaSeleccionada = new Date(formData.fecha);
-    fechaSeleccionada.setHours(0, 0, 0, 0);
-
-    const hoy = new Date();
-    hoy.setHours(0, 0, 0, 0);
-
-    const manana = new Date(hoy);
-    manana.setDate(manana.getDate() + 1);
-
-    if (fechaSeleccionada < manana) {
-      return {
-        isValid: false,
-        message: "La fecha de la noticia debe ser posterior al día de hoy",
-      };
-    }
-
-    // Validar imagen si existe
-    if (formData.imagen) {
-      // Validar que sea un archivo
-      if (!(formData.imagen instanceof File)) {
-        return {
-          isValid: false,
-          message: "Debe seleccionar un archivo de imagen válido",
-        };
-      }
-
-      // Validar tamaño
-      const maxSize = 5 * 1024 * 1024; // 5MB
-      if (formData.imagen.size > maxSize) {
-        return {
-          isValid: false,
-          message: "La imagen no puede ser mayor a 5MB",
-        };
-      }
-
-      // Validar tipo de archivo
-      const allowedTypes = [
-        "image/jpeg",
-        "image/jpg",
-        "image/png",
-        "image/webp",
-      ];
-      const fileType = formData.imagen.type.toLowerCase();
-
-      if (!allowedTypes.includes(fileType)) {
-        return {
-          isValid: false,
-          message: "Solo se permiten imágenes en formato JPG, PNG o WEBP",
-        };
-      }
-
-      // Validación adicional por extensión del nombre
-      const fileName = formData.imagen.name.toLowerCase();
-      const allowedExtensions = [".jpg", ".jpeg", ".png", ".webp"];
-      const hasValidExtension = allowedExtensions.some((ext) =>
-        fileName.endsWith(ext)
-      );
-
-      if (!hasValidExtension) {
-        return {
-          isValid: false,
-          message: "El archivo debe tener extensión .jpg, .jpeg, .png o .webp",
-        };
-      }
+    if (!formData.categoria.trim()) {
+      return { isValid: false, message: "La categoría es obligatoria" };
     }
 
     return { isValid: true };
@@ -131,9 +110,7 @@ export const useAdminNoticias = () => {
 
   // Filtros
   const getFilteredData = () => {
-    return noticiasData.filter((noticia) => {
-      if (!noticia.estado) return false;
-
+    return noticias.filter((noticia) => {
       const matchesSearch =
         noticia.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
         noticia.descripcion.toLowerCase().includes(searchTerm.toLowerCase());
@@ -174,8 +151,8 @@ export const useAdminNoticias = () => {
     setFormData({
       nombre: "",
       descripcion: "",
-      fecha: "",
-      imagen: null,
+      categoria: "Académico",
+      imagen: "",
       estado: true,
     });
     setShowModal(true);
@@ -186,8 +163,8 @@ export const useAdminNoticias = () => {
     setFormData({
       nombre: noticia.nombre,
       descripcion: noticia.descripcion,
-      fecha: noticia.fecha,
-      imagen: null,
+      categoria: noticia.categoria || "Académico",
+      imagen: noticia.imagen || "",
       estado: noticia.estado,
     });
     setShowModal(true);
@@ -199,8 +176,8 @@ export const useAdminNoticias = () => {
     setFormData({
       nombre: "",
       descripcion: "",
-      fecha: "",
-      imagen: null,
+      categoria: "Académico",
+      imagen: "",
       estado: true,
     });
   };
@@ -212,45 +189,141 @@ export const useAdminNoticias = () => {
     }));
   };
 
-  const handleFileChange = (file) => {
-    setFormData((prev) => ({
-      ...prev,
-      imagen: file,
-    }));
-  };
-
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const validation = validateForm();
 
     if (!validation.isValid) {
-      alert(validation.message);
+      toast.current?.show({
+        severity: 'warn',
+        summary: 'Validación',
+        detail: validation.message,
+        life: 3000
+      });
       return false;
     }
 
-    if (editingNoticia) {
-      console.log("Actualizando noticia:", editingNoticia.noticia_id, formData);
-      alert("Noticia actualizada exitosamente");
-    } else {
-      console.log("Creando noticia:", formData);
-      alert("Noticia creada exitosamente");
-    }
+    try {
+      setLoading(true);
 
-    handleCloseModal();
-    return true;
+      // Preparar datos para el backend
+      const noticiaData = {
+        nombre: formData.nombre,
+        descripcion: formData.descripcion,
+        fecha: new Date().toISOString().split('T')[0], // Fecha actual en formato YYYY-MM-DD
+        imagen: formData.imagen || "",
+        estado: formData.estado,
+      };
+
+      if (editingNoticia) {
+        console.log("Actualizando noticia:", editingNoticia.noticia_id, noticiaData);
+        await noticiasService.actualizar(editingNoticia.noticia_id, noticiaData);
+        toast.current?.show({
+          severity: 'success',
+          summary: 'Éxito',
+          detail: 'Noticia actualizada exitosamente',
+          life: 3000
+        });
+      } else {
+        console.log("Creando noticia:", noticiaData);
+        await noticiasService.crear(noticiaData);
+        toast.current?.show({
+          severity: 'success',
+          summary: 'Éxito',
+          detail: 'Noticia creada exitosamente',
+          life: 3000
+        });
+      }
+
+      // Recargar noticias
+      await cargarNoticias();
+      handleCloseModal();
+      return true;
+    } catch (error) {
+      console.error('Error al guardar noticia:', error);
+      toast.current?.show({
+        severity: 'error',
+        summary: 'Error',
+        detail: error?.message || 'Error al guardar la noticia. Por favor, intenta nuevamente.',
+        life: 3000
+      });
+      return false;
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleDelete = (noticiaId) => {
+  const handleDelete = async (noticiaId) => {
     if (window.confirm("¿Estás seguro de eliminar esta noticia?")) {
-      console.log("Eliminando noticia:", noticiaId);
-      alert("Noticia eliminada exitosamente");
+      try {
+        setLoading(true);
+        console.log("Eliminando noticia:", noticiaId);
+        await noticiasService.eliminar(noticiaId);
+        toast.current?.show({
+          severity: 'success',
+          summary: 'Éxito',
+          detail: 'Noticia eliminada exitosamente',
+          life: 3000
+        });
+
+        // Recargar noticias
+        await cargarNoticias();
+      } catch (error) {
+        console.error('Error al eliminar noticia:', error);
+        toast.current?.show({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al eliminar la noticia. Por favor, intenta nuevamente.',
+          life: 3000
+        });
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
-  const handleToggleEstado = (noticiaId, currentEstado) => {
+  const handleToggleEstado = async (noticiaId, currentEstado) => {
     const action = currentEstado ? "desactivar" : "activar";
     if (window.confirm(`¿Estás seguro de ${action} esta noticia?`)) {
-      console.log(`${action} noticia:`, noticiaId);
-      alert(`Noticia ${action}da exitosamente`);
+      try {
+        setLoading(true);
+        console.log(`${action} noticia:`, noticiaId);
+
+        // Obtener la noticia completa
+        const noticia = noticias.find((n) => n.noticia_id === noticiaId);
+        if (!noticia) {
+          throw new Error('Noticia no encontrada');
+        }
+
+        // Actualizar solo el estado
+        const noticiaData = {
+          nombre: noticia.nombre,
+          descripcion: noticia.descripcion,
+          fecha: noticia.fecha,
+          imagen: noticia.imagen || "",
+          estado: !currentEstado, // Invertir el estado actual
+        };
+
+        await noticiasService.actualizar(noticiaId, noticiaData);
+        toast.current?.show({
+          severity: 'success',
+          summary: 'Éxito',
+          detail: `Noticia ${action}da exitosamente`,
+          life: 3000
+        });
+
+        // Recargar noticias
+        await cargarNoticias();
+      } catch (error) {
+        console.error(`Error al ${action} noticia:`, error);
+        toast.current?.show({
+          severity: 'error',
+          summary: 'Error',
+          detail: `Error al ${action} la noticia. Por favor, intenta nuevamente.`,
+          life: 3000
+        });
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -260,6 +333,8 @@ export const useAdminNoticias = () => {
     showModal,
     editingNoticia,
     formData,
+    loading,
+    toast,
 
     getFilteredData,
     getPaginatedData,
@@ -271,7 +346,6 @@ export const useAdminNoticias = () => {
     handleOpenEditModal,
     handleCloseModal,
     handleInputChange,
-    handleFileChange,
     handleSubmit,
     handleDelete,
     handleToggleEstado,
