@@ -13,8 +13,8 @@ const PQRSView = () => {
             Envíanos tu Petición, Queja, Reclamo o Sugerencia
           </h1>
           <p className={styles.heroDescription}>
-            Tu opinión es muy importante para nosotros. A través de este formulario podrás hacernos llegar
-            tus comentarios sobre los servicios, actividades o atención del Bienestar Universitario.
+            Tu opinión es muy importante para nosotros. Para realizar una Petición, Queja, Reclamo o Sugerencia (PQRS),
+            utiliza el sistema oficial de la Universidad Popular del Cesar - UPC. Haz clic en el botón para acceder al sistema.
           </p>
         </div>
       </div>
