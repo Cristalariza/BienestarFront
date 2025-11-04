@@ -31,18 +31,16 @@ const Slider = ({
   }, []);
 
   useEffect(() => {
-    if (!isPaused || slides.length <= 1) {
+    if (isPaused || slides.length <= 1 || autoPlayInterval <= 0) {
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
       return;
     }
 
-    if (autoPlayInterval > 0 && !isPaused) {
-      timerRef.current = setInterval(() => {
-        goToNext();
-      }, autoPlayInterval);
-    }
+    timerRef.current = setInterval(() => {
+      goToNext();
+    }, autoPlayInterval);
 
     return () => {
       if (timerRef.current) {
