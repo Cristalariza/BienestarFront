@@ -7,13 +7,13 @@ import SportsView from "./views/SportsView";
 import IncluseView from "./views/InclusiveView";
 import PQRSView from "./views/PQRSView";
 import CultureView from "./views/CultureView";
+import AyudaSocialView from "./views/AyudaSocialView";
 import InfoView from "./views/InfoView";
 
 import GruposCulturaView from "./views/GruposCulturaView";
 import AcademiaView from "./views/AcademiaView";
 import LogrosView from "./views/LogrosView";
 import NormatividadView from "./views/NormatividadView";
-
 
 function App() {
   return (
@@ -60,6 +60,14 @@ function App() {
           }
         />
         <Route
+          path="/ayuda-social"
+          element={
+            <MainLayout showSubMenu={true}>
+              <AyudaSocialView />
+            </MainLayout>
+          }
+        />
+        <Route
           path="/informativo"
           element={
             <MainLayout showSubMenu={true}>
@@ -83,15 +91,14 @@ function App() {
             </MainLayout>
           }
         />
-           <Route path="/" element={<HomeView />} />
-           <Route path="/CultureView" element={<CultureView />} />
-           <Route path="/GruposCulturaView" element={<GruposCulturaView />} />
-           <Route path="/academia" element={<AcademiaView />} />
-           <Route path="/logros" element={<LogrosView />} />
-           <Route path="/normatividad" element={<NormatividadView />} />
-           <Route path="*" element={<NotFoundView />} />
+        <Route path="/" element={<HomeView />} />
+        <Route path="/CultureView" element={<CultureView />} />
+        <Route path="/GruposCulturaView" element={<GruposCulturaView />} />
+        <Route path="/academia" element={<AcademiaView />} />
+        <Route path="/logros" element={<LogrosView />} />
+        <Route path="/normatividad" element={<NormatividadView />} />
+        <Route path="*" element={<NotFoundView />} />
       </Routes>
-      
     </Router>
   );
 }
