@@ -6,7 +6,7 @@
 import axios from 'axios';
 
 // URL base de la API - se puede configurar según el entorno
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://bienestaruniversitario.space/api/v1';
 
 // Crear instancia de axios
 const api = axios.create({
