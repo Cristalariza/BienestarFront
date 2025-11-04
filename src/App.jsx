@@ -7,6 +7,7 @@ import SportsView from "./views/SportsView";
 import IncluseView from "./views/InclusiveView";
 import PQRSView from "./views/PQRSView";
 import CultureView from "./views/CultureView";
+import AyudaSocialView from "./views/AyudaSocialView";
 import InfoView from "./views/InfoView";
 
 import GruposCulturaView from "./views/GruposCulturaView";
@@ -63,6 +64,14 @@ function App() {
           element={
             <MainLayout showSubMenu={true}>
               <CultureView />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/ayuda-social"
+          element={
+            <MainLayout showSubMenu={true}>
+              <AyudaSocialView />
             </MainLayout>
           }
         />
