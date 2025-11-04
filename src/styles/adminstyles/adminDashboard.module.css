@@ -1,0 +1,188 @@
+/* Contenedor principal */
+.container {
+  padding: 0;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Título */
+.title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 32px 0;
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 4rem;
+  color: #6c757d;
+}
+
+/* Grid de gráficas */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* Tarjetas de gráficas */
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.cardWide {
+  grid-column: span 3;
+}
+
+.cardTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 1rem 0;
+  text-align: center;
+}
+
+/* Contenedores de gráficas */
+.chartContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  max-height: 220px;
+}
+
+.chartContainerTall {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+  max-height: 320px;
+}
+
+.chartContainerExtraTall {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  max-height: 450px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .title {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .cardWide {
+    grid-column: span 2;
+  }
+
+  .chartContainer {
+    min-height: 180px;
+    max-height: 220px;
+  }
+
+  .chartContainerTall {
+    min-height: 250px;
+    max-height: 280px;
+  }
+
+  .chartContainerExtraTall {
+    min-height: 350px;
+    max-height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .cardWide {
+    grid-column: span 1;
+  }
+
+  .card {
+    padding: 1.25rem;
+  }
+
+  .cardTitle {
+    font-size: 14px;
+    margin-bottom: 1rem;
+  }
+
+  .chartContainer {
+    min-height: 180px;
+    max-height: 220px;
+  }
+
+  .chartContainerTall {
+    min-height: 220px;
+    max-height: 260px;
+  }
+
+  .chartContainerExtraTall {
+    min-height: 320px;
+    max-height: 360px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .grid {
+    gap: 12px;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  .cardTitle {
+    font-size: 13px;
+  }
+
+  .chartContainer {
+    min-height: 160px;
+    max-height: 200px;
+  }
+
+  .chartContainerTall {
+    min-height: 200px;
+    max-height: 240px;
+  }
+
+  .chartContainerExtraTall {
+    min-height: 300px;
+    max-height: 340px;
+  }
+}

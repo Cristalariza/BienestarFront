@@ -1,5 +1,6 @@
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import MainLayout from "./components/layouts/MainLayout";
+import AdministracionLayout from "./components/layouts/AdministracionLayout";
 import HomeView from "./views/HomeView";
 import LoginView from "./views/LoginView";
 import NotFoundView from "./views/NotFoundView";
@@ -14,6 +15,31 @@ import GruposCulturaView from "./views/GruposCulturaView";
 import AcademiaView from "./views/AcademiaView";
 import LogrosView from "./views/LogrosView";
 import NormatividadView from "./views/NormatividadView";
+
+// Vistas Admin
+import AdminDashboard from "./views/admin/AdminDashboard";
+import AdminCultura from "./views/admin/AdminCultura";
+import AdminDeporte from "./views/admin/AdminDeporte";
+import AdminCulturaDetalle from "./views/admin/AdminCulturaDetalle";
+import AdminDeporteDetalle from "./views/admin/AdminDeporteDetalle";
+import AdminPQRS from "./views/admin/AdminPQRS";
+import { AdminNoticias } from "./views/admin/AdminNoticias";
+import { AdminEventos } from "./views/admin/AdminEventos";
+
+// Vistas Admin - Cultura
+import GruposCulturales from "./views/admin/cultura/GruposCulturales";
+import Preinscripciones from "./views/admin/cultura/Preinscripciones";
+import Inscripciones from "./views/admin/cultura/Inscripciones";
+import Vestuario from "./views/admin/cultura/Vestuario";
+import Instrumentos from "./views/admin/cultura/Instrumentos";
+import Asistencia from "./views/admin/cultura/Asistencia";
+import Reporte from "./views/admin/cultura/Reporte";
+
+// Vistas Admin - Deporte
+import GruposDeportivos from "./views/admin/deporte/GruposDeportivos";
+import InscripcionDeporte from "./views/admin/deporte/Inscripcion";
+import AsistenciaDeporte from "./views/admin/deporte/Asistencia";
+import ReporteDeporte from "./views/admin/deporte/Reporte";
 
 function App() {
   return (
@@ -98,6 +124,62 @@ function App() {
         <Route path="/logros" element={<LogrosView />} />
         <Route path="/normatividad" element={<NormatividadView />} />
         <Route path="*" element={<NotFoundView />} />
+
+        {/* Rutas administración */}
+        <Route path="/admin" element={<AdministracionLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="deporte/grupos" element={<GruposDeportivos />} />
+          <Route
+            path="deporte/grupos/:actividad"
+            element={<AdminDeporteDetalle />}
+          />
+          <Route path="deporte/inscripcion" element={<InscripcionDeporte />} />
+          <Route path="deporte/asistencia" element={<AsistenciaDeporte />} />
+          <Route path="deporte/reporte" element={<ReporteDeporte />} />
+          <Route path="deporte" element={<AdminDeporte />} />
+          <Route path="deporte/:actividad" element={<AdminDeporteDetalle />} />
+
+          {/* Rutas cultura */}
+          <Route path="cultura/grupos" element={<GruposCulturales />} />
+          <Route
+            path="cultura/grupos/:actividad"
+            element={<AdminCulturaDetalle />}
+          />
+          <Route
+            path="cultura/preinscripciones"
+            element={<Preinscripciones />}
+          />
+          <Route path="cultura/inscripciones" element={<Inscripciones />} />
+          <Route path="cultura/vestuario" element={<Vestuario />} />
+          <Route path="cultura/instrumentos" element={<Instrumentos />} />
+          <Route path="cultura/asistencia" element={<Asistencia />} />
+          <Route path="cultura/reporte" element={<Reporte />} />
+
+          <Route path="cultura" element={<AdminCultura />} />
+          <Route path="cultura/:actividad" element={<AdminCulturaDetalle />} />
+
+          {/* Rutas Ayuda Social */}
+          <Route
+            path="ayuda-social"
+            element={
+              <div>
+                En desarrollo, no se nos dio informacion correspondiente para el
+                desarrollo de este modulo.
+                <br />{" "}
+                <b>
+                  Se exige la información correspondiente para poder desarrollar
+                  un modulo optimo y adecuado a las necesidades.
+                </b>
+              </div>
+            }
+          />
+          {/* Rutas PQRs */}
+          <Route path="pqrs" element={<AdminPQRS />} />
+
+          {/* Rutas Informativo */}
+          <Route path="noticias" element={<AdminNoticias />} />
+          <Route path="eventos" element={<AdminEventos />} />
+        </Route>
       </Routes>
     </Router>
   );

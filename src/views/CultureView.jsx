@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from "react";
 import ContactSection from "../components/home/ContactSection";
+import PreinscripcionCulturalForm from "../components/forms/PreinscripcionCulturalForm";
 import styles from "../../src/styles/culture.module.css";
 import danza from "../assets/danza.png";
 import teatro from "../assets/teatro.png";
@@ -22,20 +23,16 @@ import {
 import { FaMusic, FaRegCalendarAlt } from "react-icons/fa";
 import { MdAccessibility, MdMusicNote, MdMovie } from "react-icons/md";
 import { IoIosPeople } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
-import GruposCulturaView from "./GruposCulturaView";
 
 // ======================= COMPONENTES SECUNDARIOS =======================
 
 export const ActividadesCulturalesInicio = () => {
-  const navigate = useNavigate();
-
   const actividades = [
-    { titulo: "Inicio", ruta: "/CultureView" },
-    { titulo: "Grupos Artísticos Institucionales", ruta: "/GruposCulturaView" },
-    { titulo: "Cultura y academia", ruta: "/academia" },
-    { titulo: "Logros Obtenidos", ruta: "/logros" },
-    { titulo: "Normatividad", ruta: "/normatividad" },
+    { titulo: "Inicio" },
+    { titulo: "Grupos Artísticos Institucionales" },
+    { titulo: "Cultura y academia" },
+    { titulo: "Logros Obtenidos" },
+    { titulo: "Normatividad" },
   ];
 
   return (
@@ -48,12 +45,7 @@ export const ActividadesCulturalesInicio = () => {
               alt={act.titulo}
               className={styles.actividadImg2}
             />
-            <button
-              className={styles.actividadButton2}
-              onClick={() => navigate(act.ruta)} // 👈 Aquí ocurre la navegación
-            >
-              {act.titulo}
-            </button>
+            <button className={styles.actividadButton2}>{act.titulo}</button>
           </div>
         ))}
       </div>
@@ -75,9 +67,8 @@ const TableSection = ({ onOpen }) => (
         "CONSULTAR HORARIOS DE ENSAYO",
       ].map((title, i) => (
         <div key={i} className={styles.tableCard}>
-          <div className={styles.tableHeader}></div>
           <button className={styles.tableButton} onClick={() => onOpen(title)}>
-            {title}
+            <span>{title}</span>
           </button>
         </div>
       ))}
@@ -184,39 +175,83 @@ export const ActivitiesGrid = () => (
   </section>
 );
 
-// ======================= COMPONENTE PRINCIPAL =======================
-
 const CultureView = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
+  const [programaSeleccionado, setProgramaSeleccionado] = useState(null);
 
-  const openModal = (title) => {
+  const openModal = (title, programa = null) => {
     setModalTitle(title);
+    setProgramaSeleccionado(programa);
     setModalOpen(true);
   };
 
   const closeModal = () => {
     setModalOpen(false);
     setModalTitle("");
+    setProgramaSeleccionado(null);
+  };
+
+  const handlePreinscripcionSubmit = async (inscripcionData) => {
+    try {
+      // TODO: Conectar con backend API
+      console.log("Datos de preinscripción:", inscripcionData);
+
+      // Aquí iría la llamada al backend:
+      // const response = await fetch('/api/inscripciones-culturales', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(inscripcionData)
+      // });
+
+      alert("¡Preinscripción enviada exitosamente!");
+      closeModal();
+    } catch (error) {
+      console.error("Error al enviar preinscripción:", error);
+      alert("Hubo un error al enviar la preinscripción. Intente nuevamente.");
+    }
   };
 
   return (
     <Fragment>
       <main>
-        <section className={styles.hero}>
-          <h1>Actividades Culturales</h1>
-          <p className={styles.heroDescription}>
+        <div className={styles.container}>
+          <h1 className={styles.cultureTitle}>Actividades Culturales</h1>
+          <p className={styles.cultureSubtitle}>
             La sección de cultura ofrece la posibilidad de vincularse a los
             grupos culturales, como también, desarrollar aptitudes personales en
             las diferentes manifestaciones del arte y la cultura.
           </p>
-        </section>
+          <button
+            className={styles.heroButton}
+            onClick={() => openModal("INSCRIPCIÓN A CULTURA")}
+          >
+            Inscribirme
+          </button>
+        </div>
+        <div className={styles.gradientBar}></div>
 
         <ActividadesCulturalesInicio />
         <TableSection onOpen={openModal} />
         <ActivitiesGrid />
         <ContactSection />
       </main>
+
+      {/* Modal de Preinscripción */}
+      {modalOpen && (
+        <div className={styles.modalOverlay} onClick={closeModal}>
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <PreinscripcionCulturalForm
+              onSubmit={handlePreinscripcionSubmit}
+              onCancel={closeModal}
+              programaSeleccionado={programaSeleccionado}
+            />
+          </div>
+        </div>
+      )}
     </Fragment>
   );
 };

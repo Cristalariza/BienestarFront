@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { usePQRSForm } from '../../hooks/usePQRSForm';
-import styles from '../../styles/pqrs.module.css';
-import muchachaImage from '../../assets/MuCHACHA.jpg';
+import { useState } from "react";
+import { usePQRSForm } from "../../hooks/usePQRSForm";
+import styles from "../../styles/pqrs.module.css";
+import muchachaImage from "../../assets/MuCHACHA.jpg";
 
 const PQRSForm = () => {
   const {
@@ -10,7 +10,7 @@ const PQRSForm = () => {
     handleInputChange,
     handleSubmit,
     handleTrackingSearch,
-    setTrackingCode
+    setTrackingCode,
   } = usePQRSForm();
 
   return (
@@ -20,10 +20,8 @@ const PQRSForm = () => {
         <form onSubmit={handleSubmit}>
           {/* Personal Information Card */}
           <div className={styles.formCard}>
-            <h3 className={styles.formSectionTitle}>
-              Información Personal
-            </h3>
-            
+            <h3 className={styles.formSectionTitle}>Información Personal</h3>
+
             <div className={styles.formGroup}>
               <label htmlFor="nombreCompleto" className={styles.formLabel}>
                 Nombre completo *
@@ -36,6 +34,7 @@ const PQRSForm = () => {
                 onChange={handleInputChange}
                 className={styles.formInput}
                 placeholder="Ej: Juan Pérez"
+                disabled={formData.enviarAnonimo}
                 required
               />
             </div>
@@ -52,6 +51,7 @@ const PQRSForm = () => {
                 onChange={handleInputChange}
                 className={styles.formInput}
                 placeholder="Ej: juan.perez@unicesar.edu.co"
+                disabled={formData.enviarAnonimo}
                 required
               />
             </div>
@@ -68,6 +68,7 @@ const PQRSForm = () => {
                 onChange={handleInputChange}
                 className={styles.formInput}
                 placeholder="Ej: 12345678"
+                disabled={formData.enviarAnonimo}
               />
             </div>
 
@@ -91,7 +92,7 @@ const PQRSForm = () => {
             <h3 className={styles.formSectionTitle}>
               Detalles de la Solicitud
             </h3>
-            
+
             <div className={styles.formGroup}>
               <label htmlFor="tipoSolicitud" className={styles.formLabel}>
                 Tipo de solicitud *
@@ -113,7 +114,10 @@ const PQRSForm = () => {
             </div>
 
             <div className={styles.formGroup}>
-              <label htmlFor="dependenciaRelacionada" className={styles.formLabel}>
+              <label
+                htmlFor="dependenciaRelacionada"
+                className={styles.formLabel}
+              >
                 Dependencia relacionada *
               </label>
               <select
@@ -150,7 +154,10 @@ const PQRSForm = () => {
             </div>
 
             <div className={styles.formGroup}>
-              <label htmlFor="descripcionDetallada" className={styles.formLabel}>
+              <label
+                htmlFor="descripcionDetallada"
+                className={styles.formLabel}
+              >
                 Descripción detallada *
               </label>
               <textarea
@@ -164,7 +171,8 @@ const PQRSForm = () => {
                 required
               />
               <p className={styles.formHelpText}>
-                Por favor, proporciona todos los detalles relevantes para que podamos atender tu solicitud de manera efectiva.
+                Por favor, proporciona todos los detalles relevantes para que
+                podamos atender tu solicitud de manera efectiva.
               </p>
             </div>
 
@@ -185,8 +193,12 @@ const PQRSForm = () => {
                   htmlFor="archivoAdjunto"
                   className={styles.fileInputLabel}
                 >
-                  <span className={styles.fileInputText}>Seleccionar archivo</span>
-                  <span className={styles.fileInputStatus}>Sin archivos seleccionados</span>
+                  <span className={styles.fileInputText}>
+                    Seleccionar archivo
+                  </span>
+                  <span className={styles.fileInputStatus}>
+                    Sin archivos seleccionados
+                  </span>
                 </label>
               </div>
               <p className={styles.formHelpText}>
@@ -194,10 +206,7 @@ const PQRSForm = () => {
               </p>
             </div>
 
-            <button
-              type="submit"
-              className={styles.submitButton}
-            >
+            <button type="submit" className={styles.submitButton}>
               Enviar PQRS
             </button>
           </div>
@@ -208,9 +217,9 @@ const PQRSForm = () => {
       <div className={styles.trackingSection}>
         {/* Tracking Image */}
         <div className={styles.trackingImage}>
-          <img 
-            src={muchachaImage} 
-            alt="Imagen ilustrativa del módulo PQRS" 
+          <img
+            src={muchachaImage}
+            alt="Imagen ilustrativa del módulo PQRS"
             className="w-full h-full object-cover"
           />
         </div>
@@ -218,12 +227,22 @@ const PQRSForm = () => {
         {/* Tracking Card */}
         <div className={styles.trackingCard}>
           <div className={styles.trackingHeader}>
-            <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            <svg
+              className="w-5 h-5 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
             </svg>
             <h3 className={styles.trackingTitle}>¿Ya enviaste una PQRS?</h3>
           </div>
-          
+
           <p className={styles.trackingDescription}>
             Ingresa tu código de radicado para consultar su estado:
           </p>
@@ -237,12 +256,19 @@ const PQRSForm = () => {
                 className={styles.trackingInput}
                 placeholder="Ej: PQRS-2025-001234"
               />
-              <button
-                type="submit"
-                className={styles.trackingButton}
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              <button type="submit" className={styles.trackingButton}>
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
                 </svg>
                 <span>Buscar</span>
               </button>

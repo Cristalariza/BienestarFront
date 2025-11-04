@@ -15,7 +15,7 @@ export const BIENESTAR_CATEGORIES = [
   },
   {
     id: 3,
-    title: "APOYO SOCIAL",
+    title: "AYUDA SOCIAL",
     description:
       "Brinda acompañamiento y orientación a los estudiantes en situaciones personales, académicas o económicas, promoviendo su bienestar integral.",
     link: "#/ayuda-social",
