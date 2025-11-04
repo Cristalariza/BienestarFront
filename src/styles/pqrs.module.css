@@ -102,7 +102,7 @@
 /* Main Content */
 .mainContent {
     padding: 60px 0;
-    background-color: #ffffff;
+    background: linear-gradient(180deg, #f8fdf9 0%, #ffffff 100%);
 }
 
 .contentGrid {
@@ -110,6 +110,253 @@
     grid-template-columns: 2fr 1fr;
     gap: 48px;
     align-items: start;
+}
+
+/* Modern Content Wrapper */
+.modernContentWrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.modernCard {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 0;
+    background: #ffffff;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(45, 134, 89, 0.15);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modernCard:hover {
+    box-shadow: 0 25px 80px rgba(45, 134, 89, 0.2);
+    transform: translateY(-4px);
+}
+
+/* Modern Image Section */
+.modernImageSection {
+    position: relative;
+    overflow: hidden;
+}
+
+.imageWrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+}
+
+.modernImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modernCard:hover .modernImage {
+    transform: scale(1.05);
+}
+
+.imageOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(45, 134, 89, 0.1) 0%, rgba(139, 195, 74, 0.05) 100%);
+    pointer-events: none;
+}
+
+/* Modern Content Section */
+.modernContentSection {
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fdf9 100%);
+}
+
+.iconBadge {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #8BC34A 0%, #7CB342 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 24px rgba(139, 195, 74, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.modernCard:hover .iconBadge {
+    transform: scale(1.05) rotate(5deg);
+}
+
+.badgeIcon {
+    width: 32px;
+    height: 32px;
+    color: white;
+}
+
+.modernTitle {
+    font-size: 32px;
+    font-weight: 800;
+    color: #2d8659;
+    margin: 0 0 24px 0;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+}
+
+.modernInfoContent {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.modernInfoText {
+    font-size: 17px;
+    color: #555;
+    line-height: 1.8;
+    margin: 0;
+}
+
+.modernInfoText strong {
+    color: #2d8659;
+    font-weight: 700;
+}
+
+/* Features Section */
+.featuresSection {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.featuresTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2d8659;
+    margin: 0;
+}
+
+.featuresGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.featureItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: #f8fdf9;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.featureItem:hover {
+    background: #f0f9f3;
+    border-color: #8BC34A;
+    transform: translateX(4px);
+}
+
+.featureIcon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    background: linear-gradient(135deg, #8BC34A 0%, #7CB342 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.featureIcon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.featureItem span {
+    font-size: 15px;
+    color: #333;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+/* Modern Button */
+.modernButtonContainer {
+    margin-top: 8px;
+}
+
+.modernOfficialButton {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 18px 32px;
+    background: linear-gradient(135deg, #8BC34A 0%, #7CB342 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 24px rgba(139, 195, 74, 0.35);
+    position: relative;
+    overflow: hidden;
+}
+
+.modernOfficialButton::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.modernOfficialButton:hover::before {
+    left: 100%;
+}
+
+.modernOfficialButton:hover {
+    background: linear-gradient(135deg, #7CB342 0%, #6BA33A 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(139, 195, 74, 0.45);
+}
+
+.modernOfficialButton:active {
+    transform: translateY(0);
+}
+
+.buttonText {
+    position: relative;
+    z-index: 1;
+}
+
+.buttonIcon {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.modernOfficialButton:hover .buttonIcon {
+    transform: translateX(4px);
 }
 
 /* Form Section */
@@ -314,6 +561,80 @@
     box-shadow: 0 6px 20px rgba(139, 195, 74, 0.4);
 }
 
+/* Information Section Styles */
+.infoContent {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.infoText {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.infoList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.infoList li {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+    padding-left: 28px;
+    position: relative;
+}
+
+.infoList li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #8BC34A;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.buttonContainer {
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+}
+
+.officialButton {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 32px;
+    background: linear-gradient(135deg, #8BC34A 0%, #7CB342 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(139, 195, 74, 0.3);
+}
+
+.officialButton:hover {
+    background: linear-gradient(135deg, #7CB342 0%, #6BA33A 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 195, 74, 0.4);
+}
+
+.officialButton:active {
+    transform: translateY(0);
+}
+
 /* Tracking Section */
 .trackingSection {
     display: flex;
@@ -323,7 +644,7 @@
 
 .trackingImage {
     width: 100%;
-    height: 200px;
+    height: 400px;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
@@ -770,6 +1091,22 @@
         gap: 32px;
     }
     
+    .modernCard {
+        grid-template-columns: 1fr;
+    }
+    
+    .imageWrapper {
+        min-height: 350px;
+    }
+    
+    .modernContentSection {
+        padding: 40px 32px;
+    }
+    
+    .featuresGrid {
+        grid-template-columns: 1fr;
+    }
+    
     .definitionsGrid {
         grid-template-columns: 1fr;
     }
@@ -786,6 +1123,55 @@
     
     .mainContent {
         padding: 40px 0;
+    }
+    
+    .modernContentWrapper {
+        padding: 0 1rem;
+    }
+    
+    .modernCard {
+        border-radius: 20px;
+    }
+    
+    .imageWrapper {
+        min-height: 300px;
+    }
+    
+    .modernContentSection {
+        padding: 32px 24px;
+    }
+    
+    .modernTitle {
+        font-size: 26px;
+    }
+    
+    .modernInfoText {
+        font-size: 16px;
+    }
+    
+    .featuresGrid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .featureItem {
+        padding: 14px;
+    }
+    
+    .iconBadge {
+        width: 56px;
+        height: 56px;
+        margin-bottom: 20px;
+    }
+    
+    .badgeIcon {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .modernOfficialButton {
+        padding: 16px 24px;
+        font-size: 16px;
     }
     
     .formCard {
@@ -807,5 +1193,29 @@
     
     .contactGrid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .modernContentSection {
+        padding: 24px 20px;
+    }
+    
+    .modernTitle {
+        font-size: 22px;
+    }
+    
+    .modernInfoText {
+        font-size: 15px;
+    }
+    
+    .featureItem {
+        flex-direction: column;
+        text-align: center;
+        padding: 16px;
+    }
+    
+    .featureItem span {
+        font-size: 14px;
     }
 }

@@ -240,7 +240,6 @@ const PQRSForm = () => {
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               />
             </svg>
-            <h3 className={styles.trackingTitle}>¿Ya enviaste una PQRS?</h3>
           </div>
 
           <p className={styles.trackingDescription}>
@@ -270,26 +269,7 @@ const PQRSForm = () => {
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                   />
                 </svg>
-                <span>Buscar</span>
               </button>
-            </div>
-          </form>
-
-          <div className={styles.statusIndicators}>
-            <p className={styles.statusTitle}>Estados posibles:</p>
-            <div className={styles.statusList}>
-              <div className={styles.statusItem}>
-                <div className={`${styles.statusDot} ${styles.yellow}`}></div>
-                <span>En revisión</span>
-              </div>
-              <div className={styles.statusItem}>
-                <div className={`${styles.statusDot} ${styles.blue}`}></div>
-                <span>En trámite</span>
-              </div>
-              <div className={styles.statusItem}>
-                <div className={`${styles.statusDot} ${styles.green}`}></div>
-                <span>Cerrada / Respondida</span>
-              </div>
             </div>
           </div>
         </div>
