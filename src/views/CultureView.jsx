@@ -21,14 +21,14 @@ import { useNavigate } from "react-router-dom";
 import GruposCulturaView from "./GruposCulturaView";
 
 
-// ======================= COMPONENTES SECUNDARIOS =======================
+
 
 export const ActividadesCulturalesInicio = () => {
   const navigate = useNavigate();
 
   const actividades = [
-    { titulo: "Inicio", ruta: "/CultureView" },
-    { titulo: "Grupos Artísticos Institucionales", ruta: "/GruposCulturaView" },
+    { titulo: "Inicio", ruta: "/Culture" },
+    { titulo: "Grupos Artísticos Institucionales", ruta: "/GruposCultura" },
     { titulo: "Cultura y academia", ruta: "/academia" },
     { titulo: "Logros Obtenidos", ruta: "/logros" },
     { titulo: "Normatividad", ruta: "/normatividad" },
@@ -46,7 +46,7 @@ export const ActividadesCulturalesInicio = () => {
             />
             <button
               className={styles.actividadButton2}
-              onClick={() => navigate(act.ruta)} // 👈 Aquí ocurre la navegación
+              onClick={() => navigate(act.ruta)} 
             >
               {act.titulo}
             </button>
@@ -57,100 +57,113 @@ export const ActividadesCulturalesInicio = () => {
   );
 };
 
-const TableSection = ({ onOpen }) => (
-  <section className={styles.tableSection} aria-labelledby="grupos-title">
-    <h2 id="grupos-title" className={styles.sectionTitle}>
-      Grupos Institucionales
-    </h2>
 
-    <div className={styles.tableGrid}>
-      {[
-        "INSCRIBIRSE EN UN GRUPO ARTISTICO",
-        "REQUISITOS Y SELECCIÓN",
-        "CONVOCATORIA NUEVOS INTEGRANTES",
-        "CONSULTAR HORARIOS DE ENSAYO",
-      ].map((title, i) => (
-        <div key={i} className={styles.tableCard}>
-          <div className={styles.tableHeader}></div>
-          <button className={styles.tableButton} onClick={() => onOpen(title)}>
-            {title}
-          </button>
-        </div>
-      ))}
-    </div>
-  </section>
-);
+
+export const TableSection = () => {
+  const navigate = useNavigate();
+
+  const Table = [
+    { titulo: "INSCRIBIRSE EN UN GRUPO ARTISTICO", ruta: "/inscribirse-grupo" },
+    { titulo: "PRE-INSCRIBIRSE EN UN GRUPO ARTISTICO", ruta: "/PreInscribirse-grupo" },
+    { titulo: "REQUISITOS Y SELECCIÓN", ruta: "/requisitos-seleccion" },
+    { titulo: "CONSULTAR HORARIOS DE ENSAYO", ruta: "/horarios-ensayo" },
+  ];
+
+  return (
+    <section className={styles.tableSection} aria-labelledby="grupos-title">
+      <h2 id="grupos-title" className={styles.sectionTitle}>
+        Grupos Institucionales
+      </h2>
+
+      <div className={styles.tableGrid}>
+        {Table.map((Table, i) => (
+          <div key={i} className={styles.tableCard}>
+            <div className={styles.tableHeader}></div>
+            <button
+              className={styles.tableButton}
+              onClick={() => navigate(Table.ruta)}
+            >
+              {Table.titulo}
+            </button>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
 
  const activities = [
   {
     key: "danza",
-    title: "DANZA",
+    title2: "GRUPO DE DANZAS UPARI",
     icon: <GiBallerinaShoes />,
     image: danza,
   },
   {
     key: "teatro",
-    title: "TEATRO",
-    icon: <GiDramaMasks />,
+    title2: "GRUPO DE TEATRO",
+        icon: <GiDramaMasks />,
     image: teatro,
   },
   {
     key: "zancos",
-    title: "ZANCOS",
+    title2: "ZANCOS",
+    title:" ",
     icon: <MdAccessibility />,
     image: zancos,
   },
   {
     key: "mimos",
-    title: "MIMOS",
+    title2: "MIMOS",
     icon: <IoIosPeople />,
     image: mimos,
   },
   {
     key: "orquesta",
-    title: "ORQUESTA",
+    title2: "ORQUESTA",
     icon: <MdMusicNote />,
     image: orquesta,
   },
   {
     key: "guitarras",
-    title: "GUITARRAS",
+    title2: "GUITARRAS",
     icon: <GiGuitarHead />,
     image: guitarras,
   },
   {
     key: "banda",
-    title: "BANDA PAPAYERA",
-    icon: <FaMusic />,
+    title2: "BANDA PAPAYERA",
+        icon: <FaMusic />,
     image: banda,
   },
   {
     key: "tambobanda",
-    title: "TAMBOBANDA",
+    title2: "TAMBOBANDA",
     icon: <MdMusicNote />,
     image: tambobanda,
   },
   {
     key: "raul",
-    title: "RAÚL GÓMEZ JATTÍN",
+    title2: "RAÚL GÓMEZ JATTÍN",
     icon: <FaRegCalendarAlt />,
     image: raulgomez,
   },
   {
     key: "cine",
-    title: "CINE CLUB",
+    title2: "CINE CLUB",
     icon: <MdMovie />,
     image: cine,
   },
   {
     key: "vallenato",
-    title: "MÚSICA VALLENATA",
+    title2: "CONJUNTO VALLENATO",
     icon: <FaMusic />,
     image: vallenato,
   },
   {
     key: "coral",
-    title: "CORAL",
+    title2: "CORO OPUS 4",
     icon: <GiMicrophone />,
     image: coral,
   },
@@ -173,14 +186,15 @@ export const ActivitiesGrid = () => (
             className={styles.activityImage}
           />
           <div className={styles.activityIcon}>{act.icon}</div>
-          <h4 className={styles.activityName}>{act.title}</h4>
+          <h4 className={styles.activityName}>{act.title2}</h4>
+          <h4 className={styles.activityNam}>{act.title}</h4>
         </div>
       ))}
     </div>
   </section>
 );
 
-// ======================= COMPONENTE PRINCIPAL =======================
+
 
 const CultureView = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -201,7 +215,7 @@ const CultureView = () => {
       <main>
         <section className={styles.hero}>
           <h1>Actividades Culturales</h1>
-          <p className={styles.heroDescription}>
+          <p >
             La sección de cultura ofrece la posibilidad de vincularse a los
             grupos culturales, como también, desarrollar aptitudes personales en
             las diferentes manifestaciones del arte y la cultura.
@@ -209,7 +223,7 @@ const CultureView = () => {
         </section>
 
         <ActividadesCulturalesInicio />
-        <TableSection onOpen={openModal} />
+        <TableSection />
         <ActivitiesGrid />
         <ContactSection />
       </main>

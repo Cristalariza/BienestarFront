@@ -5,6 +5,7 @@ import MissionVisionSection from '../components/home/MissionVisionSection';
 import StructureSection from '../components/home/StructureSection';
 import ContactSection from '../components/home/ContactSection';
 
+
 const HomeView = () => {
   return (
     <div>
