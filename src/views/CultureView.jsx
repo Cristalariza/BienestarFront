@@ -14,77 +14,17 @@ import raulgomez from "../assets/raul-gomez.png";
 import cine from "../assets/cine.png";
 import vallenato from "../assets/vallenato.png";
 import coral from "../assets/coral.png";
-import {GiBallerinaShoes,GiDramaMasks,GiGuitarHead,GiMicrophone,} from "react-icons/gi";
+import {
+  GiBallerinaShoes,
+  GiDramaMasks,
+  GiGuitarHead,
+  GiMicrophone,
+} from "react-icons/gi";
 import { FaMusic, FaRegCalendarAlt } from "react-icons/fa";
 import { MdAccessibility, MdMusicNote, MdMovie } from "react-icons/md";
 import { IoIosPeople } from "react-icons/io";
 
-
-
-
-export const ActividadesCulturalesInicio = () => {
-  const actividades = [
-    { titulo: "Inicio" },
-    { titulo: "Grupos Artísticos Institucionales" },
-    { titulo: "Cultura y academia" },
-    { titulo: "Logros Obtenidos" },
-    { titulo: "Normatividad" },
-  ];
-
-  return (
-    <section className={styles.actividadesInicioSection2}>
-      <div className={styles.actividadesGrid2}>
-        {actividades.map((act, i) => (
-          <div key={i} className={styles.actividadCard2}>
-            <img
-              src={`image${i + 1}.jpeg`}
-              alt={act.titulo}
-              className={styles.actividadImg2}
-            />
-            <button className={styles.actividadButton2}>{act.titulo}</button>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-};
-
-
-
-export const TableSection = () => {
-  const navigate = useNavigate();
-
-  const Table = [
-    { titulo: "INSCRIBIRSE EN UN GRUPO ARTISTICO", ruta: "/inscribirse-grupo" },
-    { titulo: "PRE-INSCRIBIRSE EN UN GRUPO ARTISTICO", ruta: "/PreInscribirse-grupo" },
-    { titulo: "REQUISITOS Y SELECCIÓN", ruta: "/requisitos-seleccion" },
-    { titulo: "CONSULTAR HORARIOS DE ENSAYO", ruta: "/horarios-ensayo" },
-  ];
-
-  return (
-    <section className={styles.tableSection} aria-labelledby="grupos-title">
-      <h2 id="grupos-title" className={styles.sectionTitle}>
-        Grupos Institucionales
-      </h2>
-
-    <div className={styles.tableGrid}>
-      {[
-        "INSCRIBIRSE EN UN GRUPO ARTISTICO",
-        "REQUISITOS Y SELECCIÓN",
-        "CONVOCATORIA NUEVOS INTEGRANTES",
-        "CONSULTAR HORARIOS DE ENSAYO",
-      ].map((title, i) => (
-        <div key={i} className={styles.tableCard}>
-          <button className={styles.tableButton} onClick={() => onOpen(title)}>
-            <span>{title}</span>
-          </button>
-        </div>
-      ))}
-    </div>
-  </section>
-);
-
- const activities = [
+const activities = [
   {
     key: "danza",
     title2: "GRUPO DE DANZAS UPARI",
@@ -94,13 +34,13 @@ export const TableSection = () => {
   {
     key: "teatro",
     title2: "GRUPO DE TEATRO",
-        icon: <GiDramaMasks />,
+    icon: <GiDramaMasks />,
     image: teatro,
   },
   {
     key: "zancos",
     title2: "ZANCOS",
-    title:" ",
+    title: " ",
     icon: <MdAccessibility />,
     image: zancos,
   },
@@ -125,7 +65,7 @@ export const TableSection = () => {
   {
     key: "banda",
     title2: "BANDA PAPAYERA",
-        icon: <FaMusic />,
+    icon: <FaMusic />,
     image: banda,
   },
   {
@@ -159,6 +99,61 @@ export const TableSection = () => {
     image: coral,
   },
 ];
+
+export const ActividadesCulturalesInicio = () => {
+  const actividades = [
+    { titulo: "Inicio" },
+    { titulo: "Grupos Artísticos Institucionales" },
+    { titulo: "Cultura y academia" },
+    { titulo: "Logros Obtenidos" },
+    { titulo: "Normatividad" },
+  ];
+
+  return (
+    <section className={styles.actividadesInicioSection2}>
+      <div className={styles.actividadesGrid2}>
+        {actividades.map((act, i) => (
+          <div key={i} className={styles.actividadCard2}>
+            <img
+              src={`image${i + 1}.jpeg`}
+              alt={act.titulo}
+              className={styles.actividadImg2}
+            />
+            <button className={styles.actividadButton2}>{act.titulo}</button>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+const TableSection = ({ onOpen }) => {
+  return (
+    <section className={styles.tableSection} aria-labelledby="grupos-title">
+      <h2 id="grupos-title" className={styles.sectionTitle}>
+        Grupos Institucionales
+      </h2>
+
+      <div className={styles.tableGrid}>
+        {[
+          "INSCRIBIRSE EN UN GRUPO ARTISTICO",
+          "REQUISITOS Y SELECCIÓN",
+          "CONVOCATORIA NUEVOS INTEGRANTES",
+          "CONSULTAR HORARIOS DE ENSAYO",
+        ].map((title, i) => (
+          <div key={i} className={styles.tableCard}>
+            <button
+              className={styles.tableButton}
+              onClick={() => onOpen(title)}
+            >
+              <span>{title}</span>
+            </button>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
 
 export const ActivitiesGrid = () => (
   <section
@@ -242,7 +237,7 @@ const CultureView = () => {
         <div className={styles.gradientBar}></div>
 
         <ActividadesCulturalesInicio />
-        <TableSection />
+        <TableSection onOpen={openModal} />
         <ActivitiesGrid />
         <ContactSection />
       </main>
