@@ -1,4 +1,4 @@
-import styles from "../../styles/ayudasocial.module.css";
+import styles from "../../styles/ayudaSocial.module.css";
 import imagen1 from "../../assets/Ayuda_Social/Buentrato/AYUDAS-01.png";
 import imagen2 from "../../assets/Ayuda_Social/Buentrato/AYUDAS-02.jpg";
 import imagen3 from "../../assets/Ayuda_Social/Buentrato/AYUDAS-03.jpg";

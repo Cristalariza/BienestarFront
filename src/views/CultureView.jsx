@@ -14,17 +14,13 @@ import raulgomez from "../assets/raul-gomez.png";
 import cine from "../assets/cine.png";
 import vallenato from "../assets/vallenato.png";
 import coral from "../assets/coral.png";
-import {
-  GiBallerinaShoes,
-  GiDramaMasks,
-  GiGuitarHead,
-  GiMicrophone,
-} from "react-icons/gi";
+import {GiBallerinaShoes,GiDramaMasks,GiGuitarHead,GiMicrophone,} from "react-icons/gi";
 import { FaMusic, FaRegCalendarAlt } from "react-icons/fa";
 import { MdAccessibility, MdMusicNote, MdMovie } from "react-icons/md";
 import { IoIosPeople } from "react-icons/io";
 
-// ======================= COMPONENTES SECUNDARIOS =======================
+
+
 
 export const ActividadesCulturalesInicio = () => {
   const actividades = [
@@ -53,11 +49,23 @@ export const ActividadesCulturalesInicio = () => {
   );
 };
 
-const TableSection = ({ onOpen }) => (
-  <section className={styles.tableSection} aria-labelledby="grupos-title">
-    <h2 id="grupos-title" className={styles.sectionTitle}>
-      Grupos Institucionales
-    </h2>
+
+
+export const TableSection = () => {
+  const navigate = useNavigate();
+
+  const Table = [
+    { titulo: "INSCRIBIRSE EN UN GRUPO ARTISTICO", ruta: "/inscribirse-grupo" },
+    { titulo: "PRE-INSCRIBIRSE EN UN GRUPO ARTISTICO", ruta: "/PreInscribirse-grupo" },
+    { titulo: "REQUISITOS Y SELECCIÓN", ruta: "/requisitos-seleccion" },
+    { titulo: "CONSULTAR HORARIOS DE ENSAYO", ruta: "/horarios-ensayo" },
+  ];
+
+  return (
+    <section className={styles.tableSection} aria-labelledby="grupos-title">
+      <h2 id="grupos-title" className={styles.sectionTitle}>
+        Grupos Institucionales
+      </h2>
 
     <div className={styles.tableGrid}>
       {[
@@ -76,76 +84,77 @@ const TableSection = ({ onOpen }) => (
   </section>
 );
 
-const activities = [
+ const activities = [
   {
     key: "danza",
-    title: "DANZA",
+    title2: "GRUPO DE DANZAS UPARI",
     icon: <GiBallerinaShoes />,
     image: danza,
   },
   {
     key: "teatro",
-    title: "TEATRO",
-    icon: <GiDramaMasks />,
+    title2: "GRUPO DE TEATRO",
+        icon: <GiDramaMasks />,
     image: teatro,
   },
   {
     key: "zancos",
-    title: "ZANCOS",
+    title2: "ZANCOS",
+    title:" ",
     icon: <MdAccessibility />,
     image: zancos,
   },
   {
     key: "mimos",
-    title: "MIMOS",
+    title2: "MIMOS",
     icon: <IoIosPeople />,
     image: mimos,
   },
   {
     key: "orquesta",
-    title: "ORQUESTA",
+    title2: "ORQUESTA",
     icon: <MdMusicNote />,
     image: orquesta,
   },
   {
     key: "guitarras",
-    title: "GUITARRAS",
+    title2: "GUITARRAS",
     icon: <GiGuitarHead />,
     image: guitarras,
   },
   {
     key: "banda",
-    title: "BANDA PAPAYERA",
-    icon: <FaMusic />,
+    title2: "BANDA PAPAYERA",
+        icon: <FaMusic />,
     image: banda,
   },
   {
     key: "tambobanda",
-    title: "TAMBOBANDA",
+    title2: "TAMBOBANDA",
     icon: <MdMusicNote />,
     image: tambobanda,
   },
   {
     key: "raul",
-    title: "RAÚL GÓMEZ JATTÍN",
+    title2: "RAÚL GÓMEZ JATTÍN",
     icon: <FaRegCalendarAlt />,
     image: raulgomez,
   },
   {
     key: "cine",
-    title: "CINE CLUB",
+    title2: "CINE CLUB",
     icon: <MdMovie />,
     image: cine,
   },
   {
     key: "vallenato",
-    title: "MÚSICA VALLENATA",
+    title2: "CONJUNTO VALLENATO",
     icon: <FaMusic />,
     image: vallenato,
   },
   {
     key: "coral",
-    title: "CORAL",
+    title2: "CORO OPUS 4",
     icon: <GiMicrophone />,
     image: coral,
   },
@@ -168,7 +177,8 @@ export const ActivitiesGrid = () => (
             className={styles.activityImage}
           />
           <div className={styles.activityIcon}>{act.icon}</div>
-          <h4 className={styles.activityName}>{act.title}</h4>
+          <h4 className={styles.activityName}>{act.title2}</h4>
+          <h4 className={styles.activityNam}>{act.title}</h4>
         </div>
       ))}
     </div>
@@ -232,7 +242,7 @@ const CultureView = () => {
         <div className={styles.gradientBar}></div>
 
         <ActividadesCulturalesInicio />
-        <TableSection onOpen={openModal} />
+        <TableSection />
         <ActivitiesGrid />
         <ContactSection />
       </main>

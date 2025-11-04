@@ -1,8 +1,11 @@
 import { Button } from "primereact/button";
 import { BIENESTAR_CATEGORIES } from "../../constants";
 import styles from "../../styles/home.module.css";
+import { useNavigate } from "react-router-dom";
 
 const CategoriesSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section className={styles.categories}>
       <div className={styles.categoriesHeader}>
@@ -23,7 +26,7 @@ const CategoriesSection = () => {
               icon="pi pi-arrow-right"
               iconPos="right"
               className={styles.categoryButton}
-              onClick={() => (window.location.href = category.link)}
+              onClick={() => navigate(category.link)} // 👈 navegación sin recargar
             />
           </div>
         ))}
@@ -33,3 +36,4 @@ const CategoriesSection = () => {
 };
 
 export default CategoriesSection;
+
