@@ -60,7 +60,7 @@ const GruposDeportivos = () => {
             key={programa.programa_id}
             nombre={programa.nombre}
             participantes={0} // TODO: Integrar con inscripciones
-            cuposDisponibles={programa.cupos_disponibles > 0}
+            cuposDisponibles={programa.cupos_disponibles}
             tipo="deporte"
             onMoreInfo={() => handleMoreInfo(programa.nombre)}
             onEdit={() => handleOpenEditModal(programa)}

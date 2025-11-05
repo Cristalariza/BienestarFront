@@ -1,115 +1,67 @@
-import { useState, useMemo } from "react";
+import { useMemo, useEffect } from "react";
+import { Toast } from "primereact/toast";
 import Table from "../../../components/admin/tables/Table";
 import SearchBar from "../../../components/admin/buscar/SearchBar";
+import { useInscripcionesCulturales } from "../../../hooks/useInscripcionesCulturales";
 import styles from "../../../styles/adminstyles/adminCultura.module.css";
 
-// Datos de ejemplo - Reemplazar con datos reales de la API
-const preinscripcionesData = [
-  {
-    id: 1,
-    nombreCompleto: "Carlos Andrés Rodríguez",
-    tipoIdentificacion: "CC",
-    numeroIdentificacion: "1234567890",
-    programaCultural: "Danza Folclórica",
-    telefono: "3001234567",
-    modalidad: "Presencial",
-    email: "carlos.rodriguez@example.com",
-    estado: "PENDIENTE",
-    fechaPreinscripcion: "2025-11-03",
-  },
-  {
-    id: 2,
-    nombreCompleto: "María Fernanda Gómez",
-    tipoIdentificacion: "CC",
-    numeroIdentificacion: "9876543210",
-    programaCultural: "Teatro",
-    telefono: "3109876543",
-    modalidad: "Virtual",
-    email: "maria.gomez@example.com",
-    estado: "PENDIENTE",
-    fechaPreinscripcion: "2025-11-02",
-  },
-  {
-    id: 3,
-    nombreCompleto: "Jorge Luis Martínez",
-    tipoIdentificacion: "CE",
-    numeroIdentificacion: "5555666777",
-    programaCultural: "Música - Guitarra",
-    telefono: "3201122334",
-    modalidad: "Presencial",
-    email: "jorge.martinez@example.com",
-    estado: "ACEPTADA",
-    fechaPreinscripcion: "2025-11-01",
-  },
-  {
-    id: 4,
-    nombreCompleto: "Sofía Valentina Castro",
-    tipoIdentificacion: "TI",
-    numeroIdentificacion: "1122334455",
-    programaCultural: "Pintura",
-    telefono: "3154445566",
-    modalidad: "Mixta",
-    email: "sofia.castro@example.com",
-    estado: "RECHAZADA",
-    fechaPreinscripcion: "2025-10-30",
-  },
-  {
-    id: 5,
-    nombreCompleto: "Diego Alejandro Vargas",
-    tipoIdentificacion: "CC",
-    numeroIdentificacion: "7788990011",
-    programaCultural: "Coro",
-    telefono: "3187778899",
-    modalidad: "Presencial",
-    email: "diego.vargas@example.com",
-    estado: "PENDIENTE",
-    fechaPreinscripcion: "2025-11-04",
-  },
-];
-
 const Preinscripciones = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedPreinscripcion, setSelectedPreinscripcion] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const {
+    inscripcionesConPersona,
+    loading,
+    searchTerm,
+    selectedInscripcion,
+    showModal,
+    currentPage,
+    openDropdownId,
+    showNoInfo,
+    toast,
+    setCurrentPage,
+    setShowNoInfo,
+    handleSearch,
+    handleClearSearch,
+    handleViewDetails,
+    handleCloseModal,
+    toggleDropdown,
+    handleEstadoChange,
+    getFilteredInscripciones
+  } = useInscripcionesCulturales();
 
-  const filteredPreinscripciones = useMemo(() => {
-    if (!searchTerm) return preinscripcionesData;
-
-    const searchLower = searchTerm.toLowerCase();
-    return preinscripcionesData.filter(
-      (item) =>
-        item.nombreCompleto.toLowerCase().includes(searchLower) ||
-        item.numeroIdentificacion.includes(searchLower) ||
-        item.email.toLowerCase().includes(searchLower) ||
-        item.programaCultural.toLowerCase().includes(searchLower)
-    );
-  }, [searchTerm]);
-
-  const handleEstadoChange = (id, nuevoEstado) => {
-    console.log(`Cambiando estado de preinscripción ${id} a ${nuevoEstado}`);
-    // TODO: Implementar llamada a API para actualizar estado
-    // Si el estado es "ACEPTADA", debería crear la inscripción completa
-  };
-
-  const handleVerDetalles = (preinscripcion) => {
-    setSelectedPreinscripcion(preinscripcion);
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setSelectedPreinscripcion(null);
-  };
-
-  const getEstadoBadge = (estado) => {
-    const badges = {
-      PENDIENTE: styles.badgePending,
-      ACEPTADA: styles.badgeApproved,
-      RECHAZADA: styles.badgeRejected,
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        openDropdownId &&
+        !event.target.closest(`.${styles.dropdownWrapper}`)
+      ) {
+        toggleDropdown(null);
+      }
     };
-    return badges[estado] || styles.badgePending;
-  };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openDropdownId]);
+
+  // Filtrar solo inscripciones PENDIENTES
+  const preinscripcionesPendientes = useMemo(() => {
+    const filtered = getFilteredInscripciones();
+    return filtered.filter(inscripcion => inscripcion.estado_inscripcion === "PENDIENTE");
+  }, [getFilteredInscripciones]);
+
+  // Mapear inscripciones del backend al formato esperado por el componente
+  const preinscripcionesFormateadas = useMemo(() => {
+    return preinscripcionesPendientes.map((inscripcion) => ({
+      id: inscripcion.inscripcion_id,
+      nombreCompleto: inscripcion.nombre_completo || 'N/A',
+      numeroIdentificacion: inscripcion.numero_identificacion || 'N/A',
+      email: inscripcion.email || inscripcion.correo_electronico || 'N/A',
+      programaCultural: inscripcion.programa_cultural?.nombre || 'N/A',
+      estadoInscripcion: inscripcion.estado_inscripcion || 'PENDIENTE',
+      fechaInscripcion: inscripcion.fecha_inscripcion || inscripcion.created_at,
+      ...inscripcion
+    }));
+  }, [preinscripcionesPendientes]);
 
   const columns = [
     {
@@ -133,160 +85,190 @@ const Preinscripciones = () => {
       sortable: true,
     },
     {
-      key: "fechaPreinscripcion",
+      key: "fechaInscripcion",
       label: "Fecha",
       sortable: true,
-    },
-    {
-      key: "estado",
-      label: "Estado",
-      sortable: true,
-      render: (value) => (
-        <span className={`${styles.badge} ${getEstadoBadge(value)}`}>
-          {value}
-        </span>
-      ),
     },
     {
       key: "actions",
       label: "Acciones",
       render: (_, row) => (
-        <div className={styles.actionsContainer}>
+        <div
+          className={`${styles.actionsContainer} ${
+            openDropdownId === row.id ? styles.actionsContainerActive : ""
+          }`}
+        >
           <button
-            className={styles.btnView}
-            onClick={() => handleVerDetalles(row)}
-            title="Ver detalles"
+            className={styles.viewButton}
+            onClick={() => handleViewDetails(row)}
           >
-            <i className="pi pi-eye"></i> Ver
+            Ver
           </button>
+          <div className={styles.dropdownWrapper}>
+            <button
+              className={styles.dropdownButton}
+              onClick={() => toggleDropdown(row.id)}
+            >
+              Estado
+              <i className="pi pi-chevron-down"></i>
+            </button>
+            {openDropdownId === row.id && (
+              <div className={styles.dropdownMenu}>
+                <button
+                  className={`${styles.dropdownItem} ${styles.approve}`}
+                  onClick={() => handleEstadoChange(row.id, "APROBADA")}
+                >
+                  <i className="pi pi-check"></i>
+                  Aceptar
+                </button>
+                <button
+                  className={`${styles.dropdownItem} ${styles.reject}`}
+                  onClick={() => handleEstadoChange(row.id, "RECHAZADA")}
+                >
+                  <i className="pi pi-times"></i>
+                  Rechazar
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       ),
     },
   ];
 
+  if (loading && inscripcionesConPersona.length === 0) {
+    return (
+      <div className={styles.container}>
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem' }}></i>
+          <p>Cargando preinscripciones...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.container}>
+      <Toast ref={toast} />
+
       <h1 className={styles.title}>Preinscripciones Culturales</h1>
 
       <div className={styles.content}>
+        {/* Barra de búsqueda y filtro NO INFO */}
         <div className={styles.searchSection}>
           <SearchBar
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
             placeholder="Buscar por nombre, identificación, email o programa..."
+            value={searchTerm}
+            onChange={handleSearch}
+            onClear={handleClearSearch}
           />
+
+          {/* Checkbox NO INFO */}
+          <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <input
+              type="checkbox"
+              id="noInfoCheckbox"
+              checked={showNoInfo}
+              onChange={(e) => setShowNoInfo(e.target.checked)}
+              style={{ cursor: 'pointer' }}
+            />
+            <label
+              htmlFor="noInfoCheckbox"
+              style={{ cursor: 'pointer', userSelect: 'none' }}
+            >
+              Mostrar solo preinscripciones sin información
+            </label>
+          </div>
+
+          {searchTerm && (
+            <p className={styles.searchResults}>
+              {preinscripcionesFormateadas.length} resultado
+              {preinscripcionesFormateadas.length !== 1 ? "s" : ""} encontrado
+              {preinscripcionesFormateadas.length !== 1 ? "s" : ""}
+            </p>
+          )}
         </div>
 
+        {/* Tabla de preinscripciones */}
         <Table
           columns={columns}
-          data={filteredPreinscripciones}
+          data={preinscripcionesFormateadas}
           currentPage={currentPage}
+          totalPages={Math.ceil(preinscripcionesFormateadas.length / 10)}
           onPageChange={setCurrentPage}
-          itemsPerPage={10}
         />
       </div>
 
-      {/* Modal de Detalles */}
-      {showModal && selectedPreinscripcion && (
+      {/* Modal simplificado para mostrar detalles básicos */}
+      {showModal && selectedInscripcion && (
         <div className={styles.modalOverlay} onClick={handleCloseModal}>
           <div
             className={styles.modalContent}
             onClick={(e) => e.stopPropagation()}
           >
             <div className={styles.modalHeader}>
-              <h2>Detalles de la Preinscripción</h2>
-              <button className={styles.modalClose} onClick={handleCloseModal}>
-                <i className="pi pi-times"></i>
+              <h2>Detalles de Preinscripción</h2>
+              <button className={styles.closeButton} onClick={handleCloseModal}>
+                ✕
               </button>
             </div>
 
             <div className={styles.modalBody}>
-              {/* Información General */}
-              <div className={styles.detailSection}>
-                <h3>
-                  <i className="pi pi-user"></i> Información General
-                </h3>
+              <section className={styles.detailSection}>
+                <h3 className={styles.sectionTitle}>📋 Información General</h3>
                 <div className={styles.detailGrid}>
                   <div className={styles.detailItem}>
-                    <label>Nombre Completo:</label>
-                    <span>{selectedPreinscripcion.nombreCompleto}</span>
+                    <span className={styles.detailLabel}>Programa:</span>
+                    <span className={styles.detailValue}>
+                      {selectedInscripcion.programaCultural}
+                    </span>
                   </div>
                   <div className={styles.detailItem}>
-                    <label>Tipo de Identificación:</label>
-                    <span>{selectedPreinscripcion.tipoIdentificacion}</span>
-                  </div>
-                  <div className={styles.detailItem}>
-                    <label>Número de Identificación:</label>
-                    <span>{selectedPreinscripcion.numeroIdentificacion}</span>
-                  </div>
-                  <div className={styles.detailItem}>
-                    <label>Email:</label>
-                    <span>{selectedPreinscripcion.email}</span>
-                  </div>
-                  <div className={styles.detailItem}>
-                    <label>Teléfono:</label>
-                    <span>{selectedPreinscripcion.telefono}</span>
-                  </div>
-                  <div className={styles.detailItem}>
-                    <label>Fecha de Preinscripción:</label>
-                    <span>{selectedPreinscripcion.fechaPreinscripcion}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Información del Programa */}
-              <div className={styles.detailSection}>
-                <h3>
-                  <i className="pi pi-palette"></i> Programa Cultural
-                </h3>
-                <div className={styles.detailGrid}>
-                  <div className={styles.detailItem}>
-                    <label>Programa:</label>
-                    <span>{selectedPreinscripcion.programaCultural}</span>
-                  </div>
-                  <div className={styles.detailItem}>
-                    <label>Modalidad:</label>
-                    <span>{selectedPreinscripcion.modalidad}</span>
-                  </div>
-                  <div className={styles.detailItem}>
-                    <label>Estado:</label>
+                    <span className={styles.detailLabel}>Estado:</span>
                     <span
-                      className={`${styles.badge} ${getEstadoBadge(
-                        selectedPreinscripcion.estado
-                      )}`}
+                      className={`${styles.detailValue} ${styles.badge} ${styles.badgePending}`}
                     >
-                      {selectedPreinscripcion.estado}
+                      {selectedInscripcion.estadoInscripcion}
+                    </span>
+                  </div>
+                  <div className={styles.detailItem}>
+                    <span className={styles.detailLabel}>Fecha Inscripción:</span>
+                    <span className={styles.detailValue}>
+                      {selectedInscripcion.fechaInscripcion}
                     </span>
                   </div>
                 </div>
-              </div>
+              </section>
 
-              {/* Acciones del Modal */}
-              {selectedPreinscripcion.estado === "PENDIENTE" && (
-                <div className={styles.modalActions}>
-                  <button
-                    className={styles.btnApprove}
-                    onClick={() => {
-                      handleEstadoChange(selectedPreinscripcion.id, "ACEPTADA");
-                      handleCloseModal();
-                    }}
-                  >
-                    <i className="pi pi-check"></i> Aceptar Preinscripción
-                  </button>
-                  <button
-                    className={styles.btnReject}
-                    onClick={() => {
-                      handleEstadoChange(
-                        selectedPreinscripcion.id,
-                        "RECHAZADA"
-                      );
-                      handleCloseModal();
-                    }}
-                  >
-                    <i className="pi pi-times"></i> Rechazar Preinscripción
-                  </button>
+              <section className={styles.detailSection}>
+                <h3 className={styles.sectionTitle}>👤 Información Personal</h3>
+                <div className={styles.detailGrid}>
+                  <div className={styles.detailItem}>
+                    <span className={styles.detailLabel}>Nombre Completo:</span>
+                    <span className={styles.detailValue}>
+                      {selectedInscripcion.nombreCompleto}
+                    </span>
+                  </div>
+                  <div className={styles.detailItem}>
+                    <span className={styles.detailLabel}>No. Identificación:</span>
+                    <span className={styles.detailValue}>
+                      {selectedInscripcion.numeroIdentificacion}
+                    </span>
+                  </div>
+                  <div className={styles.detailItem}>
+                    <span className={styles.detailLabel}>Email:</span>
+                    <span className={styles.detailValue}>
+                      {selectedInscripcion.email}
+                    </span>
+                  </div>
                 </div>
-              )}
+              </section>
+            </div>
+
+            <div className={styles.modalFooter}>
+              <button className={styles.btnClose} onClick={handleCloseModal}>
+                Cerrar
+              </button>
             </div>
           </div>
         </div>

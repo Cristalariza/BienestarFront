@@ -18,16 +18,28 @@ const AdminHeader = () => {
         console.log('Perfil completo del usuario:', profile);
 
         if (profile) {
-          // Usar nombre y apellido del perfil completo
-          if (profile.nombre && profile.apellido) {
+          // Usar nombre_completo si está disponible
+          if (profile.nombre_completo) {
+            setUserName(profile.nombre_completo);
+          }
+          // Intentar construir el nombre desde primer_nombre y primer_apellido
+          else if (profile.primer_nombre && profile.primer_apellido) {
+            setUserName(`${profile.primer_nombre} ${profile.primer_apellido}`);
+          }
+          // Fallback a nombre y apellido (formato antiguo)
+          else if (profile.nombre && profile.apellido) {
             setUserName(`${profile.nombre} ${profile.apellido}`);
-          } else if (profile.correo_elec) {
-            const emailName = profile.correo_elec.split('@')[0];
+          }
+          // Último recurso: usar el correo
+          else if (profile.correo_elec || profile.email) {
+            const email = profile.correo_elec || profile.email;
+            const emailName = email.split('@')[0];
             setUserName(emailName);
           }
 
-          if (profile.correo_elec) {
-            setUserEmail(profile.correo_elec);
+          // Guardar email
+          if (profile.correo_elec || profile.email) {
+            setUserEmail(profile.correo_elec || profile.email);
           }
         }
       } catch (error) {
@@ -36,15 +48,28 @@ const AdminHeader = () => {
         // Fallback a localStorage si falla la petición al backend
         const user = authService.getCurrentUser();
         if (user) {
-          if (user.nombre && user.apellido) {
+          // Usar nombre_completo si está disponible
+          if (user.nombre_completo) {
+            setUserName(user.nombre_completo);
+          }
+          // Intentar construir el nombre desde primer_nombre y primer_apellido
+          else if (user.primer_nombre && user.primer_apellido) {
+            setUserName(`${user.primer_nombre} ${user.primer_apellido}`);
+          }
+          // Fallback a nombre y apellido (formato antiguo)
+          else if (user.nombre && user.apellido) {
             setUserName(`${user.nombre} ${user.apellido}`);
-          } else if (user.correo_elec) {
-            const emailName = user.correo_elec.split('@')[0];
+          }
+          // Último recurso: usar el correo
+          else if (user.correo_elec || user.email) {
+            const email = user.correo_elec || user.email;
+            const emailName = email.split('@')[0];
             setUserName(emailName);
           }
 
-          if (user.correo_elec) {
-            setUserEmail(user.correo_elec);
+          // Guardar email
+          if (user.correo_elec || user.email) {
+            setUserEmail(user.correo_elec || user.email);
           }
         }
       }

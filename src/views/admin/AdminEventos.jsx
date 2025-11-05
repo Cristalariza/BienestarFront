@@ -1,4 +1,5 @@
 import { useAdminEventos } from "../../hooks/useAdminEventos";
+import { Toast } from "primereact/toast";
 import Table from "../../components/admin/tables/Table";
 import Button from "../../components/admin/buttom/Button";
 import SearchBar from "../../components/admin/buscar/SearchBar";
@@ -11,6 +12,11 @@ export const AdminEventos = () => {
     showModal,
     editingEvento,
     formData,
+    loading,
+    toast,
+    eventos,
+    showInactive,
+    setShowInactive,
     getFilteredData,
     getPaginatedData,
     handleSearch,
@@ -126,8 +132,21 @@ export const AdminEventos = () => {
     },
   ];
 
+  if (loading && eventos.length === 0) {
+    return (
+      <div className={styles.container}>
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem' }}></i>
+          <p>Cargando eventos...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.container}>
+      <Toast ref={toast} />
+
       <div className={styles.header}>
         <h1 className={styles.title}>Administración de Eventos</h1>
         <Button
@@ -145,6 +164,31 @@ export const AdminEventos = () => {
           onClear={handleClearSearch}
           placeholder="Buscar por título, descripción, lugar u organizador..."
         />
+
+        {/* Checkbox para mostrar eventos inactivos */}
+        <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <input
+            type="checkbox"
+            id="showInactiveCheckbox"
+            checked={showInactive}
+            onChange={(e) => setShowInactive(e.target.checked)}
+            style={{ cursor: 'pointer' }}
+          />
+          <label
+            htmlFor="showInactiveCheckbox"
+            style={{ cursor: 'pointer', userSelect: 'none' }}
+          >
+            Mostrar solo eventos inactivos
+          </label>
+        </div>
+
+        {searchTerm && (
+          <p className={styles.searchResults}>
+            {filteredData.length} resultado
+            {filteredData.length !== 1 ? "s" : ""} encontrado
+            {filteredData.length !== 1 ? "s" : ""}
+          </p>
+        )}
       </div>
 
       <div className={styles.tableContainer}>
@@ -177,9 +221,10 @@ export const AdminEventos = () => {
                 <input
                   type="text"
                   id="titulo"
+                  name="titulo"
                   className={styles.input}
                   value={formData.titulo}
-                  onChange={(e) => handleInputChange("titulo", e.target.value)}
+                  onChange={handleInputChange}
                   placeholder="Ingrese el título del evento"
                 />
               </div>
@@ -190,11 +235,10 @@ export const AdminEventos = () => {
                 </label>
                 <textarea
                   id="descripcion"
+                  name="descripcion"
                   className={styles.textarea}
                   value={formData.descripcion}
-                  onChange={(e) =>
-                    handleInputChange("descripcion", e.target.value)
-                  }
+                  onChange={handleInputChange}
                   placeholder="Ingrese la descripción del evento"
                   rows="4"
                 />
@@ -208,9 +252,10 @@ export const AdminEventos = () => {
                   <input
                     type="date"
                     id="fecha"
+                    name="fecha"
                     className={styles.input}
                     value={formData.fecha}
-                    onChange={(e) => handleInputChange("fecha", e.target.value)}
+                    onChange={handleInputChange}
                   />
                 </div>
 
@@ -221,9 +266,10 @@ export const AdminEventos = () => {
                   <input
                     type="text"
                     id="lugar"
+                    name="lugar"
                     className={styles.input}
                     value={formData.lugar}
-                    onChange={(e) => handleInputChange("lugar", e.target.value)}
+                    onChange={handleInputChange}
                     placeholder="Auditorio, sala, etc."
                   />
                 </div>
@@ -236,28 +282,29 @@ export const AdminEventos = () => {
                 <input
                   type="text"
                   id="organizador"
+                  name="organizador"
                   className={styles.input}
                   value={formData.organizador}
-                  onChange={(e) =>
-                    handleInputChange("organizador", e.target.value)
-                  }
+                  onChange={handleInputChange}
                   placeholder="Facultad, departamento, etc."
                 />
               </div>
 
               <div className={styles.formGroup}>
                 <label htmlFor="imagen_url" className={styles.label}>
-                  Imagen (Opcional)
+                  Imagen URL (Opcional)
                 </label>
                 <input
-                  type="file"
+                  type="text"
                   id="imagen_url"
-                  className={styles.fileInput}
-                  accept="image/jpeg,image/jpg,image/png,image/webp"
-                  onChange={(e) => handleFileChange(e.target.files[0])}
+                  name="imagen_url"
+                  className={styles.input}
+                  value={formData.imagen_url}
+                  onChange={handleInputChange}
+                  placeholder="URL de la imagen del evento"
                 />
                 <small className={styles.hint}>
-                  Tamaño máximo: 5MB. Formatos: JPG, PNG, WEBP
+                  Ingresa la URL de la imagen del evento
                 </small>
               </div>
 
@@ -266,10 +313,9 @@ export const AdminEventos = () => {
                   <label className={styles.checkboxLabel}>
                     <input
                       type="checkbox"
+                      name="activo"
                       checked={formData.activo}
-                      onChange={(e) =>
-                        handleInputChange("activo", e.target.checked)
-                      }
+                      onChange={handleInputChange}
                     />
                     <span>Evento activo</span>
                   </label>
@@ -282,11 +328,14 @@ export const AdminEventos = () => {
                 label="Cancelar"
                 variant="secondary"
                 onClick={handleCloseModal}
+                disabled={loading}
               />
               <Button
                 label={editingEvento ? "Actualizar" : "Crear"}
                 variant="primary"
                 onClick={handleSubmit}
+                disabled={loading}
+                icon={loading ? "pi pi-spin pi-spinner" : "pi pi-check"}
               />
             </div>
           </div>

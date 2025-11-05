@@ -15,19 +15,25 @@ export const useRegisterForm = () => {
 
   // Estados del formulario
   const [formData, setFormData] = useState({
-    genero: 'M',
-    nombre: '',
-    apellido: '',
-    rol: null,
+    // Datos de autenticación
     correo_elec: '',
+    contrasenia: '',
+    rol: null,
     facultad_id: null,
     programa_academico_id: null,
+
+    // Datos de persona
     tipo_documento: 'CC',
     numero_documento: '',
-    telefono: '',
+    primer_nombre: '',
+    segundo_nombre: '',
+    primer_apellido: '',
+    segundo_apellido: '',
+    sexo: 'M',
+    orientacion_sexual: '',
     fecha_nacimiento: '',
-    contrasenia: '',
-    confirmar_contrasenia: ''
+    domicilio: '',
+    celular: ''
   });
 
   // Estados para datos del servidor
@@ -117,13 +123,16 @@ export const useRegisterForm = () => {
    */
   const validate = () => {
     const requiredFields = {
-      nombre: formData.nombre,
-      apellido: formData.apellido,
+      primer_nombre: formData.primer_nombre,
+      primer_apellido: formData.primer_apellido,
       rol: formData.rol,
       correo_elec: formData.correo_elec,
       facultad_id: formData.facultad_id,
       tipo_documento: formData.tipo_documento,
       numero_documento: formData.numero_documento,
+      sexo: formData.sexo,
+      celular: formData.celular,
+      domicilio: formData.domicilio,
       contrasenia: formData.contrasenia
     };
 
@@ -164,13 +173,18 @@ export const useRegisterForm = () => {
         correo_elec: formData.correo_elec,
         contrasenia: formData.contrasenia,
         datos_persona: {
-          nombre: formData.nombre,
-          apellido: formData.apellido,
-          tipo_documento: formData.tipo_documento,
-          numero_documento: formData.numero_documento,
-          telefono: formData.telefono || '',
-          fecha_nacimiento: formData.fecha_nacimiento || '1990-01-01',
-          genero: formData.genero
+          tipo_doc: formData.tipo_documento,
+          num_doc: formData.numero_documento,
+          primer_nombre: formData.primer_nombre,
+          segundo_nombre: formData.segundo_nombre || '',
+          primer_ape: formData.primer_apellido,
+          segundo_ape: formData.segundo_apellido || '',
+          sexo: formData.sexo,
+          orientacion_sex: formData.orientacion_sexual || '',
+          fecha_nacimiento: formData.fecha_nacimiento || '',
+          domicilio: formData.domicilio,
+          email: formData.correo_elec,
+          celular: formData.celular
         },
         facultad_id: formData.facultad_id,
         programa_academico_id: formData.programa_academico_id || null
@@ -212,19 +226,25 @@ export const useRegisterForm = () => {
    */
   const resetForm = () => {
     setFormData({
-      genero: 'M',
-      nombre: '',
-      apellido: '',
-      rol: null,
+      // Datos de autenticación
       correo_elec: '',
+      contrasenia: '',
+      rol: null,
       facultad_id: null,
       programa_academico_id: null,
+
+      // Datos de persona
       tipo_documento: 'CC',
       numero_documento: '',
-      telefono: '',
+      primer_nombre: '',
+      segundo_nombre: '',
+      primer_apellido: '',
+      segundo_apellido: '',
+      sexo: 'M',
+      orientacion_sexual: '',
       fecha_nacimiento: '',
-      contrasenia: '',
-      confirmar_contrasenia: ''
+      domicilio: '',
+      celular: ''
     });
   };
 

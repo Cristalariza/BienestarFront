@@ -23,6 +23,10 @@ const ActividadCard = ({
     }
   };
 
+  // Determinar si cuposDisponibles es un número o boolean
+  const cuposNumero = typeof cuposDisponibles === 'number' ? cuposDisponibles : null;
+  const tieneCupos = cuposNumero !== null ? cuposNumero > 0 : cuposDisponibles;
+
   return (
     <div className={`${styles.card} ${!estado ? styles.inactive : ''}`}>
       <div className={styles.header}>
@@ -32,11 +36,14 @@ const ActividadCard = ({
           <div className={styles.status}>
             <span
               className={`${styles.statusDot} ${
-                cuposDisponibles ? styles.available : styles.unavailable
+                tieneCupos ? styles.available : styles.unavailable
               }`}
             ></span>
             <span className={styles.statusText}>
-              {cuposDisponibles ? "Cupos disponibles" : "Sin cupos"}
+              {cuposNumero !== null
+                ? `Cupos disponibles: ${cuposNumero}`
+                : (tieneCupos ? "Cupos disponibles" : "Sin cupos")
+              }
             </span>
           </div>
           {estado !== undefined && (
@@ -95,7 +102,7 @@ const ActividadCard = ({
 ActividadCard.propTypes = {
   nombre: PropTypes.string.isRequired,
   participantes: PropTypes.number.isRequired,
-  cuposDisponibles: PropTypes.bool.isRequired,
+  cuposDisponibles: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]).isRequired,
   tipo: PropTypes.oneOf(["deporte", "cultura"]).isRequired,
   onMoreInfo: PropTypes.func,
   onEdit: PropTypes.func,

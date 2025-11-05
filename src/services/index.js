@@ -19,3 +19,5 @@ export { default as programasAcademicosService } from './programasAcademicosServ
 export { default as estamentosService } from './estamentosService';
 export { default as administrativosService } from './administrativosService';
 export { default as programasDeportivosService } from './programasDeportivosService';
+export { default as inscripcionesDeportivasService } from './inscripcionesDeportivasService';
+export { default as inscripcionesCulturalesService } from './inscripcionesCulturalesService';

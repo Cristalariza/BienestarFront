@@ -4,6 +4,7 @@
  */
 
 import api from './api';
+import personasService from './personasService';
 
 const authService = {
   /**
@@ -16,11 +17,53 @@ const authService = {
   login: async (credentials) => {
     try {
       const response = await api.post('/auth/login', credentials);
-      const { token, ...userData } = response.data;
+      const { token, persona_id, ...userData } = response.data;
 
-      // Guardar token y datos del usuario en localStorage
+      // Guardar token en localStorage
       if (token) {
         localStorage.setItem('token', token);
+      }
+
+      // Si hay persona_id, obtener los datos completos de la persona
+      if (persona_id) {
+        try {
+          console.log('Obteniendo datos de la persona con ID:', persona_id);
+          const personaData = await personasService.obtenerPorId(persona_id);
+          console.log('Datos de la persona obtenidos:', personaData);
+
+          // Combinar datos del usuario con datos de la persona
+          const fullUserData = {
+            ...userData,
+            persona_id,
+            primer_nombre: personaData.primer_nombre,
+            segundo_nombre: personaData.segundo_nombre,
+            primer_apellido: personaData.primer_ape,
+            segundo_apellido: personaData.segundo_ape,
+            nombre_completo: `${personaData.primer_nombre} ${personaData.primer_ape}`,
+            email: personaData.email,
+            celular: personaData.celular,
+            domicilio: personaData.domicilio,
+            tipo_documento: personaData.tipo_doc,
+            numero_documento: personaData.num_doc,
+            sexo: personaData.sexo,
+            fecha_nacimiento: personaData.fecha_nacimiento
+          };
+
+          localStorage.setItem('user', JSON.stringify(fullUserData));
+
+          return {
+            token,
+            ...fullUserData
+          };
+        } catch (personaError) {
+          console.error('Error al obtener datos de la persona:', personaError);
+          // Si falla, guardar solo los datos básicos
+          const basicUserData = { ...userData, persona_id };
+          localStorage.setItem('user', JSON.stringify(basicUserData));
+          return response.data;
+        }
+      } else {
+        // Si no hay persona_id, guardar solo los datos básicos
         localStorage.setItem('user', JSON.stringify(userData));
       }
 

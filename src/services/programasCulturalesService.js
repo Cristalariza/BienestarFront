@@ -21,7 +21,7 @@ const programasCulturalesService = {
    */
   crear: async (programaData) => {
     try {
-      const response = await api.post('/programas_culturales', programaData);
+      const response = await api.post('/programas-culturales', programaData);
       return response.data;
     } catch (error) {
       throw error;
@@ -30,17 +30,16 @@ const programasCulturalesService = {
 
   /**
    * Obtener todos los programas culturales
-   * @param {Object} params - Parámetros de paginación
+   * @param {Object} params - Parámetros de consulta
    * @param {number} params.skip - Número de registros a saltar (default: 0)
-   * @param {number} params.limit - Máximo de registros a retornar (default: 100)
-   * @param {boolean} params.only_active - Solo registros activos (default: true)
-   * @returns {Promise<Array>} - Lista de programas culturales
+   * @param {boolean} params.only_active - Solo registros activos (default: false)
+   * @returns {Promise<Array>} - Lista de programas culturales (sin límite)
    */
   obtenerTodos: async (params = {}) => {
     try {
-      const { skip = 0, limit = 100, only_active = true } = params;
-      const response = await api.get('/programas_culturales', {
-        params: { skip, limit, only_active }
+      const { skip = 0, only_active = false } = params;
+      const response = await api.get('/programas-culturales', {
+        params: { skip, only_active }
       });
       return response.data;
     } catch (error) {
@@ -55,7 +54,7 @@ const programasCulturalesService = {
    */
   obtenerPorId: async (programaId) => {
     try {
-      const response = await api.get(`/programas_culturales/${programaId}`);
+      const response = await api.get(`/programas-culturales/${programaId}`);
       return response.data;
     } catch (error) {
       throw error;
@@ -70,7 +69,7 @@ const programasCulturalesService = {
    */
   actualizar: async (programaId, programaData) => {
     try {
-      const response = await api.put(`/programas_culturales/${programaId}`, programaData);
+      const response = await api.put(`/programas-culturales/${programaId}`, programaData);
       return response.data;
     } catch (error) {
       throw error;
@@ -84,7 +83,7 @@ const programasCulturalesService = {
    */
   eliminar: async (programaId) => {
     try {
-      const response = await api.delete(`/programas_culturales/${programaId}`);
+      const response = await api.delete(`/programas-culturales/${programaId}`);
       return response.data;
     } catch (error) {
       throw error;

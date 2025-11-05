@@ -11,12 +11,11 @@ const eventosService = {
    * @param {Object} eventoData - Datos del evento
    * @param {string} eventoData.titulo - Título del evento
    * @param {string} eventoData.descripcion - Descripción del evento
-   * @param {string} eventoData.fecha_inicio - Fecha de inicio (ISO 8601)
-   * @param {string} eventoData.fecha_fin - Fecha de fin (ISO 8601)
-   * @param {string} eventoData.ubicacion - Ubicación del evento
+   * @param {string} eventoData.fecha - Fecha del evento (ISO 8601)
+   * @param {string} eventoData.lugar - Lugar del evento
    * @param {string} eventoData.organizador - Organizador del evento
-   * @param {number} eventoData.capacidad_maxima - Capacidad máxima
    * @param {string} eventoData.imagen_url - URL de la imagen
+   * @param {boolean} eventoData.activo - Estado del evento
    * @returns {Promise<Object>} - Evento creado
    */
   crear: async (eventoData) => {
@@ -30,7 +29,7 @@ const eventosService = {
 
   /**
    * Obtener todos los eventos
-   * @param {Object} params - Parámetros de paginación
+   * @param {Object} params - Parámetros de consulta
    * @param {number} params.skip - Número de registros a saltar (default: 0)
    * @param {number} params.limit - Máximo de registros a retornar (default: 100)
    * @param {boolean} params.only_active - Solo registros activos (default: true)

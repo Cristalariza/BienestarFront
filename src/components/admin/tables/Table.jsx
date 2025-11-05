@@ -61,23 +61,34 @@ const Table = ({ columns, data, onPageChange, currentPage, totalPages }) => {
             </tr>
           </thead>
           <tbody>
-            {sortedData.map((row, index) => (
-              <tr key={index}>
-                {columns.map((column) => (
-                  <td key={column.key}>
-                    {column.render ? (
-                      column.render(row[column.key], row)
-                    ) : (
-                      <span
-                        className={getCellClassName(column, row[column.key])}
-                      >
-                        {row[column.key]}
-                      </span>
-                    )}
-                  </td>
-                ))}
+            {sortedData.length > 0 ? (
+              sortedData.map((row, index) => (
+                <tr key={index}>
+                  {columns.map((column) => (
+                    <td key={column.key}>
+                      {column.render ? (
+                        column.render(row[column.key], row)
+                      ) : (
+                        <span
+                          className={getCellClassName(column, row[column.key])}
+                        >
+                          {row[column.key]}
+                        </span>
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={columns.length} style={{ textAlign: 'center', padding: '3rem' }}>
+                  <i className="pi pi-info-circle" style={{ fontSize: '3rem', color: '#6b7280' }}></i>
+                  <p style={{ color: '#6b7280', marginTop: '1rem' }}>
+                    No hay inscripciones registradas.
+                  </p>
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

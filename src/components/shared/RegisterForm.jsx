@@ -56,67 +56,66 @@ const RegisterForm = () => {
         </h2>
 
         <form onSubmit={handleSubmit}>
-          {/* Género */}
+          {/* Sexo */}
           <div className="flex gap-6 justify-center mb-6">
             <div className="flex items-center gap-2">
               <RadioButton
-                inputId="genero-m"
-                name="genero"
+                inputId="sexo-m"
+                name="sexo"
                 value="M"
-                onChange={(e) => handleChange('genero', e.value)}
-                checked={formData.genero === 'M'}
+                onChange={(e) => handleChange('sexo', e.value)}
+                checked={formData.sexo === 'M'}
               />
-              <label htmlFor="genero-m" className="cursor-pointer text-sm">Hombre</label>
+              <label htmlFor="sexo-m" className="cursor-pointer text-sm">Hombre</label>
             </div>
             <div className="flex items-center gap-2">
               <RadioButton
-                inputId="genero-f"
-                name="genero"
+                inputId="sexo-f"
+                name="sexo"
                 value="F"
-                onChange={(e) => handleChange('genero', e.value)}
-                checked={formData.genero === 'F'}
+                onChange={(e) => handleChange('sexo', e.value)}
+                checked={formData.sexo === 'F'}
               />
-              <label htmlFor="genero-f" className="cursor-pointer text-sm">Mujer</label>
+              <label htmlFor="sexo-f" className="cursor-pointer text-sm">Mujer</label>
             </div>
             <div className="flex items-center gap-2">
               <RadioButton
-                inputId="genero-o"
-                name="genero"
+                inputId="sexo-o"
+                name="sexo"
                 value="O"
-                onChange={(e) => handleChange('genero', e.value)}
-                checked={formData.genero === 'O'}
+                onChange={(e) => handleChange('sexo', e.value)}
+                checked={formData.sexo === 'O'}
               />
-              <label htmlFor="genero-o" className="cursor-pointer text-sm">Otros</label>
+              <label htmlFor="sexo-o" className="cursor-pointer text-sm">Otros</label>
             </div>
           </div>
 
-          {/* Primera fila: Nombre, Apellidos, ROL */}
+          {/* Primera fila: Primer Nombre, Segundo Nombre, ROL */}
           <div className="grid grid-cols-3 gap-4 mb-4">
             <div>
-              <label htmlFor="nombre" className="block text-xs font-bold text-gray-700 mb-1">
-                Nombres<span className="text-red-600">*</span>
+              <label htmlFor="primer_nombre" className="block text-xs font-bold text-gray-700 mb-1">
+                Primer Nombre<span className="text-red-600">*</span>
               </label>
               <InputText
-                id="nombre"
-                placeholder="Ingrese su nombre"
-                value={formData.nombre}
-                onChange={(e) => handleChange('nombre', e.target.value)}
+                id="primer_nombre"
+                placeholder="Ingrese su primer nombre"
+                value={formData.primer_nombre}
+                onChange={(e) => handleChange('primer_nombre', e.target.value)}
                 className="w-full"
                 required
               />
             </div>
 
             <div>
-              <label htmlFor="apellido" className="block text-xs font-bold text-gray-700 mb-1">
-                Apellidos<span className="text-red-600">*</span>
+              <label htmlFor="segundo_nombre" className="block text-xs font-bold text-gray-700 mb-1">
+                Segundo Nombre
               </label>
               <InputText
-                id="apellido"
-                placeholder="Ingrese su apellido"
-                value={formData.apellido}
-                onChange={(e) => handleChange('apellido', e.target.value)}
+                id="segundo_nombre"
+                placeholder="Ingrese su segundo nombre"
+                value={formData.segundo_nombre}
+                onChange={(e) => handleChange('segundo_nombre', e.target.value)}
                 className="w-full"
-                required
               />
             </div>
 
@@ -136,7 +135,95 @@ const RegisterForm = () => {
             </div>
           </div>
 
-          {/* Segunda fila: Correo, Facultad, Programa */}
+          {/* Segunda fila: Primer Apellido, Segundo Apellido, Orientación Sexual */}
+          <div className="grid grid-cols-3 gap-4 mb-4">
+            <div>
+              <label htmlFor="primer_apellido" className="block text-xs font-bold text-gray-700 mb-1">
+                Primer Apellido<span className="text-red-600">*</span>
+              </label>
+              <InputText
+                id="primer_apellido"
+                placeholder="Ingrese su primer apellido"
+                value={formData.primer_apellido}
+                onChange={(e) => handleChange('primer_apellido', e.target.value)}
+                className="w-full"
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="segundo_apellido" className="block text-xs font-bold text-gray-700 mb-1">
+                Segundo Apellido
+              </label>
+              <InputText
+                id="segundo_apellido"
+                placeholder="Ingrese su segundo apellido"
+                value={formData.segundo_apellido}
+                onChange={(e) => handleChange('segundo_apellido', e.target.value)}
+                className="w-full"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="orientacion_sexual" className="block text-xs font-bold text-gray-700 mb-1">
+                Orientación Sexual
+              </label>
+              <InputText
+                id="orientacion_sexual"
+                placeholder="Opcional"
+                value={formData.orientacion_sexual}
+                onChange={(e) => handleChange('orientacion_sexual', e.target.value)}
+                className="w-full"
+              />
+            </div>
+          </div>
+
+          {/* Tercera fila: Tipo, Identificación, Fecha Nacimiento */}
+          <div className="grid grid-cols-3 gap-4 mb-4">
+            <div>
+              <label htmlFor="tipo_documento" className="block text-xs font-bold text-gray-700 mb-1">
+                Tipo<span className="text-red-600">*</span>
+              </label>
+              <Dropdown
+                id="tipo_documento"
+                value={formData.tipo_documento}
+                options={tiposDocumento}
+                onChange={(e) => handleChange('tipo_documento', e.value)}
+                placeholder="Seleccione su tipo de documento"
+                className="w-full"
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="numero_documento" className="block text-xs font-bold text-gray-700 mb-1">
+                Identificación<span className="text-red-600">*</span>
+              </label>
+              <InputText
+                id="numero_documento"
+                placeholder="Ingrese su numero de documento"
+                value={formData.numero_documento}
+                onChange={(e) => handleChange('numero_documento', e.target.value)}
+                className="w-full"
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="fecha_nacimiento" className="block text-xs font-bold text-gray-700 mb-1">
+                Fecha de Nacimiento
+              </label>
+              <InputText
+                id="fecha_nacimiento"
+                type="date"
+                value={formData.fecha_nacimiento}
+                onChange={(e) => handleChange('fecha_nacimiento', e.target.value)}
+                className="w-full"
+              />
+            </div>
+          </div>
+
+          {/* Cuarta fila: Correo, Celular, Domicilio */}
           <div className="grid grid-cols-3 gap-4 mb-4">
             <div>
               <label htmlFor="correo" className="block text-xs font-bold text-gray-700 mb-1">
@@ -155,6 +242,37 @@ const RegisterForm = () => {
               />
             </div>
 
+            <div>
+              <label htmlFor="celular" className="block text-xs font-bold text-gray-700 mb-1">
+                Celular<span className="text-red-600">*</span>
+              </label>
+              <InputText
+                id="celular"
+                placeholder="Ingrese su número de celular"
+                value={formData.celular}
+                onChange={(e) => handleChange('celular', e.target.value)}
+                className="w-full"
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="domicilio" className="block text-xs font-bold text-gray-700 mb-1">
+                Domicilio<span className="text-red-600">*</span>
+              </label>
+              <InputText
+                id="domicilio"
+                placeholder="Ingrese su dirección"
+                value={formData.domicilio}
+                onChange={(e) => handleChange('domicilio', e.target.value)}
+                className="w-full"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Quinta fila: Facultad, Programa, Contraseña */}
+          <div className="grid grid-cols-3 gap-4 mb-6">
             <div>
               <label htmlFor="facultad" className="block text-xs font-bold text-gray-700 mb-1">
                 Facultad<span className="text-red-600">*</span>
@@ -187,38 +305,6 @@ const RegisterForm = () => {
                 className="w-full"
                 emptyMessage="Seleccione primero una facultad"
                 disabled={!formData.facultad_id || programasFiltrados.length === 0}
-              />
-            </div>
-          </div>
-
-          {/* Tercera fila: Tipo, Identificación, Contraseña */}
-          <div className="grid grid-cols-3 gap-4 mb-6">
-            <div>
-              <label htmlFor="tipo_documento" className="block text-xs font-bold text-gray-700 mb-1">
-                Tipo<span className="text-red-600">*</span>
-              </label>
-              <Dropdown
-                id="tipo_documento"
-                value={formData.tipo_documento}
-                options={tiposDocumento}
-                onChange={(e) => handleChange('tipo_documento', e.value)}
-                placeholder="Seleccione su tipo de documento"
-                className="w-full"
-                required
-              />
-            </div>
-
-            <div>
-              <label htmlFor="numero_documento" className="block text-xs font-bold text-gray-700 mb-1">
-                Identificación<span className="text-red-600">*</span>
-              </label>
-              <InputText
-                id="numero_documento"
-                placeholder="Ingrese su numero de documento"
-                value={formData.numero_documento}
-                onChange={(e) => handleChange('numero_documento', e.target.value)}
-                className="w-full"
-                required
               />
             </div>
 

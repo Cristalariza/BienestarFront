@@ -34,7 +34,7 @@ const personasService = {
    */
   obtenerTodas: async () => {
     try {
-      const response = await api.get('/personas');
+      const response = await api.get('/personas/all');
       return response.data;
     } catch (error) {
       throw error;
