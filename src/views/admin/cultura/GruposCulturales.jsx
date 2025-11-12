@@ -23,6 +23,8 @@ const GruposCulturales = () => {
     handleSubmit,
     handleDelete,
     handleToggleEstado,
+    estadoFiltro,
+    setEstadoFiltro,
   } = useAdminCultura();
 
   const handleMoreInfo = (nombre) => {
@@ -32,8 +34,8 @@ const GruposCulturales = () => {
   if (loading && programas.length === 0) {
     return (
       <div className={styles.container}>
-        <div style={{ textAlign: 'center', padding: '2rem' }}>
-          <i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem' }}></i>
+        <div style={{ textAlign: "center", padding: "2rem" }}>
+          <i className="pi pi-spin pi-spinner" style={{ fontSize: "2rem" }}></i>
           <p>Cargando programas culturales...</p>
         </div>
       </div>
@@ -46,12 +48,26 @@ const GruposCulturales = () => {
 
       <div className={styles.header}>
         <h1 className={styles.title}>Grupos Culturales</h1>
-        <Button
-          label="Nuevo Programa"
-          variant="primary"
-          icon="pi pi-plus"
-          onClick={handleOpenCreateModal}
-        />
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <select
+            value={estadoFiltro}
+            onChange={(e) => setEstadoFiltro(e.target.value)}
+            style={{
+              padding: "0.5rem",
+              borderRadius: "6px",
+              border: "1px solid #ccc",
+            }}
+          >
+            <option value="activos">Activos</option>
+            <option value="eliminados">Eliminados</option>
+          </select>
+          <Button
+            label="Nuevo Programa"
+            variant="primary"
+            icon="pi pi-plus"
+            onClick={handleOpenCreateModal}
+          />
+        </div>
       </div>
 
       <div className={styles.grid}>
@@ -65,17 +81,23 @@ const GruposCulturales = () => {
             onMoreInfo={() => handleMoreInfo(programa.nombre)}
             onEdit={() => handleOpenEditModal(programa)}
             onDelete={() => handleDelete(programa.programa_id)}
-            onToggleEstado={() => handleToggleEstado(programa.programa_id, programa.estado)}
+            onToggleEstado={() =>
+              handleToggleEstado(programa.programa_id, programa.estado)
+            }
             estado={programa.estado}
           />
         ))}
       </div>
 
       {programas.length === 0 && !loading && (
-        <div style={{ textAlign: 'center', padding: '3rem' }}>
-          <i className="pi pi-info-circle" style={{ fontSize: '3rem', color: '#6b7280' }}></i>
-          <p style={{ color: '#6b7280', marginTop: '1rem' }}>
-            No hay programas culturales creados. Crea uno nuevo haciendo clic en "Nuevo Programa".
+        <div style={{ textAlign: "center", padding: "3rem" }}>
+          <i
+            className="pi pi-info-circle"
+            style={{ fontSize: "3rem", color: "#6b7280" }}
+          ></i>
+          <p style={{ color: "#6b7280", marginTop: "1rem" }}>
+            No hay programas culturales creados. Crea uno nuevo haciendo clic en
+            "Nuevo Programa".
           </p>
         </div>
       )}
@@ -85,9 +107,14 @@ const GruposCulturales = () => {
           <div className={modalStyles.modal}>
             <div className={modalStyles.modalHeader}>
               <h2 className={modalStyles.modalTitle}>
-                {editingPrograma ? "Editar Programa Cultural" : "Nuevo Programa Cultural"}
+                {editingPrograma
+                  ? "Editar Programa Cultural"
+                  : "Nuevo Programa Cultural"}
               </h2>
-              <button className={modalStyles.btnClose} onClick={handleCloseModal}>
+              <button
+                className={modalStyles.btnClose}
+                onClick={handleCloseModal}
+              >
                 <i className="pi pi-times"></i>
               </button>
             </div>
@@ -95,7 +122,8 @@ const GruposCulturales = () => {
             <div className={modalStyles.modalBody}>
               <div className={modalStyles.formGroup}>
                 <label htmlFor="nombre" className={modalStyles.label}>
-                  Nombre del Programa <span className={modalStyles.required}>*</span>
+                  Nombre del Programa{" "}
+                  <span className={modalStyles.required}>*</span>
                 </label>
                 <input
                   type="text"
@@ -128,7 +156,8 @@ const GruposCulturales = () => {
               <div className={modalStyles.formRow}>
                 <div className={modalStyles.formGroup}>
                   <label htmlFor="cupos_totales" className={modalStyles.label}>
-                    Cupos Totales <span className={modalStyles.required}>*</span>
+                    Cupos Totales{" "}
+                    <span className={modalStyles.required}>*</span>
                   </label>
                   <input
                     type="number"
@@ -178,7 +207,8 @@ const GruposCulturales = () => {
               <div className={modalStyles.formRow}>
                 <div className={modalStyles.formGroup}>
                   <label htmlFor="fecha_inicio" className={modalStyles.label}>
-                    Fecha de Inicio <span className={modalStyles.required}>*</span>
+                    Fecha de Inicio{" "}
+                    <span className={modalStyles.required}>*</span>
                   </label>
                   <input
                     type="date"

@@ -13,61 +13,45 @@ const AdminHeader = () => {
   useEffect(() => {
     const loadUserProfile = async () => {
       try {
-        // Intentar obtener el perfil completo desde el backend
         const profile = await authService.getProfile();
-        console.log('Perfil completo del usuario:', profile);
 
         if (profile) {
-          // Usar nombre_completo si está disponible
           if (profile.nombre_completo) {
             setUserName(profile.nombre_completo);
-          }
-          // Intentar construir el nombre desde primer_nombre y primer_apellido
-          else if (profile.primer_nombre && profile.primer_apellido) {
+          } else if (profile.primer_nombre && profile.primer_apellido) {
             setUserName(`${profile.primer_nombre} ${profile.primer_apellido}`);
-          }
-          // Fallback a nombre y apellido (formato antiguo)
-          else if (profile.nombre && profile.apellido) {
+          } else if (profile.nombre && profile.apellido) {
             setUserName(`${profile.nombre} ${profile.apellido}`);
-          }
-          // Último recurso: usar el correo
-          else if (profile.correo_elec || profile.email) {
+          } else if (profile.correo_elec || profile.email) {
             const email = profile.correo_elec || profile.email;
-            const emailName = email.split('@')[0];
+            const emailName = email.split("@")[0];
             setUserName(emailName);
           }
 
-          // Guardar email
           if (profile.correo_elec || profile.email) {
             setUserEmail(profile.correo_elec || profile.email);
           }
         }
       } catch (error) {
-        console.error('Error al cargar perfil, usando datos de localStorage:', error);
+        console.error(
+          "Error al cargar perfil, usando datos de localStorage:",
+          error
+        );
 
-        // Fallback a localStorage si falla la petición al backend
         const user = authService.getCurrentUser();
         if (user) {
-          // Usar nombre_completo si está disponible
           if (user.nombre_completo) {
             setUserName(user.nombre_completo);
-          }
-          // Intentar construir el nombre desde primer_nombre y primer_apellido
-          else if (user.primer_nombre && user.primer_apellido) {
+          } else if (user.primer_nombre && user.primer_apellido) {
             setUserName(`${user.primer_nombre} ${user.primer_apellido}`);
-          }
-          // Fallback a nombre y apellido (formato antiguo)
-          else if (user.nombre && user.apellido) {
+          } else if (user.nombre && user.apellido) {
             setUserName(`${user.nombre} ${user.apellido}`);
-          }
-          // Último recurso: usar el correo
-          else if (user.correo_elec || user.email) {
+          } else if (user.correo_elec || user.email) {
             const email = user.correo_elec || user.email;
-            const emailName = email.split('@')[0];
+            const emailName = email.split("@")[0];
             setUserName(emailName);
           }
 
-          // Guardar email
           if (user.correo_elec || user.email) {
             setUserEmail(user.correo_elec || user.email);
           }
@@ -83,7 +67,6 @@ const AdminHeader = () => {
       label: "Cerrar sesión",
       icon: "pi pi-sign-out",
       command: () => {
-        // Limpiar sesión y redirigir al login
         authService.logout();
         navigate("/login");
       },

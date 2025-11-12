@@ -3,7 +3,7 @@
  * Maneja todas las operaciones CRUD de inscripciones deportivas
  */
 
-import api from './api';
+import api from "./api";
 
 const inscripcionesDeportivasService = {
   /**
@@ -17,7 +17,7 @@ const inscripcionesDeportivasService = {
    */
   obtenerTodas: async (params = {}) => {
     try {
-      const response = await api.get('/inscripciones-deportivas', { params });
+      const response = await api.get("/inscripciones-deportivas", { params });
       return response.data;
     } catch (error) {
       throw error;
@@ -31,7 +31,9 @@ const inscripcionesDeportivasService = {
    */
   obtenerPorId: async (inscripcionId) => {
     try {
-      const response = await api.get(`/inscripciones-deportivas/${inscripcionId}`);
+      const response = await api.get(
+        `/inscripciones-deportivas/${inscripcionId}`
+      );
       return response.data;
     } catch (error) {
       throw error;
@@ -45,7 +47,10 @@ const inscripcionesDeportivasService = {
    */
   crear: async (inscripcionData) => {
     try {
-      const response = await api.post('/inscripciones-deportivas', inscripcionData);
+      const response = await api.post(
+        "/inscripciones-deportivas",
+        inscripcionData
+      );
       return response.data;
     } catch (error) {
       throw error;
@@ -60,7 +65,10 @@ const inscripcionesDeportivasService = {
    */
   actualizar: async (inscripcionId, inscripcionData) => {
     try {
-      const response = await api.put(`/inscripciones-deportivas/${inscripcionId}`, inscripcionData);
+      const response = await api.put(
+        `/inscripciones-deportivas/${inscripcionId}`,
+        inscripcionData
+      );
       return response.data;
     } catch (error) {
       throw error;
@@ -75,9 +83,12 @@ const inscripcionesDeportivasService = {
    */
   cambiarEstado: async (inscripcionId, nuevoEstado) => {
     try {
-      const response = await api.patch(`/inscripciones-deportivas/${inscripcionId}/estado`, {
-        estado_inscripcion: nuevoEstado
-      });
+      const response = await api.patch(
+        `/inscripciones-deportivas/${inscripcionId}/estado`,
+        {
+          estado_inscripcion: nuevoEstado,
+        }
+      );
       return response.data;
     } catch (error) {
       throw error;
@@ -91,12 +102,14 @@ const inscripcionesDeportivasService = {
    */
   eliminar: async (inscripcionId) => {
     try {
-      const response = await api.delete(`/inscripciones-deportivas/${inscripcionId}`);
+      const response = await api.delete(
+        `/inscripciones-deportivas/${inscripcionId}`
+      );
       return response.data;
     } catch (error) {
       throw error;
     }
-  }
+  },
 };
 
 export default inscripcionesDeportivasService;

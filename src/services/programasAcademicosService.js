@@ -3,7 +3,7 @@
  * Maneja todas las operaciones de programas académicos
  */
 
-import api from './api';
+import api from "./api";
 
 const programasAcademicosService = {
   /**
@@ -12,7 +12,7 @@ const programasAcademicosService = {
    */
   obtenerTodos: async () => {
     try {
-      const response = await api.get('/programas');
+      const response = await api.get("/programas/");
       return response.data;
     } catch (error) {
       throw error;
@@ -44,12 +44,12 @@ const programasAcademicosService = {
    */
   crear: async (programaData) => {
     try {
-      const response = await api.post('/programas', programaData);
+      const response = await api.post("/programas", programaData);
       return response.data;
     } catch (error) {
       throw error;
     }
-  }
+  },
 };
 
 export default programasAcademicosService;

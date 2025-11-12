@@ -24,11 +24,12 @@ const ActividadCard = ({
   };
 
   // Determinar si cuposDisponibles es un número o boolean
-  const cuposNumero = typeof cuposDisponibles === 'number' ? cuposDisponibles : null;
+  const cuposNumero =
+    typeof cuposDisponibles === "number" ? cuposDisponibles : null;
   const tieneCupos = cuposNumero !== null ? cuposNumero > 0 : cuposDisponibles;
 
   return (
-    <div className={`${styles.card} ${!estado ? styles.inactive : ''}`}>
+    <div className={`${styles.card} ${!estado ? styles.inactive : ""}`}>
       <div className={styles.header}>
         <div className={styles.info}>
           <h3 className={styles.title}>{nombre}</h3>
@@ -42,8 +43,9 @@ const ActividadCard = ({
             <span className={styles.statusText}>
               {cuposNumero !== null
                 ? `Cupos disponibles: ${cuposNumero}`
-                : (tieneCupos ? "Cupos disponibles" : "Sin cupos")
-              }
+                : tieneCupos
+                ? "Cupos disponibles"
+                : "Sin cupos"}
             </span>
           </div>
           {estado !== undefined && (
@@ -71,15 +73,6 @@ const ActividadCard = ({
               <i className="pi pi-pencil"></i>
             </button>
           )}
-          {onToggleEstado && (
-            <button
-              className={`${styles.actionBtn} ${estado ? styles.toggleOffBtn : styles.toggleOnBtn}`}
-              onClick={onToggleEstado}
-              title={estado ? "Desactivar" : "Activar"}
-            >
-              <i className={estado ? "pi pi-eye-slash" : "pi pi-eye"}></i>
-            </button>
-          )}
           {onDelete && (
             <button
               className={`${styles.actionBtn} ${styles.deleteBtn}`}
@@ -102,7 +95,8 @@ const ActividadCard = ({
 ActividadCard.propTypes = {
   nombre: PropTypes.string.isRequired,
   participantes: PropTypes.number.isRequired,
-  cuposDisponibles: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]).isRequired,
+  cuposDisponibles: PropTypes.oneOfType([PropTypes.number, PropTypes.bool])
+    .isRequired,
   tipo: PropTypes.oneOf(["deporte", "cultura"]).isRequired,
   onMoreInfo: PropTypes.func,
   onEdit: PropTypes.func,

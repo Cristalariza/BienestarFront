@@ -3,7 +3,7 @@
  * Maneja todas las operaciones de estamentos
  */
 
-import api from './api';
+import api from "./api";
 
 const estamentosService = {
   /**
@@ -12,7 +12,7 @@ const estamentosService = {
    */
   obtenerTodos: async () => {
     try {
-      const response = await api.get('/estamentos');
+      const response = await api.get("/estamentos/");
       return response.data;
     } catch (error) {
       throw error;
@@ -31,7 +31,7 @@ const estamentosService = {
     } catch (error) {
       throw error;
     }
-  }
+  },
 };
 
 export default estamentosService;

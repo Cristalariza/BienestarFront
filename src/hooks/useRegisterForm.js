@@ -3,11 +3,19 @@
  * Maneja la lógica del formulario de registro
  */
 
-import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { authService, facultadesService, programasAcademicosService, estamentosService } from '../services';
-import { validateRequiredFields, validateInstitutionalEmail } from '../utils/validators';
-import { VALIDATION_MESSAGES } from '../constants';
+import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  authService,
+  facultadesService,
+  programasAcademicosService,
+  estamentosService,
+} from "../services";
+import {
+  validateRequiredFields,
+  validateInstitutionalEmail,
+} from "../utils/validators";
+import { VALIDATION_MESSAGES } from "../constants";
 
 export const useRegisterForm = () => {
   const navigate = useNavigate();
@@ -16,24 +24,24 @@ export const useRegisterForm = () => {
   // Estados del formulario
   const [formData, setFormData] = useState({
     // Datos de autenticación
-    correo_elec: '',
-    contrasenia: '',
+    correo_elec: "",
+    contrasenia: "",
     rol: null,
     facultad_id: null,
     programa_academico_id: null,
 
     // Datos de persona
-    tipo_documento: 'CC',
-    numero_documento: '',
-    primer_nombre: '',
-    segundo_nombre: '',
-    primer_apellido: '',
-    segundo_apellido: '',
-    sexo: 'M',
-    orientacion_sexual: '',
-    fecha_nacimiento: '',
-    domicilio: '',
-    celular: ''
+    tipo_documento: "CC",
+    numero_documento: "",
+    primer_nombre: "",
+    segundo_nombre: "",
+    primer_apellido: "",
+    segundo_apellido: "",
+    sexo: "M",
+    orientacion_sexual: "",
+    fecha_nacimiento: "",
+    domicilio: "",
+    celular: "",
   });
 
   // Estados para datos del servidor
@@ -54,38 +62,63 @@ export const useRegisterForm = () => {
         // Intentar cargar facultades
         try {
           const facultadesData = await facultadesService.obtenerTodas();
-          setFacultades(facultadesData || []);
+
+          if (Array.isArray(facultadesData)) {
+            setFacultades(facultadesData);
+          } else if (facultadesData && Array.isArray(facultadesData.data)) {
+            setFacultades(facultadesData.data);
+          } else {
+            console.warn(
+              "Formato de facultades no reconocido:",
+              facultadesData
+            );
+            setFacultades([]);
+          }
         } catch (error) {
-          console.error('Error cargando facultades:', error);
+          console.error("Error cargando facultades:", error);
+          console.error("Detalles del error:", error.response || error);
           setFacultades([]);
         }
 
         // Intentar cargar programas
         try {
           const programasData = await programasAcademicosService.obtenerTodos();
-          setProgramas(programasData || []);
+
+          if (Array.isArray(programasData)) {
+            setProgramas(programasData);
+          } else if (programasData && Array.isArray(programasData.data)) {
+            setProgramas(programasData.data);
+          } else {
+            console.warn("Formato de programas no reconocido:", programasData);
+            setProgramas([]);
+          }
         } catch (error) {
-          console.error('Error cargando programas:', error);
+          console.error("Error cargando programas:", error);
           setProgramas([]);
         }
 
         // Intentar cargar estamentos
         try {
           const estamentosData = await estamentosService.obtenerTodos();
-          setEstamentos(estamentosData || []);
+
+          if (Array.isArray(estamentosData)) {
+            setEstamentos(estamentosData);
+          } else if (estamentosData && Array.isArray(estamentosData.data)) {
+            setEstamentos(estamentosData.data);
+          } else {
+            throw new Error("Formato de estamentos no reconocido");
+          }
         } catch (error) {
-          console.error('Error cargando estamentos:', error);
-          // Datos por defecto si no se pueden cargar
+          console.error("Error cargando estamentos:", error);
           setEstamentos([
-            { estamento_id: 'ESTUDIANTE', nombre: 'Estudiante' },
-            { estamento_id: 'DOCENTE', nombre: 'Docente' },
-            { estamento_id: 'ADMINISTRATIVO', nombre: 'Administrativo' },
-            { estamento_id: 'EGRESADO', nombre: 'Egresado' }
+            { estamento_id: "ESTUDIANTE", nombre: "Estudiante" },
+            { estamento_id: "DOCENTE", nombre: "Docente" },
+            { estamento_id: "ADMINISTRATIVO", nombre: "Administrativo" },
+            { estamento_id: "EGRESADO", nombre: "Egresado" },
           ]);
         }
-
       } catch (error) {
-        console.error('Error general cargando datos:', error);
+        console.error("Error general cargando datos:", error);
       } finally {
         setLoadingData(false);
       }
@@ -103,7 +136,7 @@ export const useRegisterForm = () => {
         severity,
         summary,
         detail,
-        life: 3000
+        life: 3000,
       });
     }
   };
@@ -112,9 +145,9 @@ export const useRegisterForm = () => {
    * Maneja cambios en los campos del formulario
    */
   const handleChange = (field, value) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
@@ -133,21 +166,29 @@ export const useRegisterForm = () => {
       sexo: formData.sexo,
       celular: formData.celular,
       domicilio: formData.domicilio,
-      contrasenia: formData.contrasenia
+      contrasenia: formData.contrasenia,
     };
 
     if (!validateRequiredFields(requiredFields)) {
-      showToast('error', 'Error', VALIDATION_MESSAGES.REQUIRED_FIELDS);
+      showToast("error", "Error", VALIDATION_MESSAGES.REQUIRED_FIELDS);
       return false;
     }
 
     if (!validateInstitutionalEmail(formData.correo_elec)) {
-      showToast('warn', 'Advertencia', VALIDATION_MESSAGES.INVALID_EMAIL_DOMAIN);
+      showToast(
+        "warn",
+        "Advertencia",
+        VALIDATION_MESSAGES.INVALID_EMAIL_DOMAIN
+      );
       return false;
     }
 
     if (formData.contrasenia.length < 6) {
-      showToast('warn', 'Advertencia', 'La contraseña debe tener al menos 6 caracteres');
+      showToast(
+        "warn",
+        "Advertencia",
+        "La contraseña debe tener al menos 6 caracteres"
+      );
       return false;
     }
 
@@ -176,46 +217,62 @@ export const useRegisterForm = () => {
           tipo_doc: formData.tipo_documento,
           num_doc: formData.numero_documento,
           primer_nombre: formData.primer_nombre,
-          segundo_nombre: formData.segundo_nombre || '',
+          segundo_nombre: formData.segundo_nombre || "",
           primer_ape: formData.primer_apellido,
-          segundo_ape: formData.segundo_apellido || '',
+          segundo_ape: formData.segundo_apellido || "",
           sexo: formData.sexo,
-          orientacion_sex: formData.orientacion_sexual || '',
-          fecha_nacimiento: formData.fecha_nacimiento || '',
+          orientacion_sex: formData.orientacion_sexual || "",
+          fecha_nacimiento: formData.fecha_nacimiento || "",
           domicilio: formData.domicilio,
           email: formData.correo_elec,
-          celular: formData.celular
+          celular: formData.celular,
         },
         facultad_id: formData.facultad_id,
-        programa_academico_id: formData.programa_academico_id || null
+        programa_academico_id: formData.programa_academico_id || null,
       };
-
-      console.log('Enviando datos de registro:', userData);
 
       const response = await authService.register(userData);
 
-      showToast('success', 'Éxito', 'Usuario registrado exitosamente. Ahora puedes iniciar sesión.');
+      showToast(
+        "success",
+        "Éxito",
+        "Usuario registrado exitosamente. Ahora puedes iniciar sesión."
+      );
 
       // Redirigir al login después de 2 segundos
       setTimeout(() => {
-        navigate('/login');
+        navigate("/login");
       }, 2000);
-
     } catch (error) {
-      const errorMessage = error.message || 'Error al registrar usuario';
+      const errorMessage = error.message || "Error al registrar usuario";
 
-      console.error('Error completo:', error);
+      console.error("Error completo:", error);
 
       if (error.status === 503) {
-        showToast('error', 'Error', 'No se pudo conectar con el servidor. Verifica que el backend esté corriendo.');
+        showToast(
+          "error",
+          "Error",
+          "No se pudo conectar con el servidor. Verifica que el backend esté corriendo."
+        );
       } else if (error.status === 409) {
-        showToast('error', 'Error', 'El usuario ya existe con ese correo electrónico');
+        showToast(
+          "error",
+          "Error",
+          "El usuario ya existe con ese correo electrónico"
+        );
       } else if (error.status === 400) {
-        showToast('error', 'Error', 'Datos inválidos. Por favor verifica la información.');
+        showToast(
+          "error",
+          "Error",
+          "Datos inválidos. Por favor verifica la información."
+        );
       } else {
-        showToast('error', 'Error', 'No se pudo completar el registro. El servicio puede no estar implementado aún.');
+        showToast(
+          "error",
+          "Error",
+          "No se pudo completar el registro. El servicio puede no estar implementado aún."
+        );
       }
-
     } finally {
       setLoading(false);
     }
@@ -227,24 +284,24 @@ export const useRegisterForm = () => {
   const resetForm = () => {
     setFormData({
       // Datos de autenticación
-      correo_elec: '',
-      contrasenia: '',
+      correo_elec: "",
+      contrasenia: "",
       rol: null,
       facultad_id: null,
       programa_academico_id: null,
 
       // Datos de persona
-      tipo_documento: 'CC',
-      numero_documento: '',
-      primer_nombre: '',
-      segundo_nombre: '',
-      primer_apellido: '',
-      segundo_apellido: '',
-      sexo: 'M',
-      orientacion_sexual: '',
-      fecha_nacimiento: '',
-      domicilio: '',
-      celular: ''
+      tipo_documento: "CC",
+      numero_documento: "",
+      primer_nombre: "",
+      segundo_nombre: "",
+      primer_apellido: "",
+      segundo_apellido: "",
+      sexo: "M",
+      orientacion_sexual: "",
+      fecha_nacimiento: "",
+      domicilio: "",
+      celular: "",
     });
   };
 

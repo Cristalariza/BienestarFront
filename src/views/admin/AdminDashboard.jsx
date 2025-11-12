@@ -1,26 +1,15 @@
-import { useAdminDashboard } from "../../hooks/useAdminDashboard";
-import PieChartNivel from "../../components/admin/graficas/PieChartNivel";
-import HorizontalBarChartFacultad from "../../components/admin/graficas/HorizontalBarChartFacultad";
-import PieChartModalidad from "../../components/admin/graficas/PieChartModalidad";
-import BarChartCreditos from "../../components/admin/graficas/BarChartCreditos";
-import HorizontalStackedBarAnualidadFacultad from "../../components/admin/graficas/HorizontalStackedBarAnualidadFacultad";
-import HorizontalBarProgramaModalidad from "../../components/admin/graficas/HorizontalBarProgramaModalidad";
-import styles from "../../styles/adminstyles/adminDashboard.module.css";
+import React from "react";
+import { useDashboardData } from "../../hooks/useDashboardData";
+import StatCard from "../../components/admin/Dashboard/StatCard";
+import ActivityChart from "../../components/admin/Dashboard/ActivityChart";
+import styles from "../../components/admin/Dashboard/Dashboard.module.css";
 
-export const AdminDashboard = () => {
-  const {
-    loading,
-    getPieDataNivel,
-    getHorizontalBarDataFacultad,
-    getPieDataModalidad,
-    getBarDataCreditos,
-    getStackedBarDataDuracionAnualidad,
-    getHorizontalBarDataDuracionPrograma,
-  } = useAdminDashboard();
+const AdminDashboard = () => {
+  const { loading, dashboardData, error } = useDashboardData();
 
   if (loading) {
     return (
-      <div className={styles.container}>
+      <div className={styles.dashboardContainer}>
         <div className={styles.loading}>
           <i className="pi pi-spin pi-spinner" style={{ fontSize: "2rem" }}></i>
           <p>Cargando datos del dashboard...</p>
@@ -29,62 +18,71 @@ export const AdminDashboard = () => {
     );
   }
 
+  if (error) {
+    return (
+      <div className={styles.dashboardContainer}>
+        <div className={styles.error}>
+          <h3 className={styles.error__title}>Error al cargar el dashboard</h3>
+          <p className={styles.error__message}>{error}</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className={styles.container}>
-      <div className={styles.grid}>
-        {/* Gráfica 1: Recuento de Programa por Facultad y Nivel - ARRIBA COMPLETA */}
-        <div className={`${styles.card} ${styles.cardWide}`}>
-          <h2 className={styles.cardTitle}>
-            Recuento de Programa por Facultad y Nivel
-          </h2>
-          <div className={styles.chartContainerTall}>
-            <HorizontalBarChartFacultad data={getHorizontalBarDataFacultad()} />
-          </div>
-        </div>
+    <div className={styles.dashboardContainer}>
+      {/* Header */}
+      <div className={styles.dashboardHeader}>
+        <h1 className={styles.dashboardHeader__title}>
+          Dashboard de Bienestar Universitario
+        </h1>
+      </div>
 
-        {/* Gráfica 2: Recuento de Programa por Nivel */}
-        <div className={styles.card}>
-          <h2 className={styles.cardTitle}>Recuento de Programa por Nivel</h2>
-          <div className={styles.chartContainer}>
-            <PieChartNivel data={getPieDataNivel()} />
-          </div>
-        </div>
+      {/* Stats Cards */}
+      <div className={styles.statsGrid}>
+        <StatCard
+          title="Programas Deportivos"
+          value={dashboardData.deportes.total}
+          icon="pi-trophy"
+          color="primary"
+          subtitle={`${dashboardData.deportes.inscritos} estudiantes inscritos`}
+        />
+        <StatCard
+          title="Programas Culturales"
+          value={dashboardData.cultura.total}
+          icon="pi-palette"
+          color="success"
+          subtitle={`${dashboardData.cultura.inscritos} estudiantes inscritos`}
+        />
+        <StatCard
+          title="Eventos Activos"
+          value={dashboardData.eventos.total}
+          icon="pi-calendar"
+          color="warning"
+          subtitle={`${dashboardData.eventos.proximos} próximos eventos`}
+        />
+        <StatCard
+          title="Noticias Publicadas"
+          value={dashboardData.noticias.total}
+          icon="pi-megaphone"
+          color="info"
+          subtitle={`${dashboardData.noticias.recientes} en los últimos 30 días`}
+        />
+        <StatCard
+          title="PQRS Recibidas"
+          value={dashboardData.pqrs.total}
+          icon="pi-inbox"
+          color="danger"
+          subtitle={`${dashboardData.pqrs.pendientes} pendientes de atención`}
+        />
+      </div>
 
-        {/* Gráfica 3: Recuento de Programa por Modalidad */}
-        <div className={styles.card}>
-          <h2 className={styles.cardTitle}>
-            Recuento de Programa por Modalidad
-          </h2>
-          <div className={styles.chartContainer}>
-            <PieChartModalidad data={getPieDataModalidad()} />
-          </div>
-        </div>
-
-        {/* Gráfica 4: Promedio de Créditos por Nivel */}
-        <div className={styles.card}>
-          <h2 className={styles.cardTitle}>Promedio de Créditos por Nivel</h2>
-          <div className={styles.chartContainer}>
-            <BarChartCreditos data={getBarDataCreditos()} />
-          </div>
-        </div>
-
-        {/* Gráfica 5: Suma de Duración por Anualidad y Facultad */}
-        <div className={`${styles.card} ${styles.cardWide}`}>
-          <div className={styles.chartContainerTall}>
-            <HorizontalStackedBarAnualidadFacultad
-              data={getStackedBarDataDuracionAnualidad()}
-            />
-          </div>
-        </div>
-
-        {/* Gráfica 6: Suma de Duración por Programa y Modalidad */}
-        <div className={`${styles.card} ${styles.cardWide}`}>
-          <div className={styles.chartContainerExtraTall}>
-            <HorizontalBarProgramaModalidad
-              data={getHorizontalBarDataDuracionPrograma()}
-            />
-          </div>
-        </div>
+      {/* Activity Charts */}
+      <div className={styles.chartsGrid}>
+        <ActivityChart
+          data={dashboardData.activityData}
+          title="Actividad de Noticias y Eventos (Últimos 6 meses)"
+        />
       </div>
     </div>
   );

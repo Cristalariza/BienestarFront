@@ -1,9 +1,4 @@
-/**
- * Servicio de Facultades
- * Maneja todas las operaciones de facultades
- */
-
-import api from './api';
+import api from "./api";
 
 const facultadesService = {
   /**
@@ -12,7 +7,7 @@ const facultadesService = {
    */
   obtenerTodas: async () => {
     try {
-      const response = await api.get('/facultades');
+      const response = await api.get("/facultades/");
       return response.data;
     } catch (error) {
       throw error;
@@ -43,12 +38,12 @@ const facultadesService = {
    */
   crear: async (facultadData) => {
     try {
-      const response = await api.post('/facultades', facultadData);
+      const response = await api.post("/facultades", facultadData);
       return response.data;
     } catch (error) {
       throw error;
     }
-  }
+  },
 };
 
 export default facultadesService;

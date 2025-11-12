@@ -3,8 +3,8 @@
  * Maneja login y registro de usuarios
  */
 
-import api from './api';
-import personasService from './personasService';
+import api from "./api";
+import personasService from "./personasService";
 
 const authService = {
   /**
@@ -16,20 +16,18 @@ const authService = {
    */
   login: async (credentials) => {
     try {
-      const response = await api.post('/auth/login', credentials);
+      const response = await api.post("/auth/login", credentials);
       const { token, persona_id, ...userData } = response.data;
 
       // Guardar token en localStorage
       if (token) {
-        localStorage.setItem('token', token);
+        localStorage.setItem("token", token);
       }
 
       // Si hay persona_id, obtener los datos completos de la persona
       if (persona_id) {
         try {
-          console.log('Obteniendo datos de la persona con ID:', persona_id);
           const personaData = await personasService.obtenerPorId(persona_id);
-          console.log('Datos de la persona obtenidos:', personaData);
 
           // Combinar datos del usuario con datos de la persona
           const fullUserData = {
@@ -46,25 +44,25 @@ const authService = {
             tipo_documento: personaData.tipo_doc,
             numero_documento: personaData.num_doc,
             sexo: personaData.sexo,
-            fecha_nacimiento: personaData.fecha_nacimiento
+            fecha_nacimiento: personaData.fecha_nacimiento,
           };
 
-          localStorage.setItem('user', JSON.stringify(fullUserData));
+          localStorage.setItem("user", JSON.stringify(fullUserData));
 
           return {
             token,
-            ...fullUserData
+            ...fullUserData,
           };
         } catch (personaError) {
-          console.error('Error al obtener datos de la persona:', personaError);
+          console.error("Error al obtener datos de la persona:", personaError);
           // Si falla, guardar solo los datos básicos
           const basicUserData = { ...userData, persona_id };
-          localStorage.setItem('user', JSON.stringify(basicUserData));
+          localStorage.setItem("user", JSON.stringify(basicUserData));
           return response.data;
         }
       } else {
         // Si no hay persona_id, guardar solo los datos básicos
-        localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem("user", JSON.stringify(userData));
       }
 
       return response.data;
@@ -92,7 +90,7 @@ const authService = {
    */
   register: async (userData) => {
     try {
-      const response = await api.post('/auth/register', userData);
+      const response = await api.post("/auth/register", userData);
       return response.data;
     } catch (error) {
       throw error;
@@ -103,8 +101,8 @@ const authService = {
    * Cierra la sesión del usuario
    */
   logout: () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
   },
 
   /**
@@ -112,12 +110,12 @@ const authService = {
    * @returns {Object|null} - Datos del usuario o null si no hay sesión
    */
   getCurrentUser: () => {
-    const userStr = localStorage.getItem('user');
+    const userStr = localStorage.getItem("user");
     if (userStr) {
       try {
         return JSON.parse(userStr);
       } catch (error) {
-        console.error('Error al parsear datos del usuario:', error);
+        console.error("Error al parsear datos del usuario:", error);
         return null;
       }
     }
@@ -129,7 +127,7 @@ const authService = {
    * @returns {boolean} - True si hay sesión activa
    */
   isAuthenticated: () => {
-    return !!localStorage.getItem('token');
+    return !!localStorage.getItem("token");
   },
 
   /**
@@ -137,7 +135,7 @@ const authService = {
    * @returns {string|null} - Token JWT o null
    */
   getToken: () => {
-    return localStorage.getItem('token');
+    return localStorage.getItem("token");
   },
 
   /**
@@ -148,18 +146,17 @@ const authService = {
     try {
       // Obtener datos del usuario de localStorage
       const user = authService.getCurrentUser();
-      console.log('Usuario desde localStorage:', user);
 
       if (!user) {
-        throw new Error('No hay usuario autenticado');
+        throw new Error("No hay usuario autenticado");
       }
 
       return user;
     } catch (error) {
-      console.error('Error al obtener perfil del usuario:', error);
+      console.error("Error al obtener perfil del usuario:", error);
       throw error;
     }
-  }
+  },
 };
 
 export default authService;

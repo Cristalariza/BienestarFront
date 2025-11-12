@@ -1,10 +1,5 @@
-/**
- * Vista: RegisterView
- * Vista de registro de usuario
- */
-
-import { Link } from 'react-router-dom';
-import RegisterForm from '../components/shared/RegisterForm';
+import { Link } from "react-router-dom";
+import RegisterForm from "../components/shared/RegisterForm";
 
 const RegisterView = () => {
   return (
@@ -15,7 +10,7 @@ const RegisterView = () => {
         {/* Enlace al login */}
         <div className="text-center mt-6">
           <p className="text-gray-600">
-            ¿Ya tienes una cuenta?{' '}
+            ¿Ya tienes una cuenta?{" "}
             <Link
               to="/login"
               className="text-green-600 hover:text-green-700 font-medium underline"

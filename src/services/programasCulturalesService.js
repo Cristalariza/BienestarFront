@@ -3,7 +3,7 @@
  * Maneja todas las operaciones CRUD de programas culturales
  */
 
-import api from './api';
+import api from "./api";
 
 const programasCulturalesService = {
   /**
@@ -21,7 +21,7 @@ const programasCulturalesService = {
    */
   crear: async (programaData) => {
     try {
-      const response = await api.post('/programas-culturales', programaData);
+      const response = await api.post("/programas-culturales", programaData);
       return response.data;
     } catch (error) {
       throw error;
@@ -38,8 +38,8 @@ const programasCulturalesService = {
   obtenerTodos: async (params = {}) => {
     try {
       const { skip = 0, only_active = false } = params;
-      const response = await api.get('/programas-culturales', {
-        params: { skip, only_active }
+      const response = await api.get("/programas-culturales", {
+        params: { skip, only_active },
       });
       return response.data;
     } catch (error) {
@@ -69,7 +69,10 @@ const programasCulturalesService = {
    */
   actualizar: async (programaId, programaData) => {
     try {
-      const response = await api.put(`/programas-culturales/${programaId}`, programaData);
+      const response = await api.put(
+        `/programas-culturales/${programaId}`,
+        programaData
+      );
       return response.data;
     } catch (error) {
       throw error;
@@ -88,7 +91,7 @@ const programasCulturalesService = {
     } catch (error) {
       throw error;
     }
-  }
+  },
 };
 
 export default programasCulturalesService;

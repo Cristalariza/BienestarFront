@@ -3,7 +3,7 @@
  * Maneja todas las operaciones CRUD de inscripciones culturales
  */
 
-import api from './api';
+import api from "./api";
 
 const inscripcionesCulturalesService = {
   /**
@@ -17,7 +17,7 @@ const inscripcionesCulturalesService = {
    */
   obtenerTodas: async (params = {}) => {
     try {
-      const response = await api.get('/inscripciones', { params });
+      const response = await api.get("/inscripciones", { params });
       return response.data;
     } catch (error) {
       throw error;
@@ -45,7 +45,7 @@ const inscripcionesCulturalesService = {
    */
   crear: async (inscripcionData) => {
     try {
-      const response = await api.post('/inscripciones', inscripcionData);
+      const response = await api.post("/inscripciones", inscripcionData);
       return response.data;
     } catch (error) {
       throw error;
@@ -60,7 +60,10 @@ const inscripcionesCulturalesService = {
    */
   actualizar: async (inscripcionId, inscripcionData) => {
     try {
-      const response = await api.put(`/inscripciones/${inscripcionId}`, inscripcionData);
+      const response = await api.put(
+        `/inscripciones/${inscripcionId}`,
+        inscripcionData
+      );
       return response.data;
     } catch (error) {
       throw error;
@@ -75,9 +78,12 @@ const inscripcionesCulturalesService = {
    */
   cambiarEstado: async (inscripcionId, nuevoEstado) => {
     try {
-      const response = await api.patch(`/inscripciones/${inscripcionId}/estado`, {
-        estado_inscripcion: nuevoEstado
-      });
+      const response = await api.patch(
+        `/inscripciones/${inscripcionId}/estado`,
+        {
+          estado_inscripcion: nuevoEstado,
+        }
+      );
       return response.data;
     } catch (error) {
       throw error;
@@ -96,7 +102,7 @@ const inscripcionesCulturalesService = {
     } catch (error) {
       throw error;
     }
-  }
+  },
 };
 
 export default inscripcionesCulturalesService;

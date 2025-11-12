@@ -8,6 +8,7 @@ export const useAdminCultura = () => {
   const [editingPrograma, setEditingPrograma] = useState(null);
   const [loading, setLoading] = useState(false);
   const [programas, setProgramas] = useState([]);
+  const [estadoFiltro, setEstadoFiltro] = useState("activos");
   const toast = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -23,69 +24,74 @@ export const useAdminCultura = () => {
     estado: true,
   });
 
-  // Cargar programas desde el backend
   useEffect(() => {
     cargarProgramas();
-  }, []);
+  }, [estadoFiltro]);
 
   const cargarProgramas = async () => {
     try {
       setLoading(true);
-      console.log('Iniciando carga de programas culturales...');
 
-      const data = await programasCulturalesService.obtenerTodos({ skip: 0, only_active: false });
-      console.log('Programas cargados del backend:', data);
-      console.log('Tipo de datos recibidos:', typeof data, Array.isArray(data));
-
-      // Si data no es un array, intentar obtener el array correcto
+      // Determinar los parámetros según el filtro
+      let params = { skip: 0 };
+      if (estadoFiltro === "activos") {
+        params.only_active = true;
+      } else if (estadoFiltro === "eliminados") {
+        params.only_active = false;
+      }
+      const data = await programasCulturalesService.obtenerTodos(params);
       let programasArray = Array.isArray(data) ? data : [];
 
       if (!Array.isArray(data)) {
-        console.warn('Los datos recibidos no son un array, usando array vacío');
+        console.warn("Los datos recibidos no son un array, usando array vacío");
       }
 
-      // Mapear datos del backend al formato del frontend
       const programasFormateados = programasArray.map((programa, index) => {
-        console.log(`Mapeando programa ${index}:`, programa);
         return {
           programa_id: programa.programa_id || `temp-${index}`,
-          nombre: programa.nombre || 'Sin nombre',
-          descripcion: programa.descripcion || 'Sin descripción',
-          fecha_inicio: programa.fecha_inicio || '',
-          fecha_fin: programa.fecha_fin || '',
-          horario: programa.horario || '',
-          instructor: programa.instructor || '',
+          nombre: programa.nombre || "Sin nombre",
+          descripcion: programa.descripcion || "Sin descripción",
+          fecha_inicio: programa.fecha_inicio || "",
+          fecha_fin: programa.fecha_fin || "",
+          horario: programa.horario || "",
+          instructor: programa.instructor || "",
           cupos_disponibles: programa.cupos_disponibles || 0,
           cupos_totales: programa.cupos_totales || 0,
-          ubicacion: programa.ubicacion || '',
-          estado: programa.estado !== undefined ? programa.estado : true,
+          ubicacion: programa.ubicacion || "",
+          estado:
+            programa.estado !== undefined
+              ? programa.estado
+              : programa.activo !== undefined
+              ? programa.activo
+              : true,
           created_at: programa.created_at || new Date().toISOString(),
         };
       });
 
-      console.log('Programas formateados:', programasFormateados);
-      setProgramas(programasFormateados);
-      console.log('Programas establecidos correctamente');
+      let filtrados = programasFormateados;
+      if (estadoFiltro === "eliminados") {
+        filtrados = programasFormateados.filter((p) => p.estado === false);
+      }
+      setProgramas(filtrados);
     } catch (error) {
-      console.error('Error completo al cargar programas:', error);
-      console.error('Detalles del error:', {
+      console.error("Error completo al cargar programas:", error);
+      console.error("Detalles del error:", {
         message: error.message,
         status: error.status,
-        data: error.data
+        data: error.data,
       });
 
-      // No mostrar toast si el backend no está corriendo
       if (error.status !== 503) {
         toast.current?.show({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar los programas culturales. Verifica la consola para más detalles.',
-          life: 3000
+          severity: "error",
+          summary: "Error",
+          detail:
+            "Error al cargar los programas culturales. Verifica la consola para más detalles.",
+          life: 3000,
         });
       }
       setProgramas([]);
     } finally {
-      console.log('Finalizando carga de programas');
       setLoading(false);
     }
   };
@@ -93,7 +99,10 @@ export const useAdminCultura = () => {
   // Validaciones
   const validateForm = () => {
     if (!formData.nombre || !formData.nombre.trim()) {
-      return { isValid: false, message: "El nombre del programa es obligatorio" };
+      return {
+        isValid: false,
+        message: "El nombre del programa es obligatorio",
+      };
     }
     if (formData.nombre.length < 3) {
       return {
@@ -104,18 +113,23 @@ export const useAdminCultura = () => {
 
     // Validar nombre único
     const nombreExiste = programas.some((programa) => {
-      // Si estamos editando, excluir el programa actual de la validación
-      if (editingPrograma && programa.programa_id === editingPrograma.programa_id) {
+      if (
+        editingPrograma &&
+        programa.programa_id === editingPrograma.programa_id
+      ) {
         return false;
       }
-      // Comparar nombres en minúsculas para hacer la validación case-insensitive
-      return programa.nombre.toLowerCase().trim() === formData.nombre.toLowerCase().trim();
+      return (
+        programa.nombre.toLowerCase().trim() ===
+        formData.nombre.toLowerCase().trim()
+      );
     });
 
     if (nombreExiste) {
       return {
         isValid: false,
-        message: "Ya existe un programa con este nombre. Por favor, elige otro nombre.",
+        message:
+          "Ya existe un programa con este nombre. Por favor, elige otro nombre.",
       };
     }
 
@@ -135,7 +149,10 @@ export const useAdminCultura = () => {
       return { isValid: false, message: "El horario es obligatorio" };
     }
     if (!formData.instructor || !formData.instructor.trim()) {
-      return { isValid: false, message: "El nombre del instructor es obligatorio" };
+      return {
+        isValid: false,
+        message: "El nombre del instructor es obligatorio",
+      };
     }
     if (formData.instructor.length < 3) {
       return {
@@ -150,7 +167,10 @@ export const useAdminCultura = () => {
       return { isValid: false, message: "La fecha de fin es obligatoria" };
     }
     if (new Date(formData.fecha_fin) < new Date(formData.fecha_inicio)) {
-      return { isValid: false, message: "La fecha de fin debe ser posterior a la fecha de inicio" };
+      return {
+        isValid: false,
+        message: "La fecha de fin debe ser posterior a la fecha de inicio",
+      };
     }
     if (!formData.ubicacion || !formData.ubicacion.trim()) {
       return { isValid: false, message: "La ubicación es obligatoria" };
@@ -219,41 +239,44 @@ export const useAdminCultura = () => {
     try {
       setLoading(true);
 
-      // Consultar el programa actualizado del backend
-      console.log('Consultando programa:', programa.programa_id);
-      const programaActualizado = await programasCulturalesService.obtenerPorId(programa.programa_id);
-      console.log('Programa obtenido del backend:', programaActualizado);
+      console.log("Consultando programa:", programa.programa_id);
+      const programaActualizado = await programasCulturalesService.obtenerPorId(
+        programa.programa_id
+      );
+      console.log("Programa obtenido del backend:", programaActualizado);
 
       setEditingPrograma(programaActualizado);
 
-      // Convertir fechas ISO a formato yyyy-MM-dd para los inputs de tipo date
       const formatearFecha = (fechaISO) => {
-        if (!fechaISO) return '';
+        if (!fechaISO) return "";
         const fecha = new Date(fechaISO);
-        return fecha.toISOString().split('T')[0];
+        return fecha.toISOString().split("T")[0];
       };
 
       setFormData({
-        nombre: programaActualizado.nombre || '',
-        descripcion: programaActualizado.descripcion || '',
+        nombre: programaActualizado.nombre || "",
+        descripcion: programaActualizado.descripcion || "",
         fecha_inicio: formatearFecha(programaActualizado.fecha_inicio),
         fecha_fin: formatearFecha(programaActualizado.fecha_fin),
-        horario: programaActualizado.horario || '',
-        instructor: programaActualizado.instructor || '',
+        horario: programaActualizado.horario || "",
+        instructor: programaActualizado.instructor || "",
         cupos_totales: programaActualizado.cupos_totales || 30,
         cupos_disponibles: programaActualizado.cupos_disponibles || 0,
-        ubicacion: programaActualizado.ubicacion || '',
-        estado: programaActualizado.activo !== undefined ? programaActualizado.activo : programaActualizado.estado,
+        ubicacion: programaActualizado.ubicacion || "",
+        estado:
+          programaActualizado.activo !== undefined
+            ? programaActualizado.activo
+            : programaActualizado.estado,
       });
 
       setShowModal(true);
     } catch (error) {
-      console.error('Error al cargar el programa para editar:', error);
+      console.error("Error al cargar el programa para editar:", error);
       toast.current?.show({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'No se pudo cargar la información del programa',
-        life: 3000
+        severity: "error",
+        summary: "Error",
+        detail: "No se pudo cargar la información del programa",
+        life: 3000,
       });
     } finally {
       setLoading(false);
@@ -281,7 +304,7 @@ export const useAdminCultura = () => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -290,10 +313,10 @@ export const useAdminCultura = () => {
 
     if (!validation.isValid) {
       toast.current?.show({
-        severity: 'warn',
-        summary: 'Validación',
+        severity: "warn",
+        summary: "Validación",
         detail: validation.message,
-        life: 3000
+        life: 3000,
       });
       return false;
     }
@@ -316,22 +339,29 @@ export const useAdminCultura = () => {
       };
 
       if (editingPrograma) {
-        console.log("Actualizando programa:", editingPrograma.programa_id, programaData);
-        await programasCulturalesService.actualizar(editingPrograma.programa_id, programaData);
+        console.log(
+          "Actualizando programa:",
+          editingPrograma.programa_id,
+          programaData
+        );
+        await programasCulturalesService.actualizar(
+          editingPrograma.programa_id,
+          programaData
+        );
         toast.current?.show({
-          severity: 'success',
-          summary: 'Éxito',
-          detail: 'Programa cultural actualizado exitosamente',
-          life: 3000
+          severity: "success",
+          summary: "Éxito",
+          detail: "Programa cultural actualizado exitosamente",
+          life: 3000,
         });
       } else {
         console.log("Creando programa:", programaData);
         await programasCulturalesService.crear(programaData);
         toast.current?.show({
-          severity: 'success',
-          summary: 'Éxito',
-          detail: 'Programa cultural creado exitosamente',
-          life: 3000
+          severity: "success",
+          summary: "Éxito",
+          detail: "Programa cultural creado exitosamente",
+          life: 3000,
         });
       }
 
@@ -340,12 +370,14 @@ export const useAdminCultura = () => {
       handleCloseModal();
       return true;
     } catch (error) {
-      console.error('Error al guardar programa:', error);
+      console.error("Error al guardar programa:", error);
       toast.current?.show({
-        severity: 'error',
-        summary: 'Error',
-        detail: error?.message || 'Error al guardar el programa. Por favor, intenta nuevamente.',
-        life: 3000
+        severity: "error",
+        summary: "Error",
+        detail:
+          error?.message ||
+          "Error al guardar el programa. Por favor, intenta nuevamente.",
+        life: 3000,
       });
       return false;
     } finally {
@@ -360,21 +392,22 @@ export const useAdminCultura = () => {
         console.log("Eliminando programa:", programaId);
         await programasCulturalesService.eliminar(programaId);
         toast.current?.show({
-          severity: 'success',
-          summary: 'Éxito',
-          detail: 'Programa cultural eliminado exitosamente',
-          life: 3000
+          severity: "success",
+          summary: "Éxito",
+          detail: "Programa cultural eliminado exitosamente",
+          life: 3000,
         });
 
         // Recargar programas
         await cargarProgramas();
       } catch (error) {
-        console.error('Error al eliminar programa:', error);
+        console.error("Error al eliminar programa:", error);
         toast.current?.show({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al eliminar el programa. Por favor, intenta nuevamente.',
-          life: 3000
+          severity: "error",
+          summary: "Error",
+          detail:
+            "Error al eliminar el programa. Por favor, intenta nuevamente.",
+          life: 3000,
         });
       } finally {
         setLoading(false);
@@ -392,7 +425,7 @@ export const useAdminCultura = () => {
         // Obtener el programa completo
         const programa = programas.find((p) => p.programa_id === programaId);
         if (!programa) {
-          throw new Error('Programa no encontrado');
+          throw new Error("Programa no encontrado");
         }
 
         // Actualizar solo el estado
@@ -406,15 +439,15 @@ export const useAdminCultura = () => {
           cupos_totales: programa.cupos_totales,
           cupos_disponibles: programa.cupos_disponibles,
           ubicacion: programa.ubicacion,
-          estado: !currentEstado, // Invertir el estado actual
+          estado: !currentEstado,
         };
 
         await programasCulturalesService.actualizar(programaId, programaData);
         toast.current?.show({
-          severity: 'success',
-          summary: 'Éxito',
+          severity: "success",
+          summary: "Éxito",
           detail: `Programa ${action}do exitosamente`,
-          life: 3000
+          life: 3000,
         });
 
         // Recargar programas
@@ -422,10 +455,10 @@ export const useAdminCultura = () => {
       } catch (error) {
         console.error(`Error al ${action} programa:`, error);
         toast.current?.show({
-          severity: 'error',
-          summary: 'Error',
+          severity: "error",
+          summary: "Error",
           detail: `Error al ${action} el programa. Por favor, intenta nuevamente.`,
-          life: 3000
+          life: 3000,
         });
       } finally {
         setLoading(false);
@@ -442,6 +475,8 @@ export const useAdminCultura = () => {
     loading,
     toast,
     programas,
+    estadoFiltro,
+    setEstadoFiltro,
 
     getFilteredData,
     getPaginatedData,
