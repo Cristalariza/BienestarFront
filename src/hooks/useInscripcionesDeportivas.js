@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { inscripcionesDeportivasService, personasService } from "../services";
+import { inscripcionesDeportivasService, personasService, programasDeportivosService } from "../services";
 
 export const useInscripcionesDeportivas = () => {
   const [inscripciones, setInscripciones] = useState([]);
@@ -23,48 +23,69 @@ export const useInscripcionesDeportivas = () => {
       setLoading(true);
       console.log('Cargando inscripciones deportivas...');
 
-      // Cargar inscripciones
-      const inscripcionesData = await inscripcionesDeportivasService.obtenerTodas({
-        skip: 0,
-        limit: 1000
-      });
+      // Cargar inscripciones y programas deportivos en paralelo
+      const [inscripcionesData, programasData] = await Promise.all([
+        inscripcionesDeportivasService.obtenerTodas({
+          skip: 0,
+          limit: 1000
+        }),
+        programasDeportivosService.obtenerTodos({
+          skip: 0,
+          limit: 1000,
+          only_active: false
+        })
+      ]);
 
       console.log('Inscripciones cargadas:', inscripcionesData);
+      console.log('Programas deportivos cargados:', programasData);
+      
       const inscripcionesArray = Array.isArray(inscripcionesData) ? inscripcionesData : [];
+      const programasArray = Array.isArray(programasData) ? programasData : [];
+      
+      // Crear un mapa de programas por ID para búsqueda rápida
+      const programasMap = {};
+      programasArray.forEach(programa => {
+        programasMap[programa.programa_deportivo_id || programa.id] = programa;
+      });
+
       setInscripciones(inscripcionesArray);
 
-      // Cargar todas las personas
-      console.log('Cargando personas...');
-      const personasData = await personasService.obtenerTodas();
-      console.log('Personas cargadas:', personasData);
-      const personasArray = Array.isArray(personasData) ? personasData : [];
-
-      // Hacer el cruce entre inscripciones y personas
+      // Mapear inscripciones con la estructura de la API
       const inscripcionesConInfo = inscripcionesArray.map((inscripcion) => {
-        // Buscar la persona por num_doc que coincida con identificacion
-        const persona = personasArray.find(
-          (p) => p.num_doc === inscripcion.identificacion
-        );
+        // Obtener nombre completo desde la API (nombres + apellidos) o desde formulario_completo
+        const nombreCompleto = inscripcion.nombres && inscripcion.apellidos
+          ? `${inscripcion.nombres} ${inscripcion.apellidos}`
+          : inscripcion.formulario_completo?.informacion_personal?.nombre_completo
+          ? inscripcion.formulario_completo.informacion_personal.nombre_completo
+          : 'N/A';
 
-        if (persona) {
-          return {
-            ...inscripcion,
-            persona: persona,
-            nombre_completo: `${persona.primer_nombre || ''} ${persona.segundo_nombre || ''} ${persona.primer_ape || ''} ${persona.segundo_ape || ''}`.trim(),
-            numero_identificacion: persona.num_doc,
-            email: persona.email,
-            tiene_info: true
-          };
-        } else {
-          return {
-            ...inscripcion,
-            persona: null,
-            nombre_completo: 'N/A',
-            numero_identificacion: inscripcion.identificacion,
-            email: 'N/A',
-            tiene_info: false
-          };
-        }
+        // Obtener email desde la API o desde formulario_completo
+        const email = inscripcion.email || 
+          inscripcion.formulario_completo?.informacion_personal?.email || 
+          'N/A';
+
+        // Obtener información del programa deportivo
+        const programaId = inscripcion.programa_id || inscripcion.formulario_completo?.programa_deportivo_id;
+        const programa = programaId ? programasMap[programaId] : null;
+        const programaNombre = programa?.nombre || 
+          inscripcion.formulario_completo?.deporte?.nombre || 
+          'Programa no especificado';
+
+        // Determinar si tiene información completa
+        const tieneInfo = !!(inscripcion.nombres && inscripcion.apellidos && inscripcion.email) ||
+          !!(inscripcion.formulario_completo?.informacion_personal);
+
+        return {
+          ...inscripcion,
+          nombre_completo: nombreCompleto,
+          numero_identificacion: inscripcion.identificacion,
+          email: email,
+          programa_deportivo: {
+            id: programaId,
+            nombre: programaNombre
+          },
+          tiene_info: tieneInfo
+        };
       });
 
       console.log('Inscripciones con información cruzada:', inscripcionesConInfo);
@@ -116,7 +137,24 @@ export const useInscripcionesDeportivas = () => {
       setLoading(true);
       console.log(`Cambiando estado de inscripción ${inscripcionId} a ${nuevoEstado}`);
 
-      await inscripcionesDeportivasService.cambiarEstado(inscripcionId, nuevoEstado);
+      // Usar los endpoints específicos según el estado
+      let resultado;
+      switch (nuevoEstado.toLowerCase()) {
+        case 'aprobada':
+        case 'aprobado':
+          resultado = await inscripcionesDeportivasService.aprobar(inscripcionId);
+          break;
+        case 'rechazada':
+        case 'rechazado':
+          resultado = await inscripcionesDeportivasService.rechazar(inscripcionId);
+          break;
+        case 'cancelada':
+        case 'cancelado':
+          resultado = await inscripcionesDeportivasService.cancelar(inscripcionId);
+          break;
+        default:
+          throw new Error(`Estado no válido: ${nuevoEstado}`);
+      }
 
       toast.current?.show({
         severity: 'success',
@@ -129,11 +167,12 @@ export const useInscripcionesDeportivas = () => {
       await cargarInscripciones();
     } catch (error) {
       console.error('Error al cambiar estado:', error);
+      const errorMessage = error.response?.data?.detail || error.message || 'Error desconocido';
       toast.current?.show({
         severity: 'error',
         summary: 'Error',
-        detail: 'Error al cambiar el estado de la inscripción',
-        life: 3000
+        detail: `Error al cambiar el estado: ${errorMessage}`,
+        life: 5000
       });
     } finally {
       setLoading(false);
@@ -158,15 +197,17 @@ export const useInscripcionesDeportivas = () => {
     const term = searchTerm.toLowerCase();
     return resultado.filter((inscripcion) => {
       const nombre = inscripcion.nombre_completo || '';
-      const numeroDoc = inscripcion.numero_identificacion || '';
+      const numeroDoc = inscripcion.identificacion || inscripcion.numero_identificacion || '';
       const email = inscripcion.email || '';
       const programa = inscripcion.programa_deportivo?.nombre || '';
+      const programaAcademico = inscripcion.programa_academico || '';
 
       return (
         nombre.toLowerCase().includes(term) ||
         numeroDoc.includes(term) ||
         email.toLowerCase().includes(term) ||
-        programa.toLowerCase().includes(term)
+        programa.toLowerCase().includes(term) ||
+        programaAcademico.toLowerCase().includes(term)
       );
     });
   };

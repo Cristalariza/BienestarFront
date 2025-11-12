@@ -51,33 +51,89 @@ const Inscripcion = () => {
 
   // Mapear inscripciones del backend al formato esperado por el componente
   const inscripcionesFormateadas = useMemo(() => {
-    return filteredInscripciones.map((inscripcion) => ({
-      id: inscripcion.inscripcion_id,
-      nombreCompleto: inscripcion.nombre_completo || 'N/A',
-      numeroIdentificacion: inscripcion.numero_identificacion || 'N/A',
-      email: inscripcion.email || inscripcion.correo_electronico || 'N/A',
-      programaDeportivo: inscripcion.programa_deportivo?.nombre || 'N/A',
-      estadoInscripcion: inscripcion.estado_inscripcion || 'PENDIENTE',
-      fechaInscripcion: inscripcion.fecha_inscripcion || inscripcion.created_at,
-      // Rest of the mapping would go here from the backend
-      ...inscripcion
-    }));
+    return filteredInscripciones.map((inscripcion) => {
+      // Formatear fecha de inscripción
+      const fechaInscripcion = inscripcion.fecha_inscripcion 
+        ? new Date(inscripcion.fecha_inscripcion).toLocaleDateString('es-ES', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          })
+        : inscripcion.created_at
+        ? new Date(inscripcion.created_at).toLocaleDateString('es-ES', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+          })
+        : 'N/A';
+
+      return {
+        id: inscripcion.formulario_dept_id || inscripcion.programa_id + '-' + inscripcion.identificacion,
+        formulario_dept_id: inscripcion.formulario_dept_id, // ID principal para usar en los endpoints
+        nombreCompleto: inscripcion.nombre_completo || 'N/A',
+        numeroIdentificacion: inscripcion.identificacion || inscripcion.numero_identificacion || 'N/A',
+        email: inscripcion.email || 'N/A',
+        telefono: inscripcion.telefono || inscripcion.formulario_completo?.informacion_personal?.celular || 'N/A',
+        programaDeportivo: inscripcion.programa_deportivo?.nombre || 'N/A',
+        programaAcademico: inscripcion.programa_academico || inscripcion.formulario_completo?.informacion_academica?.carrera || 'N/A',
+        semestre: inscripcion.semestre || inscripcion.formulario_completo?.informacion_academica?.semestre || 'N/A',
+        estadoInscripcion: inscripcion.estado_inscripcion || 'pendiente',
+        fechaInscripcion: fechaInscripcion,
+        // Mantener todos los datos originales para el modal
+        ...inscripcion
+      };
+    });
   }, [filteredInscripciones]);
 
   const columns = [
     {
       key: "nombreCompleto",
-      label: "Nombre",
+      label: "Nombre Completo",
       sortable: true,
     },
     {
       key: "numeroIdentificacion",
-      label: "Cédula",
+      label: "Identificación",
       sortable: true,
     },
     {
       key: "email",
       label: "Correo",
+      sortable: true,
+    },
+    {
+      key: "programaDeportivo",
+      label: "Programa Deportivo",
+      sortable: true,
+    },
+    {
+      key: "programaAcademico",
+      label: "Programa Académico",
+      sortable: true,
+    },
+    {
+      key: "estadoInscripcion",
+      label: "Estado",
+      sortable: true,
+      render: (value) => (
+        <span
+          className={`${styles.badge} ${
+            value === "aprobada" || value === "APROBADA"
+              ? styles.badgeSuccess
+              : value === "rechazada" || value === "RECHAZADA" || value === "cancelada" || value === "CANCELADA"
+              ? styles.badgeError
+              : styles.badgePending
+          }`}
+        >
+          {value?.toUpperCase() || "PENDIENTE"}
+        </span>
+      ),
+    },
+    {
+      key: "fechaInscripcion",
+      label: "Fecha Inscripción",
       sortable: true,
     },
     {
@@ -107,17 +163,63 @@ const Inscripcion = () => {
               <div className={styles.dropdownMenu}>
                 <button
                   className={`${styles.dropdownItem} ${styles.approve}`}
-                  onClick={() => handleEstadoChange(row.id, "APROBADA")}
+                  onClick={() => {
+                    const id = row.formulario_dept_id || row.id;
+                    if (!id) {
+                      toast.current?.show({
+                        severity: 'warn',
+                        summary: 'Advertencia',
+                        detail: 'No se puede cambiar el estado: falta el ID de la inscripción',
+                        life: 3000
+                      });
+                      return;
+                    }
+                    handleEstadoChange(id, "aprobada");
+                  }}
+                  disabled={!row.formulario_dept_id && !row.id}
                 >
                   <i className="pi pi-check"></i>
-                  Aceptar
+                  Aprobar
                 </button>
                 <button
                   className={`${styles.dropdownItem} ${styles.reject}`}
-                  onClick={() => handleEstadoChange(row.id, "RECHAZADA")}
+                  onClick={() => {
+                    const id = row.formulario_dept_id || row.id;
+                    if (!id) {
+                      toast.current?.show({
+                        severity: 'warn',
+                        summary: 'Advertencia',
+                        detail: 'No se puede cambiar el estado: falta el ID de la inscripción',
+                        life: 3000
+                      });
+                      return;
+                    }
+                    handleEstadoChange(id, "rechazada");
+                  }}
+                  disabled={!row.formulario_dept_id && !row.id}
                 >
                   <i className="pi pi-times"></i>
                   Rechazar
+                </button>
+                <button
+                  className={`${styles.dropdownItem} ${styles.reject}`}
+                  onClick={() => {
+                    const id = row.formulario_dept_id || row.id;
+                    if (!id) {
+                      toast.current?.show({
+                        severity: 'warn',
+                        summary: 'Advertencia',
+                        detail: 'No se puede cambiar el estado: falta el ID de la inscripción',
+                        life: 3000
+                      });
+                      return;
+                    }
+                    handleEstadoChange(id, "cancelada");
+                  }}
+                  disabled={!row.formulario_dept_id && !row.id}
+                >
+                  <i className="pi pi-ban"></i>
+                  Cancelar
                 </button>
               </div>
             )}
@@ -207,31 +309,51 @@ const Inscripcion = () => {
                 <h3 className={styles.sectionTitle}>📋 Información General</h3>
                 <div className={styles.detailGrid}>
                   <div className={styles.detailItem}>
-                    <span className={styles.detailLabel}>Programa:</span>
+                    <span className={styles.detailLabel}>Programa Deportivo:</span>
                     <span className={styles.detailValue}>
-                      {selectedInscripcion.programaDeportivo}
+                      {selectedInscripcion.programaDeportivo || selectedInscripcion.programa_deportivo?.nombre || 'N/A'}
                     </span>
                   </div>
                   <div className={styles.detailItem}>
                     <span className={styles.detailLabel}>Estado:</span>
                     <span
                       className={`${styles.detailValue} ${styles.badge} ${
-                        selectedInscripcion.estadoInscripcion === "APROBADA"
+                        selectedInscripcion.estadoInscripcion === "aprobada" || selectedInscripcion.estado_inscripcion === "aprobada"
                           ? styles.badgeSuccess
-                          : selectedInscripcion.estadoInscripcion === "RECHAZADA"
+                          : selectedInscripcion.estadoInscripcion === "rechazada" || selectedInscripcion.estado_inscripcion === "rechazada" || 
+                             selectedInscripcion.estadoInscripcion === "cancelada" || selectedInscripcion.estado_inscripcion === "cancelada"
                           ? styles.badgeError
                           : styles.badgePending
                       }`}
                     >
-                      {selectedInscripcion.estadoInscripcion}
+                      {(selectedInscripcion.estadoInscripcion || selectedInscripcion.estado_inscripcion || 'pendiente').toUpperCase()}
                     </span>
                   </div>
                   <div className={styles.detailItem}>
                     <span className={styles.detailLabel}>Fecha Inscripción:</span>
                     <span className={styles.detailValue}>
-                      {selectedInscripcion.fechaInscripcion}
+                      {selectedInscripcion.fechaInscripcion || 
+                        (selectedInscripcion.fecha_inscripcion 
+                          ? new Date(selectedInscripcion.fecha_inscripcion).toLocaleString('es-ES')
+                          : 'N/A')}
                     </span>
                   </div>
+                  {selectedInscripcion.programaAcademico && (
+                    <div className={styles.detailItem}>
+                      <span className={styles.detailLabel}>Programa Académico:</span>
+                      <span className={styles.detailValue}>
+                        {selectedInscripcion.programaAcademico}
+                      </span>
+                    </div>
+                  )}
+                  {selectedInscripcion.semestre && (
+                    <div className={styles.detailItem}>
+                      <span className={styles.detailLabel}>Semestre:</span>
+                      <span className={styles.detailValue}>
+                        {selectedInscripcion.semestre}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </section>
 
@@ -241,23 +363,89 @@ const Inscripcion = () => {
                   <div className={styles.detailItem}>
                     <span className={styles.detailLabel}>Nombre Completo:</span>
                     <span className={styles.detailValue}>
-                      {selectedInscripcion.nombreCompleto}
+                      {selectedInscripcion.nombreCompleto || 
+                        selectedInscripcion.formulario_completo?.informacion_personal?.nombre_completo ||
+                        `${selectedInscripcion.nombres || ''} ${selectedInscripcion.apellidos || ''}`.trim() || 'N/A'}
                     </span>
                   </div>
                   <div className={styles.detailItem}>
                     <span className={styles.detailLabel}>No. Identificación:</span>
                     <span className={styles.detailValue}>
-                      {selectedInscripcion.numeroIdentificacion}
+                      {selectedInscripcion.numeroIdentificacion || selectedInscripcion.identificacion || 'N/A'}
                     </span>
                   </div>
                   <div className={styles.detailItem}>
                     <span className={styles.detailLabel}>Email:</span>
                     <span className={styles.detailValue}>
-                      {selectedInscripcion.email}
+                      {selectedInscripcion.email || 'N/A'}
                     </span>
                   </div>
+                  {(selectedInscripcion.telefono || selectedInscripcion.formulario_completo?.informacion_personal?.celular) && (
+                    <div className={styles.detailItem}>
+                      <span className={styles.detailLabel}>Teléfono:</span>
+                      <span className={styles.detailValue}>
+                        {selectedInscripcion.telefono || selectedInscripcion.formulario_completo?.informacion_personal?.celular}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </section>
+
+              {selectedInscripcion.formulario_completo?.informacion_academica && (
+                <section className={styles.detailSection}>
+                  <h3 className={styles.sectionTitle}>🎓 Información Académica</h3>
+                  <div className={styles.detailGrid}>
+                    {selectedInscripcion.formulario_completo.informacion_academica.carrera && (
+                      <div className={styles.detailItem}>
+                        <span className={styles.detailLabel}>Carrera:</span>
+                        <span className={styles.detailValue}>
+                          {selectedInscripcion.formulario_completo.informacion_academica.carrera}
+                        </span>
+                      </div>
+                    )}
+                    {selectedInscripcion.formulario_completo.informacion_academica.semestre && (
+                      <div className={styles.detailItem}>
+                        <span className={styles.detailLabel}>Semestre:</span>
+                        <span className={styles.detailValue}>
+                          {selectedInscripcion.formulario_completo.informacion_academica.semestre}
+                        </span>
+                      </div>
+                    )}
+                    {selectedInscripcion.formulario_completo.informacion_academica.promedio && (
+                      <div className={styles.detailItem}>
+                        <span className={styles.detailLabel}>Promedio:</span>
+                        <span className={styles.detailValue}>
+                          {selectedInscripcion.formulario_completo.informacion_academica.promedio}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </section>
+              )}
+
+              {selectedInscripcion.contacto_emergencia && (
+                <section className={styles.detailSection}>
+                  <h3 className={styles.sectionTitle}>📞 Contacto de Emergencia</h3>
+                  <div className={styles.detailGrid}>
+                    {selectedInscripcion.contacto_emergencia.madre && (
+                      <div className={styles.detailItem}>
+                        <span className={styles.detailLabel}>Madre:</span>
+                        <span className={styles.detailValue}>
+                          {selectedInscripcion.contacto_emergencia.madre.nombre} - {selectedInscripcion.contacto_emergencia.madre.celular}
+                        </span>
+                      </div>
+                    )}
+                    {selectedInscripcion.contacto_emergencia.padre && (
+                      <div className={styles.detailItem}>
+                        <span className={styles.detailLabel}>Padre:</span>
+                        <span className={styles.detailValue}>
+                          {selectedInscripcion.contacto_emergencia.padre.nombre} - {selectedInscripcion.contacto_emergencia.padre.celular}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </section>
+              )}
             </div>
 
             <div className={styles.modalFooter}>

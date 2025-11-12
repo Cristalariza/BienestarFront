@@ -21,3 +21,4 @@ export { default as administrativosService } from './administrativosService';
 export { default as programasDeportivosService } from './programasDeportivosService';
 export { default as inscripcionesDeportivasService } from './inscripcionesDeportivasService';
 export { default as inscripcionesCulturalesService } from './inscripcionesCulturalesService';
+export { default as registrosAsistenciaService } from './registrosAsistenciaService';
