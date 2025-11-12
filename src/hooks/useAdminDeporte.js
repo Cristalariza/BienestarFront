@@ -32,10 +32,7 @@ export const useAdminDeporte = () => {
     try {
       setLoading(true);
 
-      let onlyActiveParam = false;
-      if (estadoFiltro === "activos") {
-        onlyActiveParam = true;
-      }
+      const onlyActiveParam = estadoFiltro === "activos" ? true : false;
       const data = await programasDeportivosService.obtenerTodos({
         skip: 0,
         limit: 1000,
@@ -43,33 +40,29 @@ export const useAdminDeporte = () => {
       });
 
       let programasArray = Array.isArray(data) ? data : [];
-
       if (!Array.isArray(data)) {
         console.warn("Los datos recibidos no son un array, usando array vacío");
       }
-
-      const programasFormateados = programasArray.map((programa, index) => {
-        return {
-          programa_id: programa.programa_id || `temp-${index}`,
-          nombre: programa.nombre || "Sin nombre",
-          deporte: programa.deporte || "",
-          descripcion: programa.descripcion || "Sin descripción",
-          fecha_inicio: programa.fecha_inicio || "",
-          fecha_fin: programa.fecha_fin || "",
-          horario: programa.horario || "",
-          instructor: programa.instructor || "",
-          cupos_disponibles: programa.cupos_disponibles || 0,
-          ubicacion: programa.ubicacion || "",
-          estado: programa.estado !== undefined ? programa.estado : true,
-          created_at: programa.created_at || new Date().toISOString(),
-        };
-      });
-
-      let filtrados = programasFormateados;
-      if (estadoFiltro === "eliminados") {
-        filtrados = programasFormateados.filter((p) => p.estado === false);
-      }
-      setProgramas(filtrados);
+      const programasFormateados = programasArray.map((programa, index) => ({
+        programa_id: programa.programa_id || `temp-${index}`,
+        nombre: programa.nombre || "Sin nombre",
+        deporte: programa.deporte || "",
+        descripcion: programa.descripcion || "Sin descripción",
+        fecha_inicio: programa.fecha_inicio || "",
+        fecha_fin: programa.fecha_fin || "",
+        horario: programa.horario || "",
+        instructor: programa.instructor || "",
+        cupos_disponibles: programa.cupos_disponibles || 0,
+        ubicacion: programa.ubicacion || "",
+        estado:
+          programa.estado !== undefined
+            ? programa.estado
+            : programa.activo !== undefined
+            ? programa.activo
+            : true,
+        created_at: programa.created_at || new Date().toISOString(),
+      }));
+      setProgramas(programasFormateados);
     } catch (error) {
       console.error("Error completo al cargar programas:", error);
       console.error("Detalles del error:", {
@@ -334,8 +327,15 @@ export const useAdminDeporte = () => {
         horario: formData.horario,
         instructor: formData.instructor,
         cupos_disponibles: parseInt(formData.cupos_disponibles),
+        cupos_maximos: parseInt(formData.cupos_disponibles),
         ubicacion: formData.ubicacion,
         estado: formData.estado,
+        nivel: formData.nivel || "intermedio",
+        requisitos: formData.requisitos || [
+          "Ser estudiante activo",
+          "Presentar certificado médico",
+          "Tener seguro estudiantil vigente",
+        ],
       };
 
       if (editingPrograma) {

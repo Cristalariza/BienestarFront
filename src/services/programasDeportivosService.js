@@ -3,7 +3,7 @@
  * Maneja todas las operaciones CRUD de programas deportivos e inscripciones
  */
 
-import api from './api';
+import api from "./api";
 
 const programasDeportivosService = {
   /**
@@ -22,7 +22,7 @@ const programasDeportivosService = {
    */
   crear: async (programaData) => {
     try {
-      const response = await api.post('/programas-deportivos', programaData);
+      const response = await api.post("/programas-deportivos", programaData);
       return response.data;
     } catch (error) {
       throw error;
@@ -40,8 +40,8 @@ const programasDeportivosService = {
   obtenerTodos: async (params = {}) => {
     try {
       const { skip = 0, limit = 100, only_active = true } = params;
-      const response = await api.get('/programas-deportivos', {
-        params: { skip, limit, only_active }
+      const response = await api.get("/programas-deportivos", {
+        params: { skip, limit, only_active },
       });
       return response.data;
     } catch (error) {
@@ -63,7 +63,10 @@ const programasDeportivosService = {
    */
   crearInscripcion: async (inscripcionData) => {
     try {
-      const response = await api.post('/inscripciones-deportivas', inscripcionData);
+      const response = await api.post(
+        "/inscripciones-deportivas",
+        inscripcionData
+      );
       return response.data;
     } catch (error) {
       throw error;
@@ -80,8 +83,8 @@ const programasDeportivosService = {
   obtenerInscripciones: async (params = {}) => {
     try {
       const { skip = 0, limit = 100 } = params;
-      const response = await api.get('/inscripciones-deportivas', {
-        params: { skip, limit }
+      const response = await api.get("/inscripciones-deportivas", {
+        params: { skip, limit },
       });
       return response.data;
     } catch (error) {
@@ -96,7 +99,9 @@ const programasDeportivosService = {
    */
   obtenerInscripcionesPorEstudiante: async (identificacion) => {
     try {
-      const response = await api.get(`/estudiantes/${identificacion}/inscripciones-deportivas`);
+      const response = await api.get(
+        `/estudiantes/${identificacion}/inscripciones-deportivas`
+      );
       return response.data;
     } catch (error) {
       throw error;
@@ -111,7 +116,10 @@ const programasDeportivosService = {
    */
   actualizar: async (id, programaData) => {
     try {
-      const response = await api.put(`/programas-deportivos/${id}`, programaData);
+      const response = await api.put(
+        `/programas-deportivos/${id}`,
+        programaData
+      );
       return response.data;
     } catch (error) {
       throw error;
@@ -125,12 +133,14 @@ const programasDeportivosService = {
    */
   eliminar: async (id) => {
     try {
-      const response = await api.delete(`/programas-deportivos/${id}`);
+      const response = await api.delete(
+        `/programas-deportivos/soft-delete/${id}`
+      );
       return response.data;
     } catch (error) {
       throw error;
     }
-  }
+  },
 };
 
 export default programasDeportivosService;
