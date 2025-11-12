@@ -8,6 +8,7 @@ export const useAdminDeporte = () => {
   const [editingPrograma, setEditingPrograma] = useState(null);
   const [loading, setLoading] = useState(false);
   const [programas, setProgramas] = useState([]);
+  const [estadoFiltro, setEstadoFiltro] = useState("activos");
   const toast = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -23,69 +24,64 @@ export const useAdminDeporte = () => {
     estado: true,
   });
 
-  // Cargar programas desde el backend
   useEffect(() => {
     cargarProgramas();
-  }, []);
+  }, [estadoFiltro]);
 
   const cargarProgramas = async () => {
     try {
       setLoading(true);
-      console.log('Iniciando carga de programas deportivos...');
 
-      const data = await programasDeportivosService.obtenerTodos({ skip: 0, limit: 1000, only_active: false });
-      console.log('Programas cargados del backend:', data);
-      console.log('Tipo de datos recibidos:', typeof data, Array.isArray(data));
-
-      // Si data no es un array, intentar obtener el array correcto
-      let programasArray = Array.isArray(data) ? data : [];
-
-      if (!Array.isArray(data)) {
-        console.warn('Los datos recibidos no son un array, usando array vacío');
-      }
-
-      // Mapear datos del backend al formato del frontend
-      const programasFormateados = programasArray.map((programa, index) => {
-        console.log(`Mapeando programa ${index}:`, programa);
-        return {
-          programa_id: programa.programa_id || `temp-${index}`,
-          nombre: programa.nombre || 'Sin nombre',
-          deporte: programa.deporte || '',
-          descripcion: programa.descripcion || 'Sin descripción',
-          fecha_inicio: programa.fecha_inicio || '',
-          fecha_fin: programa.fecha_fin || '',
-          horario: programa.horario || '',
-          instructor: programa.instructor || '',
-          cupos_disponibles: programa.cupos_disponibles || 0,
-          ubicacion: programa.ubicacion || '',
-          estado: programa.estado !== undefined ? programa.estado : true,
-          created_at: programa.created_at || new Date().toISOString(),
-        };
+      const onlyActiveParam = estadoFiltro === "activos" ? true : false;
+      const data = await programasDeportivosService.obtenerTodos({
+        skip: 0,
+        limit: 1000,
+        only_active: onlyActiveParam,
       });
 
-      console.log('Programas formateados:', programasFormateados);
+      let programasArray = Array.isArray(data) ? data : [];
+      if (!Array.isArray(data)) {
+        console.warn("Los datos recibidos no son un array, usando array vacío");
+      }
+      const programasFormateados = programasArray.map((programa, index) => ({
+        programa_id: programa.programa_id || `temp-${index}`,
+        nombre: programa.nombre || "Sin nombre",
+        deporte: programa.deporte || "",
+        descripcion: programa.descripcion || "Sin descripción",
+        fecha_inicio: programa.fecha_inicio || "",
+        fecha_fin: programa.fecha_fin || "",
+        horario: programa.horario || "",
+        instructor: programa.instructor || "",
+        cupos_disponibles: programa.cupos_disponibles || 0,
+        ubicacion: programa.ubicacion || "",
+        estado:
+          programa.estado !== undefined
+            ? programa.estado
+            : programa.activo !== undefined
+            ? programa.activo
+            : true,
+        created_at: programa.created_at || new Date().toISOString(),
+      }));
       setProgramas(programasFormateados);
-      console.log('Programas establecidos correctamente');
     } catch (error) {
-      console.error('Error completo al cargar programas:', error);
-      console.error('Detalles del error:', {
+      console.error("Error completo al cargar programas:", error);
+      console.error("Detalles del error:", {
         message: error.message,
         status: error.status,
-        data: error.data
+        data: error.data,
       });
 
-      // No mostrar toast si el backend no está corriendo
       if (error.status !== 503) {
         toast.current?.show({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar los programas deportivos. Verifica la consola para más detalles.',
-          life: 3000
+          severity: "error",
+          summary: "Error",
+          detail:
+            "Error al cargar los programas deportivos. Verifica la consola para más detalles.",
+          life: 3000,
         });
       }
       setProgramas([]);
     } finally {
-      console.log('Finalizando carga de programas');
       setLoading(false);
     }
   };
@@ -93,7 +89,10 @@ export const useAdminDeporte = () => {
   // Validaciones
   const validateForm = () => {
     if (!formData.nombre || !formData.nombre.trim()) {
-      return { isValid: false, message: "El nombre del programa es obligatorio" };
+      return {
+        isValid: false,
+        message: "El nombre del programa es obligatorio",
+      };
     }
     if (formData.nombre.length < 3) {
       return {
@@ -104,18 +103,23 @@ export const useAdminDeporte = () => {
 
     // Validar nombre único
     const nombreExiste = programas.some((programa) => {
-      // Si estamos editando, excluir el programa actual de la validación
-      if (editingPrograma && programa.programa_id === editingPrograma.programa_id) {
+      if (
+        editingPrograma &&
+        programa.programa_id === editingPrograma.programa_id
+      ) {
         return false;
       }
-      // Comparar nombres en minúsculas para hacer la validación case-insensitive
-      return programa.nombre.toLowerCase().trim() === formData.nombre.toLowerCase().trim();
+      return (
+        programa.nombre.toLowerCase().trim() ===
+        formData.nombre.toLowerCase().trim()
+      );
     });
 
     if (nombreExiste) {
       return {
         isValid: false,
-        message: "Ya existe un programa con este nombre. Por favor, elige otro nombre.",
+        message:
+          "Ya existe un programa con este nombre. Por favor, elige otro nombre.",
       };
     }
 
@@ -138,16 +142,25 @@ export const useAdminDeporte = () => {
       return { isValid: false, message: "La fecha de fin es obligatoria" };
     }
     if (new Date(formData.fecha_fin) < new Date(formData.fecha_inicio)) {
-      return { isValid: false, message: "La fecha de fin debe ser posterior a la fecha de inicio" };
+      return {
+        isValid: false,
+        message: "La fecha de fin debe ser posterior a la fecha de inicio",
+      };
     }
     if (!formData.horario || !formData.horario.trim()) {
       return { isValid: false, message: "El horario es obligatorio" };
     }
     if (!formData.instructor || !formData.instructor.trim()) {
-      return { isValid: false, message: "El nombre del instructor es obligatorio" };
+      return {
+        isValid: false,
+        message: "El nombre del instructor es obligatorio",
+      };
     }
     if (!formData.cupos_disponibles || formData.cupos_disponibles < 1) {
-      return { isValid: false, message: "Debe haber al menos 1 cupo disponible" };
+      return {
+        isValid: false,
+        message: "Debe haber al menos 1 cupo disponible",
+      };
     }
     if (!formData.ubicacion || !formData.ubicacion.trim()) {
       return { isValid: false, message: "La ubicación es obligatoria" };
@@ -215,12 +228,29 @@ export const useAdminDeporte = () => {
 
   const handleOpenEditModal = (programa) => {
     setEditingPrograma(programa);
+    // Convertir fechas ISO a yyyy-MM-dd
+    const formatDate = (iso) => {
+      if (!iso) return "";
+      const d = new Date(iso);
+      return d.toISOString().split("T")[0];
+    };
+    // Si el deporte es objeto, usar el nombre; si es string, usar tal cual
+    let deporteValue = "";
+    if (
+      programa.deporte &&
+      typeof programa.deporte === "object" &&
+      programa.deporte.nombre
+    ) {
+      deporteValue = programa.deporte.nombre;
+    } else {
+      deporteValue = programa.deporte || "";
+    }
     setFormData({
       nombre: programa.nombre,
-      deporte: programa.deporte,
+      deporte: deporteValue,
       descripcion: programa.descripcion,
-      fecha_inicio: programa.fecha_inicio,
-      fecha_fin: programa.fecha_fin,
+      fecha_inicio: formatDate(programa.fecha_inicio),
+      fecha_fin: formatDate(programa.fecha_fin),
       horario: programa.horario,
       instructor: programa.instructor,
       cupos_disponibles: programa.cupos_disponibles,
@@ -259,10 +289,10 @@ export const useAdminDeporte = () => {
 
     if (!validation.isValid) {
       toast.current?.show({
-        severity: 'warn',
-        summary: 'Validación',
+        severity: "warn",
+        summary: "Validación",
         detail: validation.message,
-        life: 3000
+        life: 3000,
       });
       return false;
     }
@@ -271,36 +301,67 @@ export const useAdminDeporte = () => {
       setLoading(true);
 
       // Preparar datos para el backend
+      const deportes = [
+        { deporte_id: "futbol_001", nombre: "Fútbol" },
+        { deporte_id: "voleibol_001", nombre: "Voleibol" },
+        { deporte_id: "atletismo_001", nombre: "Atletismo" },
+        { deporte_id: "taekwondo_001", nombre: "Taekwondo" },
+        { deporte_id: "natacion_001", nombre: "Natación" },
+        { deporte_id: "microfutbol_001", nombre: "Microfútbol" },
+        { deporte_id: "ajedrez_001", nombre: "Ajedrez" },
+        { deporte_id: "softbol_001", nombre: "Softbol" },
+        { deporte_id: "tenis_campo_001", nombre: "Tenis de Campo" },
+        { deporte_id: "tenis_mesa_001", nombre: "Tenis de Mesa" },
+        { deporte_id: "baloncesto_001", nombre: "Baloncesto" },
+        { deporte_id: "rugby_001", nombre: "Rugby" },
+      ];
+      const deporteObj = deportes.find(
+        (d) => d.nombre === formData.deporte
+      ) || { deporte_id: null, nombre: formData.deporte };
       const programaData = {
         nombre: formData.nombre,
-        deporte: formData.deporte,
+        deporte: deporteObj,
         descripcion: formData.descripcion,
         fecha_inicio: formData.fecha_inicio,
         fecha_fin: formData.fecha_fin,
         horario: formData.horario,
         instructor: formData.instructor,
         cupos_disponibles: parseInt(formData.cupos_disponibles),
+        cupos_maximos: parseInt(formData.cupos_disponibles),
         ubicacion: formData.ubicacion,
         estado: formData.estado,
+        nivel: formData.nivel || "intermedio",
+        requisitos: formData.requisitos || [
+          "Ser estudiante activo",
+          "Presentar certificado médico",
+          "Tener seguro estudiantil vigente",
+        ],
       };
 
       if (editingPrograma) {
-        console.log("Actualizando programa:", editingPrograma.programa_id, programaData);
-        await programasDeportivosService.actualizar(editingPrograma.programa_id, programaData);
+        console.log(
+          "Actualizando programa:",
+          editingPrograma.programa_id,
+          programaData
+        );
+        await programasDeportivosService.actualizar(
+          editingPrograma.programa_id,
+          programaData
+        );
         toast.current?.show({
-          severity: 'success',
-          summary: 'Éxito',
-          detail: 'Programa deportivo actualizado exitosamente',
-          life: 3000
+          severity: "success",
+          summary: "Éxito",
+          detail: "Programa deportivo actualizado exitosamente",
+          life: 3000,
         });
       } else {
         console.log("Creando programa:", programaData);
         await programasDeportivosService.crear(programaData);
         toast.current?.show({
-          severity: 'success',
-          summary: 'Éxito',
-          detail: 'Programa deportivo creado exitosamente',
-          life: 3000
+          severity: "success",
+          summary: "Éxito",
+          detail: "Programa deportivo creado exitosamente",
+          life: 3000,
         });
       }
 
@@ -309,12 +370,14 @@ export const useAdminDeporte = () => {
       handleCloseModal();
       return true;
     } catch (error) {
-      console.error('Error al guardar programa:', error);
+      console.error("Error al guardar programa:", error);
       toast.current?.show({
-        severity: 'error',
-        summary: 'Error',
-        detail: error?.message || 'Error al guardar el programa. Por favor, intenta nuevamente.',
-        life: 3000
+        severity: "error",
+        summary: "Error",
+        detail:
+          error?.message ||
+          "Error al guardar el programa. Por favor, intenta nuevamente.",
+        life: 3000,
       });
       return false;
     } finally {
@@ -329,21 +392,22 @@ export const useAdminDeporte = () => {
         console.log("Eliminando programa:", programaId);
         await programasDeportivosService.eliminar(programaId);
         toast.current?.show({
-          severity: 'success',
-          summary: 'Éxito',
-          detail: 'Programa deportivo eliminado exitosamente',
-          life: 3000
+          severity: "success",
+          summary: "Éxito",
+          detail: "Programa deportivo eliminado exitosamente",
+          life: 3000,
         });
 
         // Recargar programas
         await cargarProgramas();
       } catch (error) {
-        console.error('Error al eliminar programa:', error);
+        console.error("Error al eliminar programa:", error);
         toast.current?.show({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al eliminar el programa. Por favor, intenta nuevamente.',
-          life: 3000
+          severity: "error",
+          summary: "Error",
+          detail:
+            "Error al eliminar el programa. Por favor, intenta nuevamente.",
+          life: 3000,
         });
       } finally {
         setLoading(false);
@@ -361,7 +425,7 @@ export const useAdminDeporte = () => {
         // Obtener el programa completo
         const programa = programas.find((p) => p.programa_id === programaId);
         if (!programa) {
-          throw new Error('Programa no encontrado');
+          throw new Error("Programa no encontrado");
         }
 
         // Actualizar solo el estado
@@ -380,10 +444,10 @@ export const useAdminDeporte = () => {
 
         await programasDeportivosService.actualizar(programaId, programaData);
         toast.current?.show({
-          severity: 'success',
-          summary: 'Éxito',
+          severity: "success",
+          summary: "Éxito",
           detail: `Programa ${action}do exitosamente`,
-          life: 3000
+          life: 3000,
         });
 
         // Recargar programas
@@ -391,10 +455,10 @@ export const useAdminDeporte = () => {
       } catch (error) {
         console.error(`Error al ${action} programa:`, error);
         toast.current?.show({
-          severity: 'error',
-          summary: 'Error',
+          severity: "error",
+          summary: "Error",
           detail: `Error al ${action} el programa. Por favor, intenta nuevamente.`,
-          life: 3000
+          life: 3000,
         });
       } finally {
         setLoading(false);
@@ -411,6 +475,8 @@ export const useAdminDeporte = () => {
     loading,
     toast,
     programas,
+    estadoFiltro,
+    setEstadoFiltro,
 
     getFilteredData,
     getPaginatedData,

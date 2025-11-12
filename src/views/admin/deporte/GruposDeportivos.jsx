@@ -23,6 +23,8 @@ const GruposDeportivos = () => {
     handleSubmit,
     handleDelete,
     handleToggleEstado,
+    estadoFiltro,
+    setEstadoFiltro,
   } = useAdminDeporte();
 
   const handleMoreInfo = (nombre) => {
@@ -32,8 +34,8 @@ const GruposDeportivos = () => {
   if (loading && programas.length === 0) {
     return (
       <div className={styles.container}>
-        <div style={{ textAlign: 'center', padding: '2rem' }}>
-          <i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem' }}></i>
+        <div style={{ textAlign: "center", padding: "2rem" }}>
+          <i className="pi pi-spin pi-spinner" style={{ fontSize: "2rem" }}></i>
           <p>Cargando programas deportivos...</p>
         </div>
       </div>
@@ -45,13 +47,26 @@ const GruposDeportivos = () => {
       <Toast ref={toast} />
 
       <div className={styles.header}>
-        <h1 className={styles.title}>Grupos Deportivos</h1>
-        <Button
-          label="Nuevo Programa"
-          variant="primary"
-          icon="pi pi-plus"
-          onClick={handleOpenCreateModal}
-        />
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <select
+            value={estadoFiltro}
+            onChange={(e) => setEstadoFiltro(e.target.value)}
+            style={{
+              padding: "0.5rem",
+              borderRadius: "6px",
+              border: "1px solid #ccc",
+            }}
+          >
+            <option value="activos">Activos</option>
+            <option value="eliminados">Eliminados</option>
+          </select>
+          <Button
+            label="Nuevo Programa"
+            variant="primary"
+            icon="pi pi-plus"
+            onClick={handleOpenCreateModal}
+          />
+        </div>
       </div>
 
       <div className={styles.grid}>
@@ -65,17 +80,24 @@ const GruposDeportivos = () => {
             onMoreInfo={() => handleMoreInfo(programa.nombre)}
             onEdit={() => handleOpenEditModal(programa)}
             onDelete={() => handleDelete(programa.programa_id)}
-            onToggleEstado={() => handleToggleEstado(programa.programa_id, programa.estado)}
+            onToggleEstado={() =>
+              handleToggleEstado(programa.programa_id, programa.estado)
+            }
             estado={programa.estado}
           />
         ))}
       </div>
 
       {programas.length === 0 && !loading && (
-        <div style={{ textAlign: 'center', padding: '3rem' }}>
-          <i className="pi pi-info-circle" style={{ fontSize: '3rem', color: '#6b7280' }}></i>
-          <p style={{ color: '#6b7280', marginTop: '1rem' }}>
-            No hay programas deportivos creados. Crea uno nuevo haciendo clic en "Nuevo Programa".
+        <div style={{ textAlign: "center", padding: "3rem" }}>
+          <i
+            className="pi pi-info-circle"
+            style={{ fontSize: "3rem", color: "#6b7280" }}
+          ></i>
+          <p style={{ color: "#6b7280", marginTop: "1rem" }}>
+            {estadoFiltro === "activos"
+              ? 'No hay programas deportivos creados. Crea uno nuevo haciendo clic en "Nuevo Programa".'
+              : "No hay programas deportivos eliminados."}
           </p>
         </div>
       )}
@@ -85,9 +107,14 @@ const GruposDeportivos = () => {
           <div className={modalStyles.modal}>
             <div className={modalStyles.modalHeader}>
               <h2 className={modalStyles.modalTitle}>
-                {editingPrograma ? "Editar Programa Deportivo" : "Nuevo Programa Deportivo"}
+                {editingPrograma
+                  ? "Editar Programa Deportivo"
+                  : "Nuevo Programa Deportivo"}
               </h2>
-              <button className={modalStyles.btnClose} onClick={handleCloseModal}>
+              <button
+                className={modalStyles.btnClose}
+                onClick={handleCloseModal}
+              >
                 <i className="pi pi-times"></i>
               </button>
             </div>
@@ -95,7 +122,8 @@ const GruposDeportivos = () => {
             <div className={modalStyles.modalBody}>
               <div className={modalStyles.formGroup}>
                 <label htmlFor="nombre" className={modalStyles.label}>
-                  Nombre del Programa <span className={modalStyles.required}>*</span>
+                  Nombre del Programa{" "}
+                  <span className={modalStyles.required}>*</span>
                 </label>
                 <input
                   type="text"
@@ -109,7 +137,8 @@ const GruposDeportivos = () => {
 
               <div className={modalStyles.formGroup}>
                 <label htmlFor="deporte" className={modalStyles.label}>
-                  Tipo de Deporte <span className={modalStyles.required}>*</span>
+                  Tipo de Deporte{" "}
+                  <span className={modalStyles.required}>*</span>
                 </label>
                 <select
                   id="deporte"
@@ -120,12 +149,16 @@ const GruposDeportivos = () => {
                   <option value="">Seleccione un deporte</option>
                   <option value="Fútbol">Fútbol</option>
                   <option value="Voleibol">Voleibol</option>
-                  <option value="Baloncesto">Baloncesto</option>
                   <option value="Atletismo">Atletismo</option>
+                  <option value="Taekwondo">Taekwondo</option>
                   <option value="Natación">Natación</option>
-                  <option value="Tenis">Tenis</option>
-                  <option value="Ciclismo">Ciclismo</option>
-                  <option value="Otro">Otro</option>
+                  <option value="Microfútbol">Microfútbol</option>
+                  <option value="Ajedrez">Ajedrez</option>
+                  <option value="Softbol">Softbol</option>
+                  <option value="Tenis de Campo">Tenis de Campo</option>
+                  <option value="Tenis de Mesa">Tenis de Mesa</option>
+                  <option value="Baloncesto">Baloncesto</option>
+                  <option value="Rugby">Rugby</option>
                 </select>
               </div>
 
@@ -137,23 +170,34 @@ const GruposDeportivos = () => {
                   id="descripcion"
                   className={modalStyles.textarea}
                   value={formData.descripcion}
-                  onChange={(e) => handleInputChange("descripcion", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("descripcion", e.target.value)
+                  }
                   placeholder="Describe el programa deportivo"
                   rows="4"
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "1rem",
+                }}
+              >
                 <div className={modalStyles.formGroup}>
                   <label htmlFor="fecha_inicio" className={modalStyles.label}>
-                    Fecha de Inicio <span className={modalStyles.required}>*</span>
+                    Fecha de Inicio{" "}
+                    <span className={modalStyles.required}>*</span>
                   </label>
                   <input
                     type="date"
                     id="fecha_inicio"
                     className={modalStyles.input}
                     value={formData.fecha_inicio}
-                    onChange={(e) => handleInputChange("fecha_inicio", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("fecha_inicio", e.target.value)
+                    }
                   />
                 </div>
 
@@ -166,7 +210,9 @@ const GruposDeportivos = () => {
                     id="fecha_fin"
                     className={modalStyles.input}
                     value={formData.fecha_fin}
-                    onChange={(e) => handleInputChange("fecha_fin", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("fecha_fin", e.target.value)
+                    }
                   />
                 </div>
               </div>
@@ -194,22 +240,36 @@ const GruposDeportivos = () => {
                   id="instructor"
                   className={modalStyles.input}
                   value={formData.instructor}
-                  onChange={(e) => handleInputChange("instructor", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("instructor", e.target.value)
+                  }
                   placeholder="Nombre del instructor"
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "1rem",
+                }}
+              >
                 <div className={modalStyles.formGroup}>
-                  <label htmlFor="cupos_disponibles" className={modalStyles.label}>
-                    Cupos Disponibles <span className={modalStyles.required}>*</span>
+                  <label
+                    htmlFor="cupos_disponibles"
+                    className={modalStyles.label}
+                  >
+                    Cupos Disponibles{" "}
+                    <span className={modalStyles.required}>*</span>
                   </label>
                   <input
                     type="number"
                     id="cupos_disponibles"
                     className={modalStyles.input}
                     value={formData.cupos_disponibles}
-                    onChange={(e) => handleInputChange("cupos_disponibles", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("cupos_disponibles", e.target.value)
+                    }
                     min="1"
                   />
                 </div>
@@ -223,7 +283,9 @@ const GruposDeportivos = () => {
                     id="ubicacion"
                     className={modalStyles.input}
                     value={formData.ubicacion}
-                    onChange={(e) => handleInputChange("ubicacion", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("ubicacion", e.target.value)
+                    }
                     placeholder="Ej: Cancha Principal"
                   />
                 </div>
@@ -235,7 +297,9 @@ const GruposDeportivos = () => {
                     <input
                       type="checkbox"
                       checked={formData.estado}
-                      onChange={(e) => handleInputChange("estado", e.target.checked)}
+                      onChange={(e) =>
+                        handleInputChange("estado", e.target.checked)
+                      }
                     />
                     <span>Programa activo</span>
                   </label>

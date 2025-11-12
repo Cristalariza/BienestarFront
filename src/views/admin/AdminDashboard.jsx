@@ -31,13 +31,6 @@ const AdminDashboard = () => {
 
   return (
     <div className={styles.dashboardContainer}>
-      {/* Header */}
-      <div className={styles.dashboardHeader}>
-        <h1 className={styles.dashboardHeader__title}>
-          Dashboard de Bienestar Universitario
-        </h1>
-      </div>
-
       {/* Stats Cards */}
       <div className={styles.statsGrid}>
         <StatCard

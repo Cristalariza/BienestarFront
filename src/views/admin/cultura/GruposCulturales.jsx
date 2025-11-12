@@ -47,7 +47,6 @@ const GruposCulturales = () => {
       <Toast ref={toast} />
 
       <div className={styles.header}>
-        <h1 className={styles.title}>Grupos Culturales</h1>
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
           <select
             value={estadoFiltro}

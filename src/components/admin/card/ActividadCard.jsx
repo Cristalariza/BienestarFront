@@ -69,6 +69,7 @@ const ActividadCard = ({
               className={`${styles.actionBtn} ${styles.editBtn}`}
               onClick={onEdit}
               title="Editar"
+              disabled={estado === false}
             >
               <i className="pi pi-pencil"></i>
             </button>
@@ -78,6 +79,7 @@ const ActividadCard = ({
               className={`${styles.actionBtn} ${styles.deleteBtn}`}
               onClick={onDelete}
               title="Eliminar"
+              disabled={estado === false}
             >
               <i className="pi pi-trash"></i>
             </button>
