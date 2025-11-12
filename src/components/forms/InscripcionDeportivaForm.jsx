@@ -98,9 +98,35 @@ const InscripcionDeportivaForm = ({
   // Efecto para pre-llenar el programa seleccionado
   useEffect(() => {
     if (programaSeleccionado) {
+      // Buscar el objeto deporte por nombre o id
+      const deportes = [
+        { deporte_id: "futbol_001", nombre: "Fútbol" },
+        { deporte_id: "voleibol_001", nombre: "Voleibol" },
+        { deporte_id: "atletismo_001", nombre: "Atletismo" },
+        { deporte_id: "taekwondo_001", nombre: "Taekwondo" },
+        { deporte_id: "natacion_001", nombre: "Natación" },
+        { deporte_id: "microfutbol_001", nombre: "Microfútbol" },
+        { deporte_id: "ajedrez_001", nombre: "Ajedrez" },
+        { deporte_id: "softbol_001", nombre: "Softbol" },
+        { deporte_id: "tenis_campo_001", nombre: "Tenis de Campo" },
+        { deporte_id: "tenis_mesa_001", nombre: "Tenis de Mesa" },
+        { deporte_id: "baloncesto_001", nombre: "Baloncesto" },
+        { deporte_id: "rugby_001", nombre: "Rugby" },
+      ];
+      let selected = null;
+      // Buscar por id si existe, si no por nombre
+      if (programaSeleccionado.deporte_id) {
+        selected = deportes.find(
+          (d) => d.deporte_id === programaSeleccionado.deporte_id
+        );
+      } else if (programaSeleccionado.title) {
+        selected = deportes.find(
+          (d) => d.nombre === programaSeleccionado.title
+        );
+      }
       setFormData((prev) => ({
         ...prev,
-        programaDeportivoFk: programaSeleccionado.title || "",
+        programaDeportivoFk: selected || "",
       }));
     }
   }, [programaSeleccionado]);
@@ -346,16 +372,46 @@ const InscripcionDeportivaForm = ({
           <select
             id="programaDeportivoFk"
             name="programaDeportivoFk"
-            value={formData.programaDeportivoFk}
-            onChange={handleChange}
+            value={formData.programaDeportivoFk?.deporte_id || ""}
+            onChange={(e) => {
+              const deportes = [
+                { deporte_id: "futbol_001", nombre: "Fútbol" },
+                { deporte_id: "voleibol_001", nombre: "Voleibol" },
+                { deporte_id: "atletismo_001", nombre: "Atletismo" },
+                { deporte_id: "taekwondo_001", nombre: "Taekwondo" },
+                { deporte_id: "natacion_001", nombre: "Natación" },
+                { deporte_id: "microfutbol_001", nombre: "Microfútbol" },
+                { deporte_id: "ajedrez_001", nombre: "Ajedrez" },
+                { deporte_id: "softbol_001", nombre: "Softbol" },
+                { deporte_id: "tenis_campo_001", nombre: "Tenis de Campo" },
+                { deporte_id: "tenis_mesa_001", nombre: "Tenis de Mesa" },
+                { deporte_id: "baloncesto_001", nombre: "Baloncesto" },
+                { deporte_id: "rugby_001", nombre: "Rugby" },
+              ];
+              const selected =
+                deportes.find((d) => d.deporte_id === e.target.value) || "";
+              handleChange({
+                target: {
+                  name: "programaDeportivoFk",
+                  value: selected,
+                },
+              });
+            }}
             className={errors.programaDeportivoFk ? styles.error : ""}
           >
             <option value="">Seleccione un programa</option>
-            <option value="futbol">Fútbol</option>
-            <option value="voleibol">Voleibol</option>
-            <option value="baloncesto">Baloncesto</option>
-            <option value="natacion">Natación</option>
-            <option value="atletismo">Atletismo</option>
+            <option value="futbol_001">Fútbol</option>
+            <option value="voleibol_001">Voleibol</option>
+            <option value="atletismo_001">Atletismo</option>
+            <option value="taekwondo_001">Taekwondo</option>
+            <option value="natacion_001">Natación</option>
+            <option value="microfutbol_001">Microfútbol</option>
+            <option value="ajedrez_001">Ajedrez</option>
+            <option value="softbol_001">Softbol</option>
+            <option value="tenis_campo_001">Tenis de Campo</option>
+            <option value="tenis_mesa_001">Tenis de Mesa</option>
+            <option value="baloncesto_001">Baloncesto</option>
+            <option value="rugby_001">Rugby</option>
           </select>
           {errors.programaDeportivoFk && (
             <span className={styles.errorMsg}>

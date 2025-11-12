@@ -35,13 +35,13 @@ import Inscripciones from "./views/admin/cultura/Inscripciones";
 import Vestuario from "./views/admin/cultura/Vestuario";
 import Instrumentos from "./views/admin/cultura/Instrumentos";
 import Asistencia from "./views/admin/cultura/Asistencia";
-import Reporte from "./views/admin/cultura/Reporte";
+import ReporteCultura from "./views/admin/cultura/ReporteCultura";
 
 // Vistas Admin - Deporte
 import GruposDeportivos from "./views/admin/deporte/GruposDeportivos";
 import InscripcionDeporte from "./views/admin/deporte/Inscripcion";
 import AsistenciaDeporte from "./views/admin/deporte/Asistencia";
-import ReporteDeporte from "./views/admin/deporte/Reporte";
+import ReporteDeporte from "./views/admin/deporte/ReporteDeporte";
 
 function App() {
   return (
@@ -171,7 +171,7 @@ function App() {
           <Route path="cultura/vestuario" element={<Vestuario />} />
           <Route path="cultura/instrumentos" element={<Instrumentos />} />
           <Route path="cultura/asistencia" element={<Asistencia />} />
-          <Route path="cultura/reporte" element={<Reporte />} />
+          <Route path="cultura/reporte" element={<ReporteCultura />} />
 
           <Route path="cultura" element={<AdminCultura />} />
           <Route path="cultura/:actividad" element={<AdminCulturaDetalle />} />

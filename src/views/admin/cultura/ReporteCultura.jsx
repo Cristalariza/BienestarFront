@@ -7,7 +7,7 @@ import HorizontalStackedBarAnualidadFacultad from "../../../components/admin/gra
 import HorizontalBarProgramaModalidad from "../../../components/admin/graficas/HorizontalBarProgramaModalidad";
 import styles from "../../../styles/adminstyles/adminDashboard.module.css";
 
-export const Reporte = () => {
+export const ReporteCultura = () => {
   const {
     loading,
     getPieDataNivel,
@@ -90,4 +90,4 @@ export const Reporte = () => {
   );
 };
 
-export default Reporte;
+export default ReporteCultura;

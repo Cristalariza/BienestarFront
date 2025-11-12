@@ -27,7 +27,7 @@ const Header = () => {
       <div className={styles.container}>
         <div className={styles.leftSection} onClick={handleHomeRedirect}>
           <img
-            src="/Logo_upc_nuevo.png"
+            src="../../../public/Logo_upc_nuevo.png"
             alt="Universidad Popular del Cesar"
             className={styles.logo}
             onError={(e) => {
