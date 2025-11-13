@@ -99,15 +99,31 @@ export const useLoginForm = () => {
           const estamento = await estamentosService.obtenerPorId(response.estamento_id);
           console.log('Estamento del usuario:', estamento);
 
-          // Si es administrativo, redirigir a /admin
-          if (estamento && estamento.nombre && estamento.nombre.toLowerCase().includes('administrativo')) {
-            redirectPath = '/admin';
+          // Redirigir según el tipo de estamento
+          if (estamento && estamento.nombre) {
+            const nombreEstamento = estamento.nombre.toLowerCase();
+
+            if (nombreEstamento.includes('administrativo')) {
+              redirectPath = '/admin';
+            } else if (nombreEstamento.includes('estudiante')) {
+              redirectPath = '/student';
+            } else if (nombreEstamento.includes('docente')) {
+              redirectPath = '/teacher';
+            } else if (nombreEstamento.includes('egresado')) {
+              redirectPath = '/graduate';
+            }
           }
         } catch (estamentoError) {
           console.error('Error al obtener estamento:', estamentoError);
           // Si falla, usar el email como fallback
           if (email.toLowerCase().includes('admin')) {
             redirectPath = '/admin';
+          } else if (email.toLowerCase().includes('estudiante')) {
+            redirectPath = '/student';
+          } else if (email.toLowerCase().includes('docente')) {
+            redirectPath = '/teacher';
+          } else if (email.toLowerCase().includes('egresado')) {
+            redirectPath = '/graduate';
           }
         }
       }

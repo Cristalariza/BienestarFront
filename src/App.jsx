@@ -43,6 +43,21 @@ import InscripcionDeporte from "./views/admin/deporte/Inscripcion";
 import AsistenciaDeporte from "./views/admin/deporte/Asistencia";
 import ReporteDeporte from "./views/admin/deporte/ReporteDeporte";
 
+// Vistas Estudiante
+import StudentDashboard from "./views/student/StudentDashboard";
+import StudentPQRS from "./views/student/StudentPQRS";
+import MyPQRS from "./views/student/MyPQRS";
+
+// Vistas Docente
+import TeacherDashboard from "./views/teacher/TeacherDashboard";
+import TeacherPQRS from "./views/teacher/TeacherPQRS";
+import MyPQRSTeacher from "./views/teacher/MyPQRS";
+
+// Vistas Egresado
+import GraduateDashboard from "./views/graduate/GraduateDashboard";
+import GraduatePQRS from "./views/graduate/GraduatePQRS";
+import MyPQRSGraduate from "./views/graduate/MyPQRS";
+
 function App() {
   return (
     <Router>
@@ -197,6 +212,27 @@ function App() {
           {/* Rutas Informativo */}
           <Route path="noticias" element={<AdminNoticias />} />
           <Route path="eventos" element={<AdminEventos />} />
+        </Route>
+
+        {/* Rutas estudiante */}
+        <Route path="/student" element={<StudentDashboard />}>
+          <Route index element={<StudentPQRS />} />
+          <Route path="pqrs" element={<StudentPQRS />} />
+          <Route path="my-pqrs" element={<MyPQRS />} />
+        </Route>
+
+        {/* Rutas docente */}
+        <Route path="/teacher" element={<TeacherDashboard />}>
+          <Route index element={<TeacherPQRS />} />
+          <Route path="pqrs" element={<TeacherPQRS />} />
+          <Route path="my-pqrs" element={<MyPQRSTeacher />} />
+        </Route>
+
+        {/* Rutas egresado */}
+        <Route path="/graduate" element={<GraduateDashboard />}>
+          <Route index element={<GraduatePQRS />} />
+          <Route path="pqrs" element={<GraduatePQRS />} />
+          <Route path="my-pqrs" element={<MyPQRSGraduate />} />
         </Route>
       </Routes>
     </Router>

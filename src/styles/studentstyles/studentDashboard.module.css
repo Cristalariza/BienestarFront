@@ -1,0 +1,247 @@
+/**
+ * Estilos para el Dashboard de Estudiante
+ */
+
+.dashboardContainer {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* ===== Header ===== */
+.header {
+  background-color: #2d8659;
+  color: white;
+  padding: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.menuToggle {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.menuToggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.headerTitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+  text-align: center;
+}
+
+.logoutButton {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.logoutButton:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.logoutButton i {
+  font-size: 16px;
+}
+
+/* ===== Main Container ===== */
+.mainContainer {
+  display: flex;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: calc(100vh - 64px);
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+  width: 280px;
+  background-color: white;
+  border-right: 1px solid #e0e0e0;
+  transition: transform 0.3s ease;
+  position: sticky;
+  top: 64px;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+
+.sidebarHeader {
+  padding: 24px 20px 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.sidebarTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.sidebarNav {
+  padding: 16px 12px;
+}
+
+.menuItem {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.menuItem:hover {
+  background-color: #f5f5f5;
+}
+
+.menuItem i {
+  font-size: 20px;
+  color: #666;
+  min-width: 20px;
+}
+
+.menuItemContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.menuItemLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.menuItemDescription {
+  font-size: 12px;
+  color: #666;
+}
+
+.menuItemActive {
+  background-color: #e8f5e9;
+  border-left: 3px solid #2d8659;
+}
+
+.menuItemActive i {
+  color: #2d8659;
+}
+
+.menuItemActive .menuItemLabel {
+  color: #2d8659;
+  font-weight: 600;
+}
+
+/* ===== Main Content ===== */
+.mainContent {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+  background-color: #f5f5f5;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 64px;
+    transform: translateX(-100%);
+    z-index: 50;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+
+  .mainContent {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .headerContent {
+    padding: 12px 16px;
+  }
+
+  .headerTitle {
+    font-size: 18px;
+  }
+
+  .logoutButton span {
+    display: none;
+  }
+
+  .mainContent {
+    padding: 16px;
+  }
+
+  .sidebar {
+    width: 260px;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerTitle {
+    font-size: 16px;
+  }
+
+  .mainContent {
+    padding: 12px;
+  }
+
+  .sidebar {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .menuItem {
+    padding: 12px;
+  }
+
+  .menuItemLabel {
+    font-size: 13px;
+  }
+
+  .menuItemDescription {
+    font-size: 11px;
+  }
+}

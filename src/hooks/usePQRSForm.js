@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import pqrsService from "../services/pqrsService";
+import { authService } from "../services";
 import { Toast } from 'primereact/toast';
 
 export const usePQRSForm = () => {
@@ -7,6 +8,7 @@ export const usePQRSForm = () => {
   const [loading, setLoading] = useState(false);
   const [tipos, setTipos] = useState([]);
   const [categorias, setCategorias] = useState([]);
+  const [userProfile, setUserProfile] = useState(null);
 
   const [formData, setFormData] = useState({
     nombreCompleto: "",
@@ -24,10 +26,59 @@ export const usePQRSForm = () => {
   const [trackingResult, setTrackingResult] = useState(null);
   const [showTrackingModal, setShowTrackingModal] = useState(false);
 
-  // Cargar enums al montar el componente
+  // Cargar perfil del usuario y enums al montar el componente
   useEffect(() => {
+    cargarPerfilUsuario();
     cargarEnums();
   }, []);
+
+  const cargarPerfilUsuario = async () => {
+    try {
+      const profile = await authService.getProfile();
+
+      if (profile) {
+        const nombreCompleto =
+          profile.nombre_completo ||
+          (profile.primer_nombre && profile.primer_apellido
+            ? `${profile.primer_nombre} ${profile.segundo_nombre || ''} ${profile.primer_apellido} ${profile.segundo_apellido || ''}`.trim()
+            : "");
+
+        const correo = profile.correo_elec || profile.email || "";
+        const documento = profile.documento_identidad || profile.numero_documento || "";
+
+        setUserProfile({
+          nombreCompleto,
+          correoInstitucional: correo,
+          documentoIdentidad: documento
+        });
+
+        setFormData(prev => ({
+          ...prev,
+          nombreCompleto,
+          correoInstitucional: correo,
+          documentoIdentidad: documento
+        }));
+      }
+    } catch (error) {
+      console.error('Error al cargar perfil de usuario:', error);
+      // Intentar cargar desde localStorage como fallback
+      const user = authService.getCurrentUser();
+      if (user && user.correo_elec) {
+        setUserProfile({
+          nombreCompleto: user.nombre_completo || "",
+          correoInstitucional: user.correo_elec || "",
+          documentoIdentidad: user.documento_identidad || ""
+        });
+
+        setFormData(prev => ({
+          ...prev,
+          nombreCompleto: user.nombre_completo || "",
+          correoInstitucional: user.correo_elec || "",
+          documentoIdentidad: user.documento_identidad || ""
+        }));
+      }
+    }
+  };
 
   const cargarEnums = async () => {
     try {
@@ -71,13 +122,13 @@ export const usePQRSForm = () => {
           documentoIdentidad: "0000000000",
         }));
       } else {
-        // Si se desmarca, limpiar los campos
+        // Si se desmarca, restaurar los datos originales del usuario
         setFormData((prev) => ({
           ...prev,
           enviarAnonimo: false,
-          nombreCompleto: "",
-          correoInstitucional: "",
-          documentoIdentidad: "",
+          nombreCompleto: userProfile?.nombreCompleto || "",
+          correoInstitucional: userProfile?.correoInstitucional || "",
+          documentoIdentidad: userProfile?.documentoIdentidad || "",
         }));
       }
     } else {
@@ -223,11 +274,11 @@ export const usePQRSForm = () => {
         life: 5000
       });
 
-      // Resetear formulario
+      // Resetear formulario restaurando los datos del usuario
       setFormData({
-        nombreCompleto: "",
-        correoInstitucional: "",
-        documentoIdentidad: "",
+        nombreCompleto: userProfile?.nombreCompleto || "",
+        correoInstitucional: userProfile?.correoInstitucional || "",
+        documentoIdentidad: userProfile?.documentoIdentidad || "",
         tipoSolicitud: "",
         dependenciaRelacionada: "",
         asunto: "",

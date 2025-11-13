@@ -1,0 +1,411 @@
+/**
+ * Estilos para Mis PQRS (Vista de Estudiante)
+ */
+
+.container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.filterButtons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tableSection {
+  width: 100%;
+  overflow: visible;
+  min-height: 400px;
+}
+
+.loadingContainer,
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+}
+
+.emptyState h3 {
+  font-size: 18px;
+  color: #333;
+  margin: 0;
+}
+
+.emptyState p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.stats {
+  margin-top: 16px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+  color: #4a4a4a;
+}
+
+.stats strong {
+  color: #2d8659;
+  font-weight: 600;
+}
+
+/* Estilos personalizados para las celdas */
+.tipoBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.tipoBadge.petición {
+  background-color: #3b82f6; /* Azul */
+}
+
+.tipoBadge.queja {
+  background-color: #ef4444; /* Rojo */
+}
+
+.tipoBadge.reclamo {
+  background-color: #f59e0b; /* Naranja */
+}
+
+.tipoBadge.sugerencia {
+  background-color: #10b981; /* Verde */
+}
+
+.tipoBadge.felicitación {
+  background-color: #8b5cf6; /* Púrpura */
+}
+
+/* Badges de estado */
+.estadoBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.estadoBadge.en-revisión {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.estadoBadge.en-trámite {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.estadoBadge.consulta-respuesta {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.estadoBadge.cerrada {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+/* Botón Ver */
+.verButton {
+  background-color: #2d8659;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s ease;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.verButton:hover {
+  background-color: #1e5d3d;
+}
+
+.verButton i {
+  font-size: 14px;
+}
+
+/* ===== Modal de detalles ===== */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modalContent {
+  background-color: white;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modalTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  background-color: #f3f4f6;
+  color: #1f2937;
+}
+
+.modalBody {
+  padding: 24px;
+}
+
+.detailSection {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.detailSection:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 16px 0;
+}
+
+.detailRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.detailColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.detailLabel {
+  font-weight: 500;
+  color: #6b7280;
+  min-width: 140px;
+}
+
+.detailValue {
+  color: #1a1a1a;
+}
+
+.descripcionFull {
+  color: #1a1a1a;
+  line-height: 1.6;
+  margin: 0;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+}
+
+.downloadButton {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.downloadButton:hover {
+  background-color: #2563eb;
+}
+
+.downloadButton i {
+  font-size: 16px;
+}
+
+/* Respuesta */
+.respuestaContainer {
+  background-color: #f0fdf4;
+  border-left: 4px solid #2d8659;
+  padding: 16px;
+  border-radius: 6px;
+}
+
+.respuestaText {
+  color: #1a1a1a;
+  line-height: 1.6;
+  margin: 0 0 12px 0;
+}
+
+.respuestaFooter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.respuestaFooter i {
+  font-size: 14px;
+}
+
+.modalFooter {
+  padding: 16px 24px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .title {
+    font-size: 20px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+  }
+
+  .filterButtons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .filterButtons button {
+    width: 100%;
+  }
+
+  .modalContent {
+    max-width: 100%;
+    margin: 0 10px;
+  }
+
+  .modalHeader {
+    padding: 16px;
+  }
+
+  .modalTitle {
+    font-size: 18px;
+  }
+
+  .modalBody {
+    padding: 16px;
+  }
+
+  .detailLabel {
+    min-width: 100px;
+    font-size: 13px;
+  }
+
+  .detailValue {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 18px;
+  }
+
+  .verButton span {
+    display: none;
+  }
+
+  .detailRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .detailLabel {
+    min-width: auto;
+  }
+}

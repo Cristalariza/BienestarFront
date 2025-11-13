@@ -40,7 +40,7 @@ const PQRSForm = () => {
                 onChange={handleInputChange}
                 className={styles.formInput}
                 placeholder="Ej: Juan Pérez"
-                disabled={formData.enviarAnonimo}
+                disabled={!formData.enviarAnonimo}
                 required
               />
             </div>
@@ -57,7 +57,7 @@ const PQRSForm = () => {
                 onChange={handleInputChange}
                 className={styles.formInput}
                 placeholder="Ej: juan.perez@unicesar.edu.co"
-                disabled={formData.enviarAnonimo}
+                disabled={!formData.enviarAnonimo}
                 required
               />
             </div>
@@ -74,7 +74,7 @@ const PQRSForm = () => {
                 onChange={handleInputChange}
                 className={styles.formInput}
                 placeholder="Ej: 12345678"
-                disabled={formData.enviarAnonimo}
+                disabled={!formData.enviarAnonimo}
               />
             </div>
 
