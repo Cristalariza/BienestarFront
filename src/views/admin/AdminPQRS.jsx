@@ -2,10 +2,12 @@ import Table from "../../components/admin/tables/Table";
 import SearchBar from "../../components/admin/buscar/SearchBar";
 import Button from "../../components/admin/buttom/Button";
 import { useAdminPQRS } from "../../hooks/useAdminPQRS";
+import { Toast } from 'primereact/toast';
 import styles from "../../styles/adminstyles/adminPQRS.module.css";
 
 const AdminPQRS = () => {
   const {
+    toast,
     searchTerm,
     selectedFilter,
     currentPage,
@@ -24,6 +26,7 @@ const AdminPQRS = () => {
     handleChangeStatus,
     handleSaveResponse,
     handleExport,
+    loading,
   } = useAdminPQRS();
 
   const itemsPerPage = 10;
@@ -112,6 +115,7 @@ const AdminPQRS = () => {
 
   return (
     <div className={styles.container}>
+      <Toast ref={toast} />
       <div className={styles.header}>
         <h1 className={styles.title}>Gestión de PQRS</h1>
       </div>
@@ -311,15 +315,20 @@ const AdminPQRS = () => {
                 </div>
               )}
 
-              {selectedPQRS.estado === "Consulta/Respuesta" && (
-                <div className={styles.detailSection}>
-                  <h3 className={styles.sectionTitle}>Respuesta</h3>
+              {/* Sección de Respuesta */}
+              <div className={styles.detailSection}>
+                <h3 className={styles.sectionTitle}>Respuesta</h3>
+                <div className={styles.detailColumn}>
+                  <label className={styles.detailLabel}>
+                    Escribe tu respuesta:
+                  </label>
                   <textarea
                     className={styles.responseTextarea}
                     value={respuesta}
                     onChange={(e) => setRespuesta(e.target.value)}
-                    placeholder="Escribe aquí la respuesta a esta PQRS..."
+                    placeholder="Escribe la respuesta para esta PQRS..."
                     rows="6"
+                    disabled={loading}
                   />
                   <Button
                     label="Guardar Respuesta"
@@ -327,19 +336,10 @@ const AdminPQRS = () => {
                     icon="pi pi-save"
                     iconPos="left"
                     onClick={handleSaveResponse}
+                    disabled={loading || !respuesta.trim()}
                   />
                 </div>
-              )}
-
-              {selectedPQRS.respuesta &&
-                selectedPQRS.estado !== "Consulta/Respuesta" && (
-                  <div className={styles.detailSection}>
-                    <h3 className={styles.sectionTitle}>Respuesta</h3>
-                    <p className={styles.descripcionFull}>
-                      {selectedPQRS.respuesta}
-                    </p>
-                  </div>
-                )}
+              </div>
             </div>
 
             <div className={styles.modalFooter}>

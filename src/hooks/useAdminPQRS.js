@@ -1,77 +1,97 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import pqrsService from "../services/pqrsService";
 
 export const useAdminPQRS = () => {
+  const toast = useRef(null);
+  const [pqrsData, setPqrsData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("todos");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedPQRS, setSelectedPQRS] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [respuesta, setRespuesta] = useState("");
+  const [estadisticas, setEstadisticas] = useState(null);
+  const [tipos, setTipos] = useState([]);
+  const [estados, setEstados] = useState([]);
+  const [categorias, setCategorias] = useState([]);
 
-  // Datos de ejemplo - Aquí conectarías con tu API
-  const pqrsData = [
-    {
-      nombre: "Juan Pérez",
-      correo: "juan.perez@unicesar.edu.co",
-      documento: "1234567890",
-      tipoSolicitud: "Petición",
-      dependencia: "Bienestar Universitario",
-      asunto: "Solicitud de beca",
-      descripcion:
-        "Solicito información sobre el proceso de postulación a becas para el semestre 2025-1",
-      archivo: "documento.pdf",
-      fecha: "2025-11-01",
-      estado: "En revisión",
-    },
-    {
-      nombre: "María García",
-      correo: "maria.garcia@unicesar.edu.co",
-      documento: "9876543210",
-      tipoSolicitud: "Queja",
-      dependencia: "Dirección Académica",
-      asunto: "Horario de atención",
-      descripcion: "El horario de atención no está siendo cumplido",
-      archivo: null,
-      fecha: "2025-11-02",
-      estado: "En trámite",
-    },
-    {
-      nombre: "Carlos López",
-      correo: "carlos.lopez@unicesar.edu.co",
-      documento: "5555555555",
-      tipoSolicitud: "Reclamo",
-      dependencia: "Dirección Financiera",
-      asunto: "Error en el cobro",
-      descripcion: "Se realizó un cobro duplicado en mi matrícula",
-      archivo: "comprobante.pdf",
-      fecha: "2025-10-30",
-      estado: "Cerrada",
-    },
-    {
-      nombre: "Ana Martínez",
-      correo: "ana.martinez@unicesar.edu.co",
-      documento: "4444444444",
-      tipoSolicitud: "Sugerencia",
-      dependencia: "Bienestar Universitario",
-      asunto: "Mejora en servicios",
-      descripcion: "Sugiero ampliar el horario de la biblioteca",
-      archivo: null,
-      fecha: "2025-10-28",
-      estado: "En revisión",
-    },
-    {
-      nombre: "ANONIMO",
-      correo: "anonimo@unicesar.edu.co",
-      documento: "0000000000",
-      tipoSolicitud: "Queja",
-      dependencia: "Recursos Humanos",
-      asunto: "Trato inadecuado",
-      descripcion: "Reporte de trato inadecuado por parte de un funcionario",
-      archivo: null,
-      fecha: "2025-11-03",
-      estado: "En trámite",
-    },
-  ];
+  // Cargar datos al montar el componente
+  useEffect(() => {
+    cargarPQRS();
+    cargarEnums();
+    cargarEstadisticas();
+  }, []);
+
+  const cargarPQRS = async () => {
+    try {
+      setLoading(true);
+      const data = await pqrsService.obtenerTodas({
+        skip: 0,
+        limit: 1000,
+        only_active: true
+      });
+
+      // Mapear datos del backend al formato del frontend
+      const pqrsMapeadas = Array.isArray(data) ? data.map(pqrs => ({
+        id: pqrs.pqrs_id,
+        nombre: pqrs.nombre_completo || 'N/A',
+        correo: pqrs.correo_institucional || 'N/A',
+        documento: pqrs.documento_identidad || 'N/A',
+        tipoSolicitud: pqrs.tipo_solicitud || 'N/A',
+        dependencia: pqrs.dependencia_relacionada || 'N/A',
+        asunto: pqrs.asunto || 'N/A',
+        descripcion: pqrs.descripcion_detallada || 'N/A',
+        archivo: pqrs.archivo_adjunto || null,
+        fecha: pqrs.fecha_solicitud ? new Date(pqrs.fecha_solicitud).toLocaleDateString() : 'N/A',
+        estado: pqrs.estado || 'En revisión',
+        respuesta: pqrs.respuesta || '',
+        respondidoPor: pqrs.respondido_por || '',
+        enviarAnonimo: pqrs.enviar_anonimo || false
+      })) : [];
+
+      setPqrsData(pqrsMapeadas);
+    } catch (error) {
+      console.error('Error al cargar PQRS:', error);
+      toast.current?.show({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'No se pudieron cargar las PQRS',
+        life: 3000
+      });
+      setPqrsData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const cargarEnums = async () => {
+    try {
+      const [tiposData, estadosData, categoriasData] = await Promise.all([
+        pqrsService.obtenerTipos(),
+        pqrsService.obtenerEstados(),
+        pqrsService.obtenerCategorias(),
+      ]);
+      setTipos(Array.isArray(tiposData) ? tiposData : []);
+      setEstados(Array.isArray(estadosData) ? estadosData : ["En revisión", "En trámite", "Consulta/Respuesta", "Cerrada"]);
+      setCategorias(Array.isArray(categoriasData) ? categoriasData : []);
+    } catch (error) {
+      console.error('Error al cargar enums:', error);
+      // Valores por defecto
+      setTipos(["Petición", "Queja", "Reclamo", "Sugerencia", "Felicitación"]);
+      setEstados(["En revisión", "En trámite", "Consulta/Respuesta", "Cerrada"]);
+      setCategorias([]);
+    }
+  };
+
+  const cargarEstadisticas = async () => {
+    try {
+      const stats = await pqrsService.obtenerEstadisticas();
+      setEstadisticas(stats);
+    } catch (error) {
+      console.error('Error al cargar estadísticas:', error);
+    }
+  };
 
   // Validaciones
   const validateCloseModal = () => {
@@ -109,7 +129,7 @@ export const useAdminPQRS = () => {
     return null;
   };
 
-  // Filtros
+  // Filtros y búsqueda
   const getFilteredData = () => {
     return pqrsData.filter((pqrs) => {
       const matchesSearch =
@@ -124,6 +144,42 @@ export const useAdminPQRS = () => {
 
       return matchesSearch && matchesFilter;
     });
+  };
+
+  // Búsqueda en backend (usar cuando searchTerm cambie después de un delay)
+  const buscarEnBackend = async (termino) => {
+    if (!termino.trim()) {
+      cargarPQRS();
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const resultados = await pqrsService.buscar(termino);
+
+      const pqrsMapeadas = Array.isArray(resultados) ? resultados.map(pqrs => ({
+        id: pqrs.pqrs_id,
+        nombre: pqrs.nombre_completo || 'N/A',
+        correo: pqrs.correo_institucional || 'N/A',
+        documento: pqrs.documento_identidad || 'N/A',
+        tipoSolicitud: pqrs.tipo_solicitud || 'N/A',
+        dependencia: pqrs.dependencia_relacionada || 'N/A',
+        asunto: pqrs.asunto || 'N/A',
+        descripcion: pqrs.descripcion_detallada || 'N/A',
+        archivo: pqrs.archivo_adjunto || null,
+        fecha: pqrs.fecha_solicitud ? new Date(pqrs.fecha_solicitud).toLocaleDateString() : 'N/A',
+        estado: pqrs.estado || 'En revisión',
+        respuesta: pqrs.respuesta || '',
+        respondidoPor: pqrs.respondido_por || '',
+        enviarAnonimo: pqrs.enviar_anonimo || false
+      })) : [];
+
+      setPqrsData(pqrsMapeadas);
+    } catch (error) {
+      console.error('Error al buscar:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Paginación
@@ -147,6 +203,7 @@ export const useAdminPQRS = () => {
   const handleClearSearch = () => {
     setSearchTerm("");
     setCurrentPage(1);
+    cargarPQRS();
   };
 
   const handleFilterChange = (filter) => {
@@ -158,56 +215,196 @@ export const useAdminPQRS = () => {
     setCurrentPage(page);
   };
 
-  const handleViewDetails = (pqrs) => {
-    setSelectedPQRS(pqrs);
-    setShowModal(true);
-    setRespuesta(pqrs.respuesta || "");
+  const handleViewDetails = async (pqrs) => {
+    try {
+      setLoading(true);
+      // Cargar detalles completos desde el backend
+      const detalles = await pqrsService.obtenerPorId(pqrs.id);
+
+      setSelectedPQRS({
+        ...pqrs,
+        ...detalles
+      });
+      setShowModal(true);
+      setRespuesta(detalles.respuesta || pqrs.respuesta || "");
+    } catch (error) {
+      console.error('Error al cargar detalles:', error);
+      setSelectedPQRS(pqrs);
+      setShowModal(true);
+      setRespuesta(pqrs.respuesta || "");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCloseModal = () => {
-    const validation = validateCloseModal();
-
-    if (!validation.isValid) {
-      alert(validation.message);
-      return false;
-    }
-
     setShowModal(false);
     setSelectedPQRS(null);
     setRespuesta("");
     return true;
   };
 
-  const handleChangeStatus = (newStatus) => {
+  const handleChangeStatus = async (newStatus) => {
     const notification = notifyStatusChange(newStatus);
 
     if (notification) {
-      alert(notification);
+      toast.current?.show({
+        severity: 'info',
+        summary: 'Información',
+        detail: notification,
+        life: 3000
+      });
     }
 
-    setSelectedPQRS({ ...selectedPQRS, estado: newStatus });
+    try {
+      // Actualizar en el backend
+      await pqrsService.actualizar(selectedPQRS.id, {
+        estado: newStatus,
+        respuesta: respuesta || selectedPQRS.respuesta,
+        respondido_por: "Administrador",
+        fecha_respuesta: new Date().toISOString()
+      });
+
+      setSelectedPQRS({ ...selectedPQRS, estado: newStatus });
+
+      toast.current?.show({
+        severity: 'success',
+        summary: 'Éxito',
+        detail: 'Estado actualizado correctamente',
+        life: 3000
+      });
+
+      // Recargar la lista
+      cargarPQRS();
+    } catch (error) {
+      console.error('Error al actualizar estado:', error);
+      toast.current?.show({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'No se pudo actualizar el estado',
+        life: 3000
+      });
+    }
   };
 
-  const handleSaveResponse = () => {
+  const handleSaveResponse = async () => {
     const validation = validateSaveResponse();
 
     if (!validation.isValid) {
-      alert(validation.message);
+      toast.current?.show({
+        severity: 'warn',
+        summary: 'Validación',
+        detail: validation.message,
+        life: 3000
+      });
       return false;
     }
 
-    // Aquí conectarías con tu API para guardar la respuesta
-    console.log("Guardando respuesta:", respuesta);
-    alert("Respuesta guardada exitosamente");
+    try {
+      setLoading(true);
 
-    setSelectedPQRS({ ...selectedPQRS, respuesta: respuesta });
-    return true;
+      // Actualizar PQRS con la respuesta usando PUT
+      await pqrsService.actualizar(selectedPQRS.id, {
+        respuesta: respuesta,
+        respondido_por: "Administrador",
+        fecha_respuesta: new Date().toISOString()
+      });
+
+      // Actualizar el estado local
+      setSelectedPQRS({
+        ...selectedPQRS,
+        respuesta: respuesta,
+        respondidoPor: "Administrador"
+      });
+
+      toast.current?.show({
+        severity: 'success',
+        summary: 'Éxito',
+        detail: 'Respuesta guardada exitosamente',
+        life: 3000
+      });
+
+      // Recargar lista de PQRS
+      cargarPQRS();
+
+      return true;
+    } catch (error) {
+      console.error('Error al guardar respuesta:', error);
+      toast.current?.show({
+        severity: 'error',
+        summary: 'Error',
+        detail: error.response?.data?.detail || 'No se pudo guardar la respuesta',
+        life: 3000
+      });
+      return false;
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleExport = () => {
-    // Aquí conectarías con tu API para exportar
-    console.log("Exportando datos PQRS...");
-    alert("Exportando datos a Excel...");
+    try {
+      // Exportar a CSV
+      const headers = ['ID', 'Nombre', 'Correo', 'Tipo', 'Dependencia', 'Asunto', 'Descripción', 'Estado', 'Fecha'];
+      const csvData = pqrsData.map(pqrs => [
+        pqrs.id,
+        pqrs.nombre,
+        pqrs.correo,
+        pqrs.tipoSolicitud,
+        pqrs.dependencia,
+        pqrs.asunto,
+        pqrs.descripcion,
+        pqrs.estado,
+        pqrs.fecha
+      ]);
+
+      const csv = [
+        headers.join(','),
+        ...csvData.map(row => row.map(cell => `"${cell}"`).join(','))
+      ].join('\n');
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `pqrs_${new Date().toISOString().split('T')[0]}.csv`;
+      link.click();
+
+      toast.current?.show({
+        severity: 'success',
+        summary: 'Éxito',
+        detail: 'Datos exportados correctamente',
+        life: 3000
+      });
+    } catch (error) {
+      console.error('Error al exportar:', error);
+      toast.current?.show({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'No se pudieron exportar los datos',
+        life: 3000
+      });
+    }
+  };
+
+  const handleDelete = async (pqrsId) => {
+    try {
+      await pqrsService.cancelar(pqrsId);
+      toast.current?.show({
+        severity: 'success',
+        summary: 'Éxito',
+        detail: 'PQRS cancelada correctamente',
+        life: 3000
+      });
+      cargarPQRS();
+    } catch (error) {
+      console.error('Error al cancelar PQRS:', error);
+      toast.current?.show({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'No se pudo cancelar la PQRS',
+        life: 3000
+      });
+    }
   };
 
   return {
@@ -219,6 +416,12 @@ export const useAdminPQRS = () => {
     showModal,
     respuesta,
     pqrsData,
+    loading,
+    estadisticas,
+    tipos,
+    estados,
+    categorias,
+    toast,
 
     // Setters
     setRespuesta,
@@ -226,6 +429,8 @@ export const useAdminPQRS = () => {
     // Métodos de datos
     getFilteredData,
     getPaginatedData,
+    cargarPQRS,
+    buscarEnBackend,
 
     // Handlers
     handleSearch,
@@ -237,5 +442,6 @@ export const useAdminPQRS = () => {
     handleChangeStatus,
     handleSaveResponse,
     handleExport,
+    handleDelete,
   };
 };

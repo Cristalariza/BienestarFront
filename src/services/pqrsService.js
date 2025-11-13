@@ -8,15 +8,7 @@ import api from './api';
 const pqrsService = {
   /**
    * Crear una nueva PQRS
-   * @param {Object} pqrsData - Datos de la PQRS
-   * @param {string} pqrsData.tipo_solicitud - Tipo de solicitud (PETICION, QUEJA, RECLAMO, SUGERENCIA)
-   * @param {string} pqrsData.asunto - Asunto de la solicitud
-   * @param {string} pqrsData.descripcion - Descripción detallada
-   * @param {string} pqrsData.solicitante_nombre - Nombre del solicitante
-   * @param {string} pqrsData.solicitante_email - Email del solicitante
-   * @param {string} pqrsData.solicitante_telefono - Teléfono del solicitante
-   * @param {string} pqrsData.dependencia_relacionada - Dependencia relacionada
-   * @returns {Promise<Object>} - PQRS creada
+   * POST /api/v1/pqrs
    */
   crear: async (pqrsData) => {
     try {
@@ -28,12 +20,8 @@ const pqrsService = {
   },
 
   /**
-   * Obtener todas las PQRS
-   * @param {Object} params - Parámetros de paginación
-   * @param {number} params.skip - Número de registros a saltar (default: 0)
-   * @param {number} params.limit - Máximo de registros a retornar (default: 100)
-   * @param {boolean} params.only_active - Solo registros activos (default: true)
-   * @returns {Promise<Array>} - Lista de PQRS
+   * Obtener todas las PQRS con paginación
+   * GET /api/v1/pqrs
    */
   obtenerTodas: async (params = {}) => {
     try {
@@ -49,8 +37,7 @@ const pqrsService = {
 
   /**
    * Obtener una PQRS por ID
-   * @param {string} pqrsId - ID de la PQRS
-   * @returns {Promise<Object>} - PQRS encontrada
+   * GET /api/v1/pqrs/{pqrs_id}
    */
   obtenerPorId: async (pqrsId) => {
     try {
@@ -62,13 +49,10 @@ const pqrsService = {
   },
 
   /**
-   * Actualizar el estado de una PQRS
-   * @param {string} pqrsId - ID de la PQRS
-   * @param {Object} data - Datos a actualizar
-   * @param {string} data.estado - Nuevo estado (PENDIENTE, EN_PROCESO, RESUELTO, CERRADO)
-   * @returns {Promise<Object>} - PQRS actualizada
+   * Actualizar una PQRS (estado, respuesta, etc.)
+   * PUT /api/v1/pqrs/{pqrs_id}
    */
-  actualizarEstado: async (pqrsId, data) => {
+  actualizar: async (pqrsId, data) => {
     try {
       const response = await api.put(`/pqrs/${pqrsId}`, data);
       return response.data;
@@ -78,14 +62,62 @@ const pqrsService = {
   },
 
   /**
-   * Agregar respuesta a una PQRS
-   * @param {string} pqrsId - ID de la PQRS
-   * @param {Object} respuestaData - Datos de la respuesta
-   * @param {string} respuestaData.respuesta - Texto de la respuesta
-   * @param {string} respuestaData.respondido_por - Nombre de quien responde
-   * @returns {Promise<Object>} - Confirmación
+   * Cancelar una PQRS (soft delete)
+   * DELETE /api/v1/pqrs/{pqrs_id}
    */
-  agregarRespuesta: async (pqrsId, respuestaData) => {
+  cancelar: async (pqrsId) => {
+    try {
+      const response = await api.delete(`/pqrs/${pqrsId}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * Consultar PQRS por código de radicado
+   * POST /api/v1/pqrs/consulta
+   */
+  consultarPorCodigo: async (additionalProp) => {
+    try {
+      const response = await api.post('/pqrs/consulta', { additionalProp });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * Obtener todas las PQRS de un usuario específico
+   * GET /api/v1/usuarios/{usuario_id}/pqrs
+   */
+  obtenerPorUsuario: async (usuarioId) => {
+    try {
+      const response = await api.get(`/usuarios/${usuarioId}/pqrs`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * Obtener todas las respuestas de una PQRS
+   * GET /api/v1/pqrs/{pqrs_id}/respuestas
+   */
+  obtenerRespuestas: async (pqrsId) => {
+    try {
+      const response = await api.get(`/pqrs/${pqrsId}/respuestas`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * Crear una nueva respuesta a una PQRS
+   * POST /api/v1/pqrs/{pqrs_id}/respuestas
+   */
+  crearRespuesta: async (pqrsId, respuestaData) => {
     try {
       const response = await api.post(`/pqrs/${pqrsId}/respuestas`, respuestaData);
       return response.data;
@@ -95,17 +127,90 @@ const pqrsService = {
   },
 
   /**
-   * Eliminar una PQRS
-   * @param {string} pqrsId - ID de la PQRS
-   * @returns {Promise<Object>} - Confirmación de eliminación
+   * Obtener el seguimiento de cambios de una PQRS
+   * GET /api/v1/pqrs/{pqrs_id}/seguimiento
    */
-  eliminar: async (pqrsId) => {
+  obtenerSeguimiento: async (pqrsId) => {
     try {
-      const response = await api.delete(`/pqrs/${pqrsId}`);
+      const response = await api.get(`/pqrs/${pqrsId}/seguimiento`);
       return response.data;
     } catch (error) {
       throw error;
     }
+  },
+
+  /**
+   * Buscar PQRS por término en asunto o descripción
+   * GET /api/v1/pqrs/buscar/{termino}
+   */
+  buscar: async (termino) => {
+    try {
+      const response = await api.get(`/pqrs/buscar/${termino}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * Obtener estadísticas generales de PQRS
+   * GET /api/v1/pqrs/estadisticas/general
+   */
+  obtenerEstadisticas: async () => {
+    try {
+      const response = await api.get('/pqrs/estadisticas/general');
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * Obtener todos los tipos de PQRS disponibles
+   * GET /api/v1/pqrs/enums/tipos
+   */
+  obtenerTipos: async () => {
+    try {
+      const response = await api.get('/pqrs/enums/tipos');
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * Obtener todos los estados de PQRS disponibles
+   * GET /api/v1/pqrs/enums/estados
+   */
+  obtenerEstados: async () => {
+    try {
+      const response = await api.get('/pqrs/enums/estados');
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * Obtener todas las categorías de PQRS disponibles
+   * GET /api/v1/pqrs/enums/categorias
+   */
+  obtenerCategorias: async () => {
+    try {
+      const response = await api.get('/pqrs/enums/categorias');
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Métodos de compatibilidad con código anterior
+  actualizarEstado: async (pqrsId, data) => {
+    return pqrsService.actualizar(pqrsId, data);
+  },
+
+  eliminar: async (pqrsId) => {
+    return pqrsService.cancelar(pqrsId);
   }
 };
 
