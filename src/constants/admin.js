@@ -92,6 +92,20 @@ export const ADMIN_SIDEBAR_ITEMS = [
     label: "Ayuda Social",
     icon: "pi pi-heart",
     url: "/admin/ayuda-social",
+    subItems: [
+      {
+        id: "bicicletas",
+        label: "Bicicletas",
+        url: "/admin/ayuda-social/bicicletas",
+        icon: "pi pi-car",
+      },
+      {
+        id: "grupos-juveniles",
+        label: "Grupos Juveniles",
+        url: "/admin/ayuda-social/grupos-juveniles",
+        icon: "pi pi-users",
+      },
+    ],
   },
   {
     id: 5,

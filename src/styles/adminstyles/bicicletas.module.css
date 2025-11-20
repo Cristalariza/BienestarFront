@@ -1,0 +1,100 @@
+.container {
+    padding: 24px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.titulo {
+    font-size: 1.4rem;
+    color: #118a4e;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.barraBusqueda {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+}
+
+.inputBusqueda {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    width: 250px;
+    transition: border 0.2s;
+}
+
+.inputBusqueda:focus {
+    border-color: #118a4e;
+    outline: none;
+}
+
+.tablaContainer {
+    overflow-x: auto;
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.tabla th {
+    background-color: #118a4e;
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+    font-weight: 500;
+}
+
+.tabla td {
+    padding: 10px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.tabla tr:hover {
+    background-color: #f8f9fa;
+}
+
+.botones {
+    display: flex;
+    gap: 10px;
+}
+
+.botonVer,
+.botonEditar,
+.botonEliminar {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform 0.15s;
+}
+
+.botonVer {
+    color: #118a4e;
+}
+
+.botonEditar {
+    color: #0d6efd;
+}
+
+.botonEliminar {
+    color: #dc3545;
+}
+
+.botonVer:hover,
+.botonEditar:hover,
+.botonEliminar:hover {
+    transform: scale(1.15);
+}
+
+.sinResultados {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+    font-style: italic;
+}

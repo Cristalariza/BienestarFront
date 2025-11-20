@@ -43,6 +43,10 @@ import InscripcionDeporte from "./views/admin/deporte/Inscripcion";
 import AsistenciaDeporte from "./views/admin/deporte/Asistencia";
 import ReporteDeporte from "./views/admin/deporte/ReporteDeporte";
 
+// Vistas Admin - Ayuda Social
+import Bicicletas from "./views/admin/ayuda-social/Bicicletas";
+import GruposJuveniles from "./views/admin/ayuda-social/GruposJuveniles";
+
 // Vistas Estudiante
 import StudentDashboard from "./views/student/StudentDashboard";
 import StudentPQRS from "./views/student/StudentPQRS";
@@ -192,20 +196,12 @@ function App() {
           <Route path="cultura/:actividad" element={<AdminCulturaDetalle />} />
 
           {/* Rutas Ayuda Social */}
+          <Route path="ayuda-social/bicicletas" element={<Bicicletas />} />
           <Route
-            path="ayuda-social"
-            element={
-              <div>
-                En desarrollo, no se nos dio informacion correspondiente para el
-                desarrollo de este modulo.
-                <br />{" "}
-                <b>
-                  Se exige la información correspondiente para poder desarrollar
-                  un modulo optimo y adecuado a las necesidades.
-                </b>
-              </div>
-            }
+            path="ayuda-social/grupos-juveniles"
+            element={<GruposJuveniles />}
           />
+
           {/* Rutas PQRs */}
           <Route path="pqrs" element={<AdminPQRS />} />
 
